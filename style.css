@@ -25,6 +25,18 @@ nav .wrapper{
   align-items: center;
   justify-content: space-between;
 }
+
+.logo{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+}
+
+.logo img{
+    width: 40px;
+}
+
 .wrapper .logo a{
   color: #f2f2f2;
   font-size: 30px;
@@ -285,6 +297,7 @@ nav input{
     justify-content: center;
     align-items: center;
     font-family: arial;
+    z-index: 99;
 }
 
 .modal-form{
