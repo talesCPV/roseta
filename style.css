@@ -1,6 +1,8 @@
 
+
+/* MODAL */
 .modal{
-    display: flex;
+    display: none;
     position: absolute;
     top: 0;
     width: 100%;
@@ -8,6 +10,7 @@
     background-color: #04040473;
     justify-content: center;
     align-items: center;
+    font-family: arial;
 }
 
 .modal-form{
@@ -19,12 +22,25 @@
 
 .modal-head{
     position: relative;
-    height: 50px;
+    height: 30px;
     border-bottom: solid 1px;
     padding: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4em;
 }
 
 .modal-close{
     position: absolute;
     right: 10px;
+}
+
+.modal-close:hover{
+    cursor: pointer;
+    color: brown;
+}
+
+.modal-content{
+    padding: 10px 20px;
 }

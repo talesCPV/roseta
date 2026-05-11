@@ -9,6 +9,7 @@ then
     git init
 
 #    git add assets/
+    git add templates/
     git add script.js
     git add style.css
     git add index.html
