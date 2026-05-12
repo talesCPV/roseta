@@ -16,6 +16,12 @@ then
     git add commit.sh
     git add index.html
     
+    git add data.json
+    git add script.js
+    git add style.css
+
+
+
     git commit -m "by_script"
 
 #    git branch -M main
