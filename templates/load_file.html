@@ -1,0 +1,31 @@
+<title>Load File</title>
+<template>
+    <style></style>
+
+    <fieldset>
+        <legend>Selecione o arquivo</legend>
+        <input  name="up_file" id="up_file" type="file">
+    </fieldset>
+
+</template>
+<script>
+
+    try{
+        document.querySelector('#load_file').querySelector('#up_file').accept = main_data.load_file.accept
+    }catch{
+        document.querySelector('#load_file').querySelector('#up_file').accept = ''
+    }
+
+    document.querySelector('#load_file').querySelector('#up_file').addEventListener('change',(e)=>{
+
+        try{
+//            const call = document.querySelector('#load_file').previousElementSibling
+            main_data.load_file.callback(e.target.files[0])
+            removeModal('load_file')
+        }catch{
+            console.error('Not set callback function.')
+        }
+
+    })
+
+</script>

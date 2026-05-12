@@ -66,6 +66,7 @@ nav .wrapper{
 }
 .nav-links li a:hover{
   background: var(--menu-color-2);
+  cursor: pointer;
 }
 .nav-links .mobile-item{
   display: none;

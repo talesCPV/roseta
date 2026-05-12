@@ -1,7 +1,7 @@
 
 /* MODAL */
 .modal{
-    display: none;
+    display: flex;
     position: absolute;
     top: 0;
     width: 100%;
@@ -29,6 +29,9 @@
     justify-content: center;
     align-items: center;
     font-size: 1.4em;
+    background-color: #975252;
+    color: white;
+    border-radius: 10px 10px 0 0;
 }
 
 .modal-close{
@@ -38,9 +41,11 @@
 
 .modal-close:hover{
     cursor: pointer;
-    color: brown;
+    color: rgb(5, 5, 5);
 }
 
-.modal-content{
+.modal-content{ 
     padding: 10px 20px;
+    overflow: scroll;
+    height: 95%;
 }

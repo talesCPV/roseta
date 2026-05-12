@@ -1,0 +1,138 @@
+<title>Importar CSV</title>
+<template>
+    <style>
+        .hide{
+            display: none;
+        }
+    </style>
+
+
+
+    <div id="main">
+        <div class="range">
+            <button id="btn-load">Load File</button>
+            <input class="hide" name="up_file" id="up_file" type="file" accept=".csv">
+    
+            <input id="rng-select" type="range" min="0" max="0" value="0">
+            <label for="edt-goto">INDEX</label>
+            <input type="number" id="edt-goto">
+        </div>
+
+        <div class="register">
+            <div class="left">
+                <img id="reg-img" src="" alt="">
+            </div>
+            <div class="rigth"></div>
+        </div>
+    </div>
+
+
+</template>
+<script>
+
+//    const localScreen = document.querySelector('#impost_csv')
+
+let registers = []
+
+function loadRegister(index){
+    reg = registers[index]
+    console.log(reg)
+    
+    try{
+        img = reg['Categorias,URL de Origem'].split(':')
+        document.querySelector('#reg-img').src = img.length>2 ? img[1]+':'+img[2] : ''
+    }catch{null}
+
+
+    const panel = document.querySelector('.rigth')
+    panel.innerHTML = ''
+    for (const [key, value] of Object.entries(reg)) {
+
+        const line = document.createElement('div')
+        line.className = 'line'
+        panel.appendChild(line
+
+        )
+
+        const label = document.createElement('label')
+        label.innerHTML = key
+        line.appendChild(label)
+
+        const valor = document.createElement('input')
+        valor.value = value
+        valor.readOnly = true
+        line.appendChild(valor)
+
+    }
+}
+
+function fragmenta(line,sep){
+    line = line.replaceAll(', ', '*|**|*')
+    const arr = line.split(sep)
+    for(let i=0; i<arr.length; i++){
+        arr[i] = arr[i].replaceAll('*|**|*', ', ')
+    }
+    return arr
+}
+
+function makeJSON(txt){
+    const lines = txt.split('\n')
+    const head = lines[0].split('|')
+    function newJSON(){
+        const out = new Object
+        for(let i=0; i<head.length; i++){
+            out[head[i]] = ''
+        }
+        return out
+    }
+
+   registers = []
+    for(let i=1; i<lines.length; i++){
+        const obj = newJSON()
+        const line = fragmenta(lines[i],',')
+        for(let i=0; i<line.length; i++){
+            obj[head[i]] = line[i]
+        }
+        registers.push(obj)
+    }
+    document.querySelector('#rng-select').max = registers.length
+    try{
+        loadRegister(0)
+    }catch{null}
+}
+
+document.querySelector('#rng-select').addEventListener('change',(e)=>{
+    const index = document.querySelector('#rng-select').value
+    document.querySelector('#edt-goto').value = index
+    loadRegister(index)
+})
+
+document.querySelector('#edt-goto').addEventListener('change',(e)=>{
+    const index = document.querySelector('#edt-goto').value
+    document.querySelector('#rng-select').value = index
+    loadRegister(index)
+})
+
+function openFile(file){
+    if (file) {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+            const content = e.target.result
+            makeJSON(content)
+        }
+        reader.readAsText(file)
+    }
+}
+
+document.querySelector('#up_file').addEventListener('change',(e)=>{
+    openFile(e.target.files[0])
+})
+
+document.querySelector('#btn-load').addEventListener('click',()=>{
+    document.querySelector('#up_file').click()
+
+//    openHTML('load_file',{'accept':'.csv','callback':openFile})
+})
+
+
+</script>
