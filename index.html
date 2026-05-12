@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="assets/icon.png">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/menu.css">
+    <link rel="stylesheet" href="style/style.css">
     <!-- Pictogrammers -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+    <script src="scripts/modal.js"></script>
+
     <title>ROSETA</title>
 </head>
 <body>
@@ -21,14 +24,11 @@
             <li><a href="#">Home</a></li>
             <li><a href="#">About</a></li>
             <li>
-              <a href="#" class="desktop-item">Dropdown Menu</a>
+              <a href="#" class="desktop-item">Config</a>
               <input type="checkbox" id="showDrop">
-              <label for="showDrop" class="mobile-item">Dropdown Menu</label>
+              <label for="showDrop" class="mobile-item">Configurações</label>
               <ul class="drop-menu">
-                <li><a href="#">Drop menu 1</a></li>
-                <li><a href="#">Drop menu 2</a></li>
-                <li><a href="#">Drop menu 3</a></li>
-                <li><a href="#">Drop menu 4</a></li>
+                <li><a id="menu-tipo-dados">Tipo de Dados</a></li>
               </ul>
             </li>
             <li>
@@ -49,15 +49,15 @@
                 </div>
               </div>
             </li>
-            <li><a href="#">Feedback</a></li>
+            <li><a href="#">Login</a></li>
           </ul>
           <label for="menu-btn" class="btn menu-btn"><i class="fas fa-bars"><span class="mdi mdi-menu"></span></i></label>
         </div>
       </nav>
       
       <div class="body-text">
-        <div class="title">Responsive Dropdown and Mega Menu</div>
-        <div class="sub-title">using only HTML & CSS</div>
+        <div class="title">Navegue entre formatos de metadados</div>
+        <div class="sub-title">com somente 1 click</div>
       </div>
 
 
@@ -71,5 +71,4 @@
         </div>
     </div>
 </body>
-<script src="script.js"></script>
 </html>

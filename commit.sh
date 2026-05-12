@@ -8,14 +8,13 @@ then
 
     git init
 
-#    git add assets/
+    git add assets/
+    git add data/
+    git add scripts/
+    git add style/
     git add templates/
-    git add script.js
-    git add style.css
-    git add index.html
-#    git add teste.html
     git add commit.sh
-    git add data.json
+    git add index.html
     
     git commit -m "by_script"
 
