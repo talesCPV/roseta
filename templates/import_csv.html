@@ -4,6 +4,17 @@
         .hide{
             display: none;
         }
+
+        img{
+            max-width: 30%;
+        }
+
+        .register{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
     </style>
 
 
@@ -34,9 +45,49 @@
 
 let registers = []
 
+function getURL(obj){
+
+    const out = new Object
+    out.img = []
+    out.url = []
+    for (const [key, value] of Object.entries(reg)) {
+        let isImg = 0
+        if(value.includes('http')){
+            vl = value.split('http')
+            vl = 'http'+vl[vl.length-1]
+
+            let i=vl.length-1
+            let ext = ''
+            while(i>0 && vl[i]!='/'){
+                if(vl[i]=='.' && ext.length){
+                    isImg = ['png','jpg','jpeg','gif','bmp'].includes(ext)
+                    i=0
+                }else{
+                    ext = vl[i] + ext
+                }
+                i--
+            }
+            isImg ? out.img.includes(vl)?null:out.img.push(vl) : out.url.push(vl)
+            obj[key] = vl
+        }
+    }
+    return out
+}
+
 function loadRegister(index){
     reg = registers[index]
-    console.log(reg)
+    const url = getURL(reg)
+    
+    const left_panel = document.querySelector('.left')
+    left_panel.innerHTML = ''
+    for(let i=0; i<url.img.length; i++){
+        const img = document.createElement('img')
+        img.src = url.img[i]
+        left_panel.appendChild(img)
+
+        console.log(url.img[i])
+    }
+
     
     try{
         img = reg['Categorias,URL de Origem'].split(':')
