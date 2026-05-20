@@ -6,6 +6,8 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
 
+    cp ~/Documentos/SQL/roseta/*.sql sql/
+
     git init
 
     git add assets/
@@ -13,6 +15,7 @@ then
     git add scripts/
     git add style/
     git add templates/
+    git add sql/
     git add commit.sh
     git add index.html
 
