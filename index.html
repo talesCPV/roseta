@@ -1,69 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="assets/icon.png">
-    <link rel="stylesheet" href="style/main.css">
-    <link rel="stylesheet" href="style/menu.css">
-    <link rel="stylesheet" href="style/modal.css">
-    <!-- Pictogrammers -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
-    <script src="scripts/modal.js"></script>
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="icon" type="image/x-icon" href="assets/icon.png">
+      <link rel="stylesheet" href="style/main.css">
+      <link rel="stylesheet" href="style/menu.css">
+      <link rel="stylesheet" href="style/modal.css">
+      <!-- Pictogrammers -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+      <script src="scripts/modal.js"></script>
 
-    <title>ROSETA</title>
-</head>
-<body>
+      <title>ROSETA</title>
+  </head>
+  <body>
 
-    <nav>
-      <div class="wrapper">
-        <div class="logo"><a href="#">ROSETA</a><img src="assets/icon_white.png" alt=""> </div>
-        <input type="radio" name="slider" id="menu-btn">
-        <input type="radio" name="slider" id="close-btn">
-        <ul class="nav-links">
-          <label for="close-btn" class="btn close-btn"><i class="fas fa-times"><span class="mdi mdi-window-close"></span></i></label>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li>
-            <a href="#" class="desktop-item">Config</a>
-            <input type="checkbox" id="showDrop">
-            <label for="showDrop" class="mobile-item">Configurações</label>
-            <ul class="drop-menu">
-              <li><a id="menu-tipo-dados">Tipo de Dados</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="#" class="desktop-item">Formatos</a>
-            <input type="checkbox" id="showMega">
-            <label for="showMega" class="mobile-item">Formatos</label>
-            <div class="mega-box">
-              <div class="content">
-                <div class="row">
-                  <img src="https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg" alt="">
-                </div>
-                <div class="row">
-                  <header>Extenções</header>
-                  <ul class="mega-links">
-                    <li><a id="menu-import-csv">CSV</a></li>
-                  </ul>
+      <nav>
+        <div class="wrapper">
+          <div class="logo"><a href="#">ROSETA</a><img src="assets/icon_white.png" alt=""> </div>
+          <input type="radio" name="slider" id="menu-btn">
+          <input type="radio" name="slider" id="close-btn">
+          <ul class="nav-links">
+            <label for="close-btn" class="btn close-btn"><i class="fas fa-times"><span class="mdi mdi-window-close"></span></i></label>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li>
+              <a href="#" class="desktop-item">Config</a>
+              <input type="checkbox" id="showDrop">
+              <label for="showDrop" class="mobile-item">Configurações</label>
+              <ul class="drop-menu">
+                <li><a id="menu-tipo-dados">Tipo de Dados</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="desktop-item">Formatos</a>
+              <input type="checkbox" id="showMega">
+              <label for="showMega" class="mobile-item">Formatos</label>
+              <div class="mega-box">
+                <div class="content">
+                  <div class="row">
+                    <img src="https://fadzrinmadu.github.io/hosted-assets/responsive-mega-menu-and-dropdown-menu-using-only-html-and-css/img.jpg" alt="">
+                  </div>
+                  <div class="row">
+                    <header>Extenções</header>
+                    <ul class="mega-links">
+                      <li><a id="menu-import-csv">CSV</a></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
-          </li>
-          <li><a href="#">Login</a></li>
-        </ul>
-        <label for="menu-btn" class="btn menu-btn"><i class="fas fa-bars"><span class="mdi mdi-menu"></span></i></label>
+            </li>
+            <li><a href="#">Login</a></li>
+          </ul>
+          <label for="menu-btn" class="btn menu-btn"><i class="fas fa-bars"><span class="mdi mdi-menu"></span></i></label>
+        </div>
+      </nav>
+        
+      <div class="body-text">
+        <div class="title">Navegue entre formatos de metadados</div>
+        <div class="sub-title">com somente 1 click</div>
       </div>
-    </nav>
-      
-    <div class="body-text">
-      <div class="title">Navegue entre formatos de metadados</div>
-      <div class="sub-title">com somente 1 click</div>
-    </div>
 
-    <div class="modal-area"></div>
-  
-</body>
-<script src="scripts/menu.js"></script>
-<script src="scripts/main.js"></script>
+      <div class="modal-area"></div>
+    
+  </body>
+  <script src="scripts/menu.js"></script>
+  <script src="scripts/main.js"></script>
 </html>
