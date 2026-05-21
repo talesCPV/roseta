@@ -233,8 +233,9 @@
 
         const panel = document.querySelector('.rigth')
         panel.innerHTML = ''
-        for (const [key, value] of Object.entries(reg)) {
-
+        console.log(reg)
+        const record = []
+        for (const [key, value] of Object.entries(reg)) {            
             const line = document.createElement('div')
             line.className = 'line'
             panel.appendChild(line)
@@ -258,8 +259,9 @@
             valor.value = value
             valor.readOnly = true
             line.appendChild(valor)
-
+            record.push({"field":line.data.head.title,"value":value})
         }
+        main_data.roseta.newRecord(record)
     }
 
     function fragmenta(line,sep){
@@ -334,8 +336,9 @@
         if (file) {
             const reader = new FileReader()
             reader.onload = (e) => {
-                main_data.csv = e.target.result
-                makeJSON(main_data.csv)
+                const csv = e.target.result                
+//                makeJSON(csv)
+                main_data.roseta.importCSV(csv)
             }
             reader.readAsText(file)
         }
@@ -343,6 +346,7 @@
 
     document.querySelector('#up_file').addEventListener('change',(e)=>{
         openFile(e.target.files[0])
+
     })
 
     document.querySelector('#btn-load').addEventListener('click',()=>{
