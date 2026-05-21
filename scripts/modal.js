@@ -1,4 +1,4 @@
-function openHTML(template,data={}){
+function openHTML(template,data={},dimension=[0,0]){
     fetch(`templates/${template}.html`)
     .then( stream => stream.text())
     .then( text => {
@@ -7,7 +7,7 @@ function openHTML(template,data={}){
         const title = temp.getElementsByTagName('title')[0];
         const body = temp.getElementsByTagName('template')[0];
         const script = temp.getElementsByTagName('script')[0] != undefined ? temp.getElementsByTagName('script')[0] : ''
-        newModal(template,title,body,script,data)
+        newModal(template,title,body,script,data,dimension)
     })
 }
 
@@ -16,7 +16,7 @@ function removeModal(id){
     delete(main_data[id])
 }
 
-function newModal(id,ttl,body,script,data={}){
+function newModal(id,ttl,body,script,data={},dimension){
 
     try{
         const area = document.querySelector('.modal-area')
@@ -29,6 +29,10 @@ function newModal(id,ttl,body,script,data={}){
     
         const form = document.createElement('div')
         form.className = 'modal-form'
+        if(dimension[0] >0 && dimension[1]>0){
+            form.style.width = `${dimension[0]}px`
+            form.style.height = `${dimension[1]}px`
+        }
         modal.appendChild(form)
     
         const head = document.createElement('div')
