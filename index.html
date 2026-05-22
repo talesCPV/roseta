@@ -11,7 +11,7 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
       <script src="scripts/modal.js"></script>
 
-      <title>ROSETA</title>
+      <title>ROSETA 1.0</title>
   </head>
   <body>
 
@@ -22,7 +22,7 @@
           <input type="radio" name="slider" id="close-btn">
           <ul class="nav-links">
             <label for="close-btn" class="btn close-btn"><i class="fas fa-times"><span class="mdi mdi-window-close"></span></i></label>
-            <li><a href="#">Home</a></li>
+            <li><a href="#">Dashboard</a></li>
             <li><a href="#">About</a></li>
             <li>
               <a href="#" class="desktop-item">Config</a>
@@ -42,7 +42,7 @@
                     <img src="assets/roseta.jpg" alt="">
                   </div>
                   <div class="row">
-                    <header>Extenções</header>
+                    <header>Load File</header>
                     <ul class="mega-links">
                       <li><a id="menu-import-csv">CSV</a></li>
                       <li><a id="menu-import-json-ld">JSON-LD</a></li>
@@ -58,8 +58,20 @@
       </nav>
         
       <div class="body-text">
+<!--    
         <div class="title">Navegue entre formatos de metadados</div>
         <div class="sub-title">com somente 1 click</div>
+-->
+        <h4>Coleções</h4>
+        <div class="colecoes">
+          <select id="cmb-colecoes" size="5"></select>
+        </div>
+        <h4>Registros</h4>
+        <div class="registros">
+          <table id="tbl-registros"></table>
+        </div>
+
+
       </div>
 
       <div class="modal-area"></div>

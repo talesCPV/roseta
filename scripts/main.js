@@ -1,7 +1,7 @@
 /* GLOBAL VAR */
 
 const main_data = new Object
-
+main_data.user_id = 0
 
 /* MODAL */
 /*
@@ -11,7 +11,8 @@ document.querySelector('.modal-close').addEventListener('click',()=>{
     */
 
 class Roseta{
-    constructor(modal=undefined){
+    constructor(nome,modal=''){
+        this.nome = nome
         this.modal = modal
         this.fields = []
         this.values = []
@@ -47,7 +48,6 @@ Roseta.prototype.newRecord = function(record){
 }
 
 Roseta.prototype.importCSV = function(csv){
-//    console.log(csv)
 
     function splitComa(line){
         line = line.replaceAll(', ', '*|**|*')
@@ -64,18 +64,69 @@ Roseta.prototype.importCSV = function(csv){
 
     const head = lines[0].split('|')
 
-    console.log(lines[0])
-    console.log(lines[1])
-    console.log(head)
-    console.log(splitComa(lines[1]))
-/*    
     for(let i=1; i<lines.length; i++){
-        console.log(splitComa(lines[i]))
+        const line = splitComa(lines[i])
+        const record = []
+        for(let j=0; j<Math.max(head.length,line.length); j++){
+            const reg = new Object
+            reg.field = j<head.length ? head[j] : ''
+            reg.value = j<line.length ? line[j] : ''
+            record.push(reg)
+        }
+        this.newRecord(record)
     }
-*/
+}
 
+Roseta.prototype.fillTable = function(){
+    const tbl = document.createElement('table')
+    tbl.innerHTML = ''
+    const head = document.createElement('tr')
+    tbl.appendChild(head)
+
+    for(let i=0; i<this.values.length; i++){
+        const line = document.createElement('tr')
+        tbl.appendChild(line)
+        for (const [key, value] of Object.entries(this.values[i])) {
+            if(i==0){
+                const th = document.createElement('th')
+                th.innerHTML = key
+                head.appendChild(th)
+        
+            }
+            const td = document.createElement('td')
+            td.innerHTML = value
+            line.appendChild(td)    
+//            console.log(key,value)
+        }
+
+    }
+
+    return tbl
 
 }
 
 
+
 main_data.roseta = new Roseta('Obra de Arte')
+
+function addColecao(name,file){
+    const colec =  document.querySelector('#cmb-colecoes')
+    const option = document.createElement('option')
+    option.value = colec.querySelectorAll('option').length
+    option.innerHTML = name
+    option.data = file
+    colec.appendChild(option)
+}
+
+function openCSV(file){
+    if (file) {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+            const csv = e.target.result              
+            const roseta =  new Roseta(file.name,'Obra de Arte')
+            roseta.importCSV(csv)
+            addColecao(file.name,roseta)
+        }
+        reader.readAsText(file)
+    }
+}

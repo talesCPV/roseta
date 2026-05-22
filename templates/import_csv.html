@@ -337,8 +337,8 @@
             const reader = new FileReader()
             reader.onload = (e) => {
                 const csv = e.target.result                
-//                makeJSON(csv)
-                main_data.roseta.importCSV(csv)
+                makeJSON(csv)
+//                main_data.roseta.importCSV(csv)
             }
             reader.readAsText(file)
         }

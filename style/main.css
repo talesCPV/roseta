@@ -10,3 +10,51 @@ button{
 button:hover{
     background-color: #ece0e0;
 }
+
+h4{
+  width: 100%;
+  text-align: start;
+}
+
+.body-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    position: absolute;
+    top: 70px;
+  /*  
+    left: 50%;
+    transform: translate(-50%, -50%);
+  */
+    width: 100%;
+    height: calc(100vh - 70px);
+    text-align: center;
+    padding: 0 30px;
+  }
+
+  /*
+  .body-text div{
+    font-size: 45px;
+    font-weight: 600;
+  }
+  */
+  .colecoes{
+    width: 100%;
+    height: 10%;
+  }
+
+  .registros{
+    width: 100%;
+    height: 90%;
+    overflow: scroll;
+  }
+  
+  .colecoes select, .registros table{
+  width: 100%;
+  height: 100%;
+  border: solid;
+  font-size: 0.7em;
+  font-weight: unset;
+  }
