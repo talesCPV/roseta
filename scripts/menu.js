@@ -13,19 +13,32 @@ document.querySelector('#menu-import-csv').addEventListener('click',()=>{
 /* DOM */
 
 document.querySelector('#cmb-colecoes').addEventListener('click',()=>{
-    const sel = document.querySelector('#cmb-colecoes')
-    const option = sel.options[sel.selectedIndex]
-    const data = option.data
-    const tbl = document.querySelector('#tbl-registros')
 
-    tbl.innerHTML = data.fillTable().innerHTML
+    try{
+        const sel = document.querySelector('#cmb-colecoes')
+        const option = sel.options[sel.selectedIndex]
+        const data = option.data
+        const tbl = document.querySelector('#tbl-registros')    
+        tbl.innerHTML = data.fillTable().innerHTML
+        console.log(data)
+        document.querySelector('#btn-fields').disabled = 0
+    }catch{null}
+})
 
-/*
-    for(let i=0; i<data.length; i++){
-        console.log(data[i])
-
+document.querySelector('#btn-new-colec').addEventListener('click',()=>{
+    const nome = prompt('Nome da Coleção')
+    if(nome!=null){
+        const modal = prompt('Tipo de Coleção:(ex: Obra de Arte, Revista, etc)')
+        if(modal!=null){
+            addColecao(new Roseta(nome,modal))
+        }
     }
-*/
+})
 
+document.querySelector('#btn-new-reg').addEventListener('click',()=>{
+    
+})
 
+document.querySelector('#btn-fields').addEventListener('click',()=>{
+  console.log(document.querySelector('#cmb-colecoes').value)  
 })

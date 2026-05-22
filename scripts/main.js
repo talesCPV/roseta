@@ -1,6 +1,7 @@
 /* GLOBAL VAR */
 
 const main_data = new Object
+main_data.colecoes = []
 main_data.user_id = 0
 
 /* MODAL */
@@ -11,8 +12,8 @@ document.querySelector('.modal-close').addEventListener('click',()=>{
     */
 
 class Roseta{
-    constructor(nome,modal=''){
-        this.nome = nome
+    constructor(name,modal=''){
+        this.name = name
         this.modal = modal
         this.fields = []
         this.values = []
@@ -109,11 +110,12 @@ Roseta.prototype.fillTable = function(){
 
 main_data.roseta = new Roseta('Obra de Arte')
 
-function addColecao(name,file){
+function addColecao(file){
+    main_data.colecoes.push(file)
     const colec =  document.querySelector('#cmb-colecoes')
     const option = document.createElement('option')
     option.value = colec.querySelectorAll('option').length
-    option.innerHTML = name
+    option.innerHTML = file.name
     option.data = file
     colec.appendChild(option)
 }
@@ -123,9 +125,9 @@ function openCSV(file){
         const reader = new FileReader()
         reader.onload = (e) => {
             const csv = e.target.result              
-            const roseta =  new Roseta(file.name,'Obra de Arte')
+            const roseta =  new Roseta(file.name,'Obra de Arte')                        
             roseta.importCSV(csv)
-            addColecao(file.name,roseta)
+            addColecao(roseta)
         }
         reader.readAsText(file)
     }
