@@ -59,20 +59,21 @@
         
       <div class="body-text">
 
-        <h4>Coleções</h4>
-        <div class="colecoes">
-          <select id="cmb-colecoes" size="5"></select>
+        <div class="files">
+          <div class="colecoes">
+            <h4>Coleções</h4>
+            <select id="cmb-colecoes" size="5"></select>
+          </div>
+  
+          <div class="registros">
+            <h4>Detalhes</h4>
+            <table id="tbl-registros"></table>
+          </div>
         </div>
+
         <div class="control">
           <button id="btn-new-colec">Nova Coleção</button>
-          <button id="btn-fields" disabled>Campos</button>
-        </div>
-        <h4>Registros</h4>
-        <div class="registros">
-          <table id="tbl-registros"></table>
-        </div>
-        <div class="control">
-          <button id="btn-new-reg">Novo Registro</button>
+  <!--            <button id="btn-fields" disabled>Campos</button>-->
         </div>
 
       </div>
@@ -83,6 +84,7 @@
   <script src="scripts/menu.js"></script>
   <script src="scripts/main.js"></script>
   <script>
-      document.querySelector('#btn-fields').disabled = 1
+
+
   </script>
 </html>

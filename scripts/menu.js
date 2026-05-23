@@ -21,7 +21,7 @@ document.querySelector('#cmb-colecoes').addEventListener('click',()=>{
         const tbl = document.querySelector('#tbl-registros')    
         tbl.innerHTML = data.fillTable().innerHTML
         console.log(data)
-        document.querySelector('#btn-fields').disabled = 0
+//        document.querySelector('#btn-fields').disabled = 0
     }catch{null}
 })
 
@@ -35,6 +35,7 @@ document.querySelector('#btn-new-colec').addEventListener('click',()=>{
     }
 })
 
+/*
 document.querySelector('#btn-new-reg').addEventListener('click',()=>{
     
 })
@@ -42,3 +43,4 @@ document.querySelector('#btn-new-reg').addEventListener('click',()=>{
 document.querySelector('#btn-fields').addEventListener('click',()=>{
   console.log(document.querySelector('#cmb-colecoes').value)  
 })
+*/
