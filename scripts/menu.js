@@ -16,18 +16,18 @@ document.querySelector('#cmb-colecoes').addEventListener('click',()=>{
 
     try{
         const sel = document.querySelector('#cmb-colecoes')
-        const option = sel.options[sel.selectedIndex]
-//        const data = option.data
-        openHTML('show_collection',option.data)
-
-/*        
-        const tbl = document.querySelector('#tbl-registros')    
-        tbl.innerHTML = data.fillTable().innerHTML
-        console.log(data)
-*/
-//        document.querySelector('#btn-fields').disabled = 0
+        const option = sel.options[sel.selectedIndex]        
+        about(option.data)
     }catch{null}
 
+})
+
+document.querySelector('#about-show').addEventListener('click',()=>{
+    openHTML('show_collection',document.querySelector('.registros').data)
+})
+
+document.querySelector('#about-save').addEventListener('click',()=>{
+    
 })
 
 document.querySelector('#btn-new-colec').addEventListener('click',()=>{

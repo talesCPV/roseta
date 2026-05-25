@@ -17,6 +17,7 @@ then
     git add templates/
     git add sql/
     git add files/
+    git add backend/
     git add commit.sh
     git add index.html
 

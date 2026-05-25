@@ -67,13 +67,32 @@
   
           <div class="registros">
             <h4>Detalhes</h4>
-            <table id="tbl-registros"></table>
+            <div class="about">
+              <div class="line">  
+                <h4>Nome:</h4>
+                <span id="about-nome"></span>
+              </div>
+              <div class="line">  
+                <h4>Modal:</h4>
+                <span id="about-modal"></span>
+              </div>
+              <div class="line">  
+                <h4>Qtd. Registros:</h4>
+                <span id="about-reg">0</span>
+              </div>
+                <h4>Campos:</h4>
+                <select id="about-fields" size="5"></select>
+                <div class="control">
+                  <button>Novo Campo</button>
+                </div>
+                <button id="about-show">Ver Registros</button>
+                <button id="about-save">Salvar</button>
+            </div>
           </div>
         </div>
 
         <div class="control">
           <button id="btn-new-colec">Nova Coleção</button>
-  <!--            <button id="btn-fields" disabled>Campos</button>-->
         </div>
 
       </div>

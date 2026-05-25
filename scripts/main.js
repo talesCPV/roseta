@@ -20,6 +20,15 @@ class Roseta{
     }
 }
 
+Roseta.prototype.about = function(){
+    const out = new Object
+    out.registers = this.values.length
+    out.modal = this.modal
+    out.name = this.name
+    out.fields = this.fields
+    return out
+}
+
 Roseta.prototype.addField = function(field,kind='text',def=''){
     const fld = new Object
     fld.name = field
@@ -118,6 +127,23 @@ function addColecao(file){
     option.innerHTML = file.name
     option.data = file
     colec.appendChild(option)
+}
+
+function about(collection){
+    document.querySelector('.registros').data = collection
+    console.log(collection)
+    const fields = document.querySelector('#about-fields')
+    document.querySelector('#about-nome').innerHTML = collection.name
+    document.querySelector('#about-modal').innerHTML = collection.modal 
+    document.querySelector('#about-reg').innerHTML = collection.values.length
+    fields.innerHTML = ''
+    for(let i=0; i<collection.fields.length; i++){
+        const opt = document.createElement('option')
+        opt.data = collection.fields[i]
+        opt.innerHTML = collection.fields[i].name
+        fields.appendChild(opt)
+    }
+
 }
 
 function openCSV(file){

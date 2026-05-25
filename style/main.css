@@ -12,8 +12,18 @@ button:hover{
 }
 
 h4{
-  width: 100%;
   text-align: start;
+}
+
+.line{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+/*  align-items: center;*/
+}
+
+.line span{
+  font-size: 1.3em;
 }
 
 .files{
@@ -23,6 +33,19 @@ h4{
   margin-bottom: -70px;
   gap: 15px;
   flex-wrap: wrap;
+}
+
+.about{
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 20px;
+}
+
+.about > *{
+  width: 100%;
 }
 
 .control{
@@ -68,7 +91,7 @@ h4{
   }
 
   
-  .colecoes select, .registros table{
+  .colecoes select, .registros .about{
   width: 100%;
   height: 100%;
   border: solid;
