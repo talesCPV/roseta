@@ -17,12 +17,17 @@ document.querySelector('#cmb-colecoes').addEventListener('click',()=>{
     try{
         const sel = document.querySelector('#cmb-colecoes')
         const option = sel.options[sel.selectedIndex]
-        const data = option.data
+//        const data = option.data
+        openHTML('show_collection',option.data)
+
+/*        
         const tbl = document.querySelector('#tbl-registros')    
         tbl.innerHTML = data.fillTable().innerHTML
         console.log(data)
+*/
 //        document.querySelector('#btn-fields').disabled = 0
     }catch{null}
+
 })
 
 document.querySelector('#btn-new-colec').addEventListener('click',()=>{
