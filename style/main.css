@@ -108,7 +108,12 @@ h4{
 
     .registros{
       width: 100%;
-      height: calc(100% - 220px);
+/*      height: calc(100% - 220px);*/
+    }
+
+    .files{
+      margin-bottom: unset;
+      height: unset;
     }
 
   }
