@@ -115,8 +115,6 @@ Roseta.prototype.fillTable = function(){
 
 }
 
-
-
 main_data.roseta = new Roseta('Obra de Arte')
 
 function addColecao(file){
@@ -131,7 +129,7 @@ function addColecao(file){
 
 function about(collection){
     document.querySelector('.registros').data = collection
-    console.log(collection)
+//    console.log(collection)
     const fields = document.querySelector('#about-fields')
     document.querySelector('#about-nome').innerHTML = collection.name
     document.querySelector('#about-modal').innerHTML = collection.modal 

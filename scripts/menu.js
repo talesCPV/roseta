@@ -13,13 +13,11 @@ document.querySelector('#menu-import-csv').addEventListener('click',()=>{
 /* DOM */
 
 document.querySelector('#cmb-colecoes').addEventListener('click',()=>{
-
     try{
         const sel = document.querySelector('#cmb-colecoes')
         const option = sel.options[sel.selectedIndex]        
         about(option.data)
     }catch{null}
-
 })
 
 document.querySelector('#about-show').addEventListener('click',()=>{
@@ -27,7 +25,10 @@ document.querySelector('#about-show').addEventListener('click',()=>{
 })
 
 document.querySelector('#about-save').addEventListener('click',()=>{
-    
+    const roseta = document.querySelector('.registros').data
+    if(roseta != undefined){
+        saveFile(JSON.stringify(roseta),`/../files/${main_data.user_id}/`)
+    }
 })
 
 document.querySelector('#btn-new-colec').addEventListener('click',()=>{
@@ -39,13 +40,3 @@ document.querySelector('#btn-new-colec').addEventListener('click',()=>{
         }
     }
 })
-
-/*
-document.querySelector('#btn-new-reg').addEventListener('click',()=>{
-    
-})
-
-document.querySelector('#btn-fields').addEventListener('click',()=>{
-  console.log(document.querySelector('#cmb-colecoes').value)  
-})
-*/
