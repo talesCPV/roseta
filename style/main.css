@@ -15,11 +15,20 @@ h4{
   text-align: start;
 }
 
-.line{
+.line, .line-center{
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 10px;
-/*  align-items: center;*/
+}
+
+.align-right{
+  position: absolute;
+  right: 50px;
+}
+
+.line-center{
+  justify-content: center;
 }
 
 .line span{

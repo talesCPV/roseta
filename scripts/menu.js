@@ -17,7 +17,10 @@ document.querySelector('#cmb-colecoes').addEventListener('click',()=>{
         const sel = document.querySelector('#cmb-colecoes')
         const option = sel.options[sel.selectedIndex]        
         about(option.data)
-    }catch{null}
+        enableFields()  
+    }catch{
+        enableFields(0)
+    }
 })
 
 document.querySelector('#about-show').addEventListener('click',()=>{
@@ -28,10 +31,9 @@ document.querySelector('#about-show').addEventListener('click',()=>{
 })
 
 document.querySelector('#about-save').addEventListener('click',()=>{
-    const roseta = document.querySelector('.registros').data
-    if(roseta != undefined){
-        saveFile(JSON.stringify(roseta),`/../files/${main_data.user_id}/`)
-    }
+    const index = findColecao(document.querySelector('.registros').data)
+    console.log(index)
+//    saveColecao(index)
 })
 
 document.querySelector('#about-del').addEventListener('click',()=>{
@@ -43,6 +45,24 @@ document.querySelector('#about-del').addEventListener('click',()=>{
     }
 })
 
+document.querySelector('#about-edit-nome').addEventListener('click',()=>{
+    const name = prompt('Digite o nome da coleção:',document.querySelector('#about-nome').innerHTML)
+    if(name!=null){
+        const index = findColecao(document.querySelector('.registros').data)
+        main_data.colecoes[index].name = name
+        editColecao(index)
+    }
+})
+
+document.querySelector('#about-edit-modal').addEventListener('click',()=>{
+    const modal = prompt('Tipo de Coleção:(ex: Obra de Arte, Revista, etc)',document.querySelector('#about-modal').innerHTML)
+    if(modal!=null){
+        const index = findColecao(document.querySelector('.registros').data)
+        main_data.colecoes[index].modal = modal
+        editColecao(index)
+    }
+})
+
 document.querySelector('#btn-new-colec').addEventListener('click',()=>{
     const nome = prompt('Nome da Coleção')
     if(nome!=null){
@@ -50,5 +70,12 @@ document.querySelector('#btn-new-colec').addEventListener('click',()=>{
         if(modal!=null){
             addColecao(new Roseta(nome,modal))
         }
+    }
+})
+
+document.querySelector('#about-novo-campo').addEventListener('click',()=>{
+    const roseta = document.querySelector('.registros').data
+    if(roseta != undefined){
+        openHTML('new_field',roseta,[500,280])
     }
 })

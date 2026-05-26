@@ -125,38 +125,70 @@ Roseta.prototype.fillTable = function(){
 main_data.roseta = new Roseta('Obra de Arte')
 
 function findColecao(file){
-    return main_data.colecoes.findIndex(p => p.name == file.name);
+    try{
+        return main_data.colecoes.findIndex(p => p.name == file.name);
+    }catch{
+        return -1
+    }
+}
+
+function editColecao(index){
+/*    
+    const old = JSON.parse(JSON.stringify(main_data.colecoes[index]))
+    main_data.colecoes[index].name = name
+    main_data.colecoes[index].modal = modal
+    delColecao(old).then(()=>{
+        addColecao(main_data.colecoes[index])
+    })
+*/
+}
+
+function saveColecao(index){
+    const roseta = main_data.colecoes[index]
+    if(roseta != undefined){
+        saveFile(JSON.stringify(roseta),`/../files/${main_data.user_id}/`)
+    }
 }
 
 function addColecao(file){
-    main_data.colecoes.push(file)
-    const colec =  document.querySelector('#cmb-colecoes')
-    const option = document.createElement('option')
-    option.value = colec.querySelectorAll('option').length
-    option.innerHTML = file.name
-    option.data = file
-    colec.appendChild(option)
+    const index = findColecao(file)
+    if(index<0){
+        main_data.colecoes.push(file)
+        const colec =  document.querySelector('#cmb-colecoes')
+        const option = document.createElement('option')
+        option.value = colec.querySelectorAll('option').length
+        option.innerHTML = file.name
+        option.data = file
+        colec.appendChild(option)
+    }else{
+        alert('Já existe uma coleção com este nome')
+    }
 }
 
 function delColecao(file){
-    const index = findColecao(file)
-    const colec =  document.querySelector('#cmb-colecoes')
-
-    if(colec.options[index].data.name == main_data.colecoes[index].name){
-        colec.options[index].remove()
-        const filename =  main_data.colecoes[index].name.split('.')[0]
-        delFile(`/../files/${main_data.user_id}/${filename}.rst`)
-    }
-
-
-
-
+    return new Promise((resolve,reject) =>{
+        const index = findColecao(file)
+        const colec =  document.querySelector('#cmb-colecoes')
+        if(colec.options[index].data.name == main_data.colecoes[index].name){
+            colec.options[index].remove()
+            const filename =  main_data.colecoes[index].name.split('.')[0]
+            delFile(`/../files/${main_data.user_id}/${filename}.rst`)
+            .then(function (response){
+                if (response.status === 200) {                 
+                    resolve(response.text())
+                } else { 
+                    reject(new Error("Houve algum erro na comunicação com o servidor"))
+                } 
+            })
+        }else{
+            reject(new Error("Registro não encontrado!"))
+        }
+    })
 
 }
 
 function about(collection){
     document.querySelector('.registros').data = collection
-//    console.log(collection)
     const fields = document.querySelector('#about-fields')
     document.querySelector('#about-nome').innerHTML = collection.name
     document.querySelector('#about-modal').innerHTML = collection.modal 
@@ -181,5 +213,12 @@ function openCSV(file){
             addColecao(roseta)
         }
         reader.readAsText(file)
+    }
+}
+
+function enableFields(enable=1){
+    const el = document.querySelectorAll('.only-register')
+    for(let i=0; i<el.length; i++){
+        el[i].disabled = !enable ? 1 : 0 
     }
 }

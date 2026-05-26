@@ -1,0 +1,62 @@
+<title>Novo Campo</title>
+<template>
+    <style>
+        .form{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            height: 100%;
+        }
+
+        .line label:nth-child(1){
+            min-width: 60px;
+            text-align: end;
+        }
+
+        .line select, .line input, .line textarea{
+            min-width: 300px;
+            padding: 5px;
+            font-size: 0.8em;
+            resize: none;
+        }
+
+
+    </style>
+
+    <div class="form">
+        <div class="line">
+            <label for="edtNome">Nome:</label>
+            <input type="text" id="edtNome">
+        </div>
+        <div class="line">
+            <label for="edtDefault">Padrão:</label>
+            <textarea id="edtDefault" rows="5"></textarea>
+
+        </div>
+        <div class="line">
+            <label for="cmbKind">Tipo:</label>
+            <select id="cmbKind">
+                <option value="text" default="">Texto</option>
+                <option value="number" default="0">Numérico</option>
+                <option value="decimal" default="0.0">Decimal</option>
+                <option value="textarea" default="">Texto Longo</option>
+            </select>
+        </div>
+        <button id="btnAddField">Adicionar</button>
+    </div>
+
+
+</template>
+<script>
+
+    const local_form = document.querySelector('#new_field')
+    const local_data = main_data.new_field
+
+    local_form.querySelector('#btnAddField').addEventListener('click',()=>{
+        console.log(local_data)
+    })
+
+
+</script>
