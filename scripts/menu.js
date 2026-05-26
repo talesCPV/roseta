@@ -21,13 +21,25 @@ document.querySelector('#cmb-colecoes').addEventListener('click',()=>{
 })
 
 document.querySelector('#about-show').addEventListener('click',()=>{
-    openHTML('show_collection',document.querySelector('.registros').data)
+    const roseta = document.querySelector('.registros').data
+    if(roseta != undefined){
+        openHTML('show_collection',roseta)
+    }
 })
 
 document.querySelector('#about-save').addEventListener('click',()=>{
     const roseta = document.querySelector('.registros').data
     if(roseta != undefined){
         saveFile(JSON.stringify(roseta),`/../files/${main_data.user_id}/`)
+    }
+})
+
+document.querySelector('#about-del').addEventListener('click',()=>{
+    const roseta = document.querySelector('.registros').data
+    if(roseta != undefined){
+        if(confirm('Deseja excluir esta coleção?')){
+            delColecao(roseta)
+        }
     }
 })
 

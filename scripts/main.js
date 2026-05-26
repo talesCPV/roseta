@@ -87,6 +87,13 @@ Roseta.prototype.importCSV = function(csv){
     }
 }
 
+Roseta.prototype.importJSON = function(json){
+    this.name = json.name
+    this.modal = json.modal
+    this.fields = json.fields
+    this.values = json.values
+}
+
 Roseta.prototype.fillTable = function(){
     const tbl = document.createElement('table')
     tbl.innerHTML = ''
@@ -117,6 +124,10 @@ Roseta.prototype.fillTable = function(){
 
 main_data.roseta = new Roseta('Obra de Arte')
 
+function findColecao(file){
+    return main_data.colecoes.findIndex(p => p.name == file.name);
+}
+
 function addColecao(file){
     main_data.colecoes.push(file)
     const colec =  document.querySelector('#cmb-colecoes')
@@ -125,6 +136,22 @@ function addColecao(file){
     option.innerHTML = file.name
     option.data = file
     colec.appendChild(option)
+}
+
+function delColecao(file){
+    const index = findColecao(file)
+    const colec =  document.querySelector('#cmb-colecoes')
+
+    if(colec.options[index].data.name == main_data.colecoes[index].name){
+        colec.options[index].remove()
+        const filename =  main_data.colecoes[index].name.split('.')[0]
+        delFile(`/../files/${main_data.user_id}/${filename}.rst`)
+    }
+
+
+
+
+
 }
 
 function about(collection){
