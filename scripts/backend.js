@@ -39,6 +39,27 @@ function delFile(path){
     })
 }
 
+function renameFile(old_name,new_name){
+    const data = new URLSearchParams()
+        data.append("old_name", old_name)
+        data.append("new_name", new_name)
+    const myRequest = new Request("backend/renameFile.php",{
+        method : "POST",
+        body : data
+    })
+
+    return new Promise((resolve,reject) =>{
+        fetch(myRequest)
+        .then(function (response){
+            if (response.status === 200) {                 
+                resolve(response.text())
+            } else { 
+                reject(new Error("Houve algum erro na comunicação com o servidor"))
+            } 
+        })
+    })
+}
+
 function showFiles(path){
     const data = new URLSearchParams()
         data.append("dir", path)
@@ -60,6 +81,10 @@ function showFiles(path){
 }
 
 function loadUserFiles(user_id){
+    enableFields(0)
+    document.querySelector('#cmb-colecoes').innerHTML = ''
+    main_data.colecoes = []
+
     showFiles(`files/${user_id}/`).then((resolve)=>{
         const json = JSON.parse(resolve)
         for(let i=2; i<json.length; i++){

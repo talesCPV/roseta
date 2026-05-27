@@ -70,26 +70,25 @@
             <div class="about">
               <div class="line">  
                 <h4>Nome:</h4>
-                <span id="about-nome"></span>
+                <span id="about-nome" class="about-field"></span>
                 <button id="about-edit-nome" class="align-right only-register" disabled>edit</button>
               </div>
               <div class="line">  
                 <h4>Modal:</h4>
-                <span id="about-modal"></span>
+                <span id="about-modal" class="about-field"></span>
                 <button id="about-edit-modal" class="align-right only-register" disabled>edit</button>
               </div>
               <div class="line">  
                 <h4>Qtd. Registros:</h4>
-                <span id="about-reg">0</span>
+                <span id="about-reg" class="about-field"></span>
               </div>
               <div class="line">
                 <h4>Campos:</h4>
-                <button id="about-novo-campo" class="align-right only-register">Novo Campo</button>
+                <button id="about-novo-campo" class="align-right only-register" disabled>Novo Campo</button>
               </div>
-                <select id="about-fields" size="5"></select>
+                <select id="about-fields" size="5"  class="about-field"></select>
                 <div class="line-center">
-                  <button id="about-show">Visualizar</button>
-                  <button id="about-save" class="only-register" disabled>Salvar</button>
+                  <button id="about-show" class="only-register" disabled>Visualizar</button>
                   <button id="about-del" class="only-register" disabled>Deletar</button>  
                 </div>
             </div>
@@ -109,6 +108,7 @@
   <script src="scripts/main.js"></script>
   <script>
     loadUserFiles(main_data.user_id)
+
 
   </script>
 </html>

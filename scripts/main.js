@@ -132,15 +132,16 @@ function findColecao(file){
     }
 }
 
-function editColecao(index){
-/*    
-    const old = JSON.parse(JSON.stringify(main_data.colecoes[index]))
-    main_data.colecoes[index].name = name
-    main_data.colecoes[index].modal = modal
-    delColecao(old).then(()=>{
-        addColecao(main_data.colecoes[index])
-    })
-*/
+function editColecao(index,field,value){
+    if(main_data.colecoes[index] != undefined){
+        const newOne = JSON.parse(JSON.stringify(main_data.colecoes[index]))
+        delColecao(main_data.colecoes[index]).then(()=>{
+            newOne[field] = value
+            addColecao(newOne)
+            saveColecao(findColecao(newOne))
+            clearFields()
+        })
+    }
 }
 
 function saveColecao(index){
@@ -151,8 +152,7 @@ function saveColecao(index){
 }
 
 function addColecao(file){
-    const index = findColecao(file)
-    if(index<0){
+    if(findColecao(file)<0){
         main_data.colecoes.push(file)
         const colec =  document.querySelector('#cmb-colecoes')
         const option = document.createElement('option')
@@ -173,12 +173,10 @@ function delColecao(file){
             colec.options[index].remove()
             const filename =  main_data.colecoes[index].name.split('.')[0]
             delFile(`/../files/${main_data.user_id}/${filename}.rst`)
-            .then(function (response){
-                if (response.status === 200) {                 
-                    resolve(response.text())
-                } else { 
-                    reject(new Error("Houve algum erro na comunicação com o servidor"))
-                } 
+            .then((response)=>{
+                resolve('ok')
+                main_data.colecoes.splice(index,1)
+                clearFields()
             })
         }else{
             reject(new Error("Registro não encontrado!"))
@@ -216,9 +214,17 @@ function openCSV(file){
     }
 }
 
+function clearFields(){
+        const el = document.querySelectorAll('.about-field')
+        for(let i=0; i<el.length; i++){
+            el[i].innerHTML = ''
+        }
+        enableFields(0)
+}
+
 function enableFields(enable=1){
     const el = document.querySelectorAll('.only-register')
     for(let i=0; i<el.length; i++){
-        el[i].disabled = !enable ? 1 : 0 
+        el[i].disabled = !enable ? 1 : 0         
     }
 }
