@@ -133,15 +133,22 @@ function findColecao(file){
 }
 
 function editColecao(index,field,value){
-    if(main_data.colecoes[index] != undefined){
-        const newOne = JSON.parse(JSON.stringify(main_data.colecoes[index]))
-        delColecao(main_data.colecoes[index]).then(()=>{
-            newOne[field] = value
-            addColecao(newOne)
-            saveColecao(findColecao(newOne))
-            clearFields()
-        })
-    }
+
+    return  new Promise((resolve,reject) =>{
+
+        if(main_data.colecoes[index] != undefined){
+            const newOne = JSON.parse(JSON.stringify(main_data.colecoes[index]))
+            delColecao(main_data.colecoes[index]).then(()=>{
+                newOne[field] = value
+                addColecao(newOne)
+                saveColecao(findColecao(newOne))
+                clearFields()
+                resolve('ok')
+            })
+        }else{
+            reject(new Error("Registro não encontrado!"))
+        }
+    })
 }
 
 function saveColecao(index){

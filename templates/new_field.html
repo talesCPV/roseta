@@ -39,9 +39,11 @@
             <label for="cmbKind">Tipo:</label>
             <select id="cmbKind">
                 <option value="text" default="">Texto</option>
-                <option value="number" default="0">Numérico</option>
+                <option value="numeric" default="0">Numérico</option>
                 <option value="decimal" default="0.0">Decimal</option>
                 <option value="textarea" default="">Texto Longo</option>
+                <option value="date" default="">Data</option>
+                <option value="url" default="">URL</option>
             </select>
         </div>
         <button id="btnAddField">Adicionar</button>
@@ -53,9 +55,45 @@
 
     const local_form = document.querySelector('#new_field')
     const local_data = main_data.new_field
+    const index = findColecao(local_data.register)
+    const newField = local_data.data == null
+    let key
+
+    if(!newField){
+        local_form.querySelector('#edtNome').value = local_data.data.name
+        local_form.querySelector('#edtDefault').value = local_data.data.default
+        local_form.querySelector('#cmbKind').value = local_data.data.kind
+        key = `${local_data.data.kind},${local_data.data.name}`
+    }
+
+    console.log(key)
 
     local_form.querySelector('#btnAddField').addEventListener('click',()=>{
-        console.log(local_data)
+        const field = new Object
+        field.name = local_form.querySelector('#edtNome').value
+        field.default = local_form.querySelector('#edtDefault').value
+        field.kind = local_form.querySelector('#cmbKind').value
+        if(newField){
+            local_data.register.fields.push(field)
+            for(let i=0; i<local_data.register.values.length; i++){
+                local_data.register.values[i][`${field.kind},${field.name}`] = field.default
+            }
+        }else{            
+            local_data.register.fields.push(field)
+            let i = local_data.register.fields.findIndex(p => p.name == local_data.data.name)
+            delete(local_data.register.fields[i])
+            for(let i=0; i<local_data.register.values.length; i++){     
+                console.log(local_data.register.values[i][key])           
+                local_data.register.values[i][`${field.kind},${field.name}`] = local_data.register.values[i][key]
+                delete(local_data.register.values[i][key])
+            }
+            
+        }
+        editColecao(index,'values',main_data.colecoes[index].values)
+        .then(()=>{
+            editColecao(index,'fields',main_data.colecoes[index].fields)
+            removeModal('new_field')
+        })
     })
 
 

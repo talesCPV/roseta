@@ -68,8 +68,22 @@ document.querySelector('#btn-new-colec').addEventListener('click',()=>{
 })
 
 document.querySelector('#about-novo-campo').addEventListener('click',()=>{
-    const roseta = document.querySelector('.registros').data
-    if(roseta != undefined){
-        openHTML('new_field',roseta,[500,280])
+    const obj = new Object
+    obj.register = document.querySelector('.registros').data
+    obj.data = null
+    if(obj.register != undefined){
+        openHTML('new_field',obj,[500,280])
+    }
+})
+
+document.querySelector('#about-fields').addEventListener('click',()=>{
+    const sel = document.querySelector('#about-fields')
+    const option = sel.options[sel.selectedIndex]        
+    console.log(option.data)
+    const obj = new Object
+    obj.register = document.querySelector('.registros').data
+    obj.data = option.data
+    if(obj.register != undefined){
+        openHTML('new_field',obj,[500,280])
     }
 })
