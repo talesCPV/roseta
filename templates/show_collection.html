@@ -139,6 +139,7 @@
             <div class="btn-round" id="btn-left"><span class="mdi mdi-arrow-left-bold-circle"></span></div>
             <input type="number" id="edt-goto">
             <div class="btn-round" id="btn-right"><span class="mdi mdi-arrow-right-bold-circle"></span></div>
+            <div class="btn-round" id="btn-add"><span class="mdi mdi-plus-circle"></span></div>
         </div>
 
         <div class="register">
@@ -152,8 +153,10 @@
 <script>
 
 //    const localScreen = document.querySelector('#impost_csv')
-
+    const local_form = document.querySelector('#show_collection')
     const collection = main_data.show_collection
+
+    console.log(collection)
 
     let roseta = []
 
@@ -163,8 +166,6 @@
             document.querySelector('#edt-goto').value = 0
             loadRegister(0)
         }
-
-
     }
 
     function getURL(obj){
@@ -315,43 +316,48 @@
         }catch{null}
     }
 
-    document.querySelector('#edt-goto').addEventListener('change',(e)=>{
-        const index = (document.querySelector('#edt-goto').value>collection.values.length-1) ? collection.values.length-1 : document.querySelector('#edt-goto').value
-        document.querySelector('#edt-goto').value = index
+    local_form.querySelector('#edt-goto').addEventListener('change',(e)=>{
+        const index = (local_form.querySelector('#edt-goto').value>collection.values.length-1) ? collection.values.length-1 : document.querySelector('#edt-goto').value
+        local_form.querySelector('#edt-goto').value = index
         loadRegister(index)
     })
 
-    document.querySelector('#btn-left').addEventListener('click',()=>{
+    local_form.querySelector('#btn-left').addEventListener('click',()=>{
         try{
-            document.querySelector('#edt-goto').value--
-            const index = document.querySelector('#edt-goto').value
+            local_form.querySelector('#edt-goto').value--
+            const index = local_form.querySelector('#edt-goto').value
             loadRegister(index)
         }catch{
-            document.querySelector('#edt-goto').value++
+            local_form.querySelector('#edt-goto').value++
         }
     })
 
-    document.querySelector('#btn-right').addEventListener('click',()=>{
-        document.querySelector('#edt-goto').value++
+    local_form.querySelector('#btn-right').addEventListener('click',()=>{
+        local_form.querySelector('#edt-goto').value++
         try{
-            const index = document.querySelector('#edt-goto').value
+            const index = local_form.querySelector('#edt-goto').value
             loadRegister(index)
-        }catch{document.querySelector('#edt-goto').value--}
+        }catch{local_form.querySelector('#edt-goto').value--}
     })
 
 
-    function openFile(file){
-        if (file) {
-            const reader = new FileReader()
-            reader.onload = (e) => {
-                const csv = e.target.result                
-                makeJSON(csv)
-//                main_data.roseta.importCSV(csv)
-            }
-            reader.readAsText(file)
-        }
-    }
+    local_form.querySelector('#btn-add').addEventListener('click',()=>{
 
+            const reg = new Object
+            for(let i=0; i<collection.fields.length; i++){
+                reg[collection.fields[i].name] = collection.fields[i].default
+            }
+            collection.values.push(reg)
+            loadRegister(collection.values.length-1)
+            const index = findColecao(collection)
+            editColecao(index,'values',main_data.colecoes[index].values)
+
+//            saveColecao(findColecao(collection))
+//            console.log(findColecao(collection))
+            //        this.newRecord(record)
+
+
+    })
 
     start()
 

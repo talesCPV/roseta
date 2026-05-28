@@ -1,1 +1,1 @@
-{"name":"teste 1","modal":"123","fields":[{"name":"campo 1","default":"1","kind":"text"},{"name":"campo 2","default":"2","kind":"text"}],"values":[]}
+{"name":"teste 1","modal":"123","fields":[{"name":"campo 1","default":"1","kind":"text"},{"name":"campo 2","default":"2","kind":"text"},{"name":"Campo 3","default":"125","kind":"numeric"}],"values":[{"campo 1":"1","campo 2":"2","numeric,Campo 3":"125"},{"campo 1":"1","campo 2":"2","numeric,Campo 3":"125"},{"campo 1":"1","campo 2":"2","numeric,Campo 3":"125"}]}
