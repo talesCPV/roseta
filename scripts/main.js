@@ -48,9 +48,11 @@ Roseta.prototype.newRecord = function(record){
     const reg = new Object
     for(let i=0; i<record.length; i++){
         try{
+            const fullfield = record[i].field.split(',')
+            record[i].field = fullfield[fullfield.length==1 ? 0 : 1]
             reg[record[i].field] = record[i].value
             if(!this.fields.some(obj => obj.name === record[i].field)){
-                this.addField(record[i].field)
+                this.addField(record[i].field,fullfield.length==1 ? 'text' : fullfield[0])
             }
         }catch{null}
     }
@@ -202,7 +204,8 @@ function about(collection){
     for(let i=0; i<collection.fields.length; i++){
         const opt = document.createElement('option')
         opt.data = collection.fields[i]
-        opt.innerHTML = collection.fields[i].name
+        const fullfield = collection.fields[i].name.split(',')
+        opt.innerHTML =  fullfield[fullfield.length==1 ? 0 : 1]
         fields.appendChild(opt)
     }
 
@@ -216,6 +219,7 @@ function openCSV(file){
             const roseta =  new Roseta(file.name,'Obra de Arte')                        
             roseta.importCSV(csv)
             addColecao(roseta)
+            saveColecao(findColecao(roseta))
         }
         reader.readAsText(file)
     }

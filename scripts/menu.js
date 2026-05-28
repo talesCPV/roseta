@@ -39,6 +39,23 @@ document.querySelector('#about-del').addEventListener('click',()=>{
     }
 })
 
+document.querySelector('#about-clone').addEventListener('click',()=>{
+    const roseta = document.querySelector('.registros').data
+    if(roseta != undefined){
+        const obj = new Object       
+        obj.name = prompt('Digite um novo nome:')
+        if(obj.name!=null){
+            const index = findColecao(obj)
+            if(index<0){
+                const newOne = JSON.parse(JSON.stringify(roseta))
+                newOne.name = obj.name
+                addColecao(newOne)           
+                saveColecao(findColecao(obj))
+            }
+        }
+    }
+})
+
 document.querySelector('#about-edit-nome').addEventListener('click',()=>{
     const name = prompt('Digite o nome da coleção:',document.querySelector('#about-nome').innerHTML)
     if(name!=null){

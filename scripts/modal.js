@@ -11,7 +11,7 @@ function openHTML(template,data={},dimension=[0,0]){
     })
 }
 
-function removeModal(id){
+function closeWindow(id){
     document.querySelector(`#${id}`).remove()
     delete(main_data[id])
 }
@@ -48,7 +48,7 @@ function newModal(id,ttl,body,script,data={},dimension){
         close.className = 'modal-close'
         close.innerHTML = '&times;'
         close.addEventListener('click',()=>{
-            removeModal(id)
+            closeWindow(id)
         })
         head.appendChild(close)
     

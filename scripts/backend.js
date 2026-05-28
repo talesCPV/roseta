@@ -85,17 +85,23 @@ function loadUserFiles(user_id){
     document.querySelector('#cmb-colecoes').innerHTML = ''
     main_data.colecoes = []
 
-    showFiles(`files/${user_id}/`).then((resolve)=>{
-        const json = JSON.parse(resolve)
-        for(let i=2; i<json.length; i++){
-            fetch(`files/${user_id}/${json[i]}`)
-            .then( stream => stream.text())
+    async function addRegisters(json){
+        let i=2
+        while(i<json.length){
+            await fetch(`files/${user_id}/${json[i]}`)
+            .then( stream =>stream.text())
             .then( text => {
                 const obj = new Roseta
                 obj.importJSON(JSON.parse(text))
                 addColecao(obj)
+                i++
             })
         }
+    }
+
+    showFiles(`files/${user_id}/`).then((resolve)=>{
+        const json = JSON.parse(resolve)
+        addRegisters(json)          
     })
 
 }
