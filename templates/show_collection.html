@@ -259,25 +259,26 @@
             panel.appendChild(line)
 
             line.data = new Object
-            line.data.head = new Object
-            line.data.head.data = key.split(',')
-            line.data.head.data.length <2 ? line.data.head.data.unshift('text') : null
-            line.data.head.type = line.data.head.data[0] 
-            line.data.head.title = line.data.head.data[1]
-            line.data.value = value
+            line.data.field = new Object
+            line.data.field.data = key.split(',')
+            line.data.field.data.length <2 ? line.data.field.data.unshift('text') : null
+            line.data.field.type = line.data.field.data[0] 
+            line.data.field.title = line.data.field.data[1]
 
             const label = document.createElement('label')
-            label.innerHTML = line.data.head.title
-            label.addEventListener('click',()=>{
-                openHTML('csv_edit',line.data,[300,300])
-            })
+            label.innerHTML = line.data.field.title
             line.appendChild(label)
 
             const valor = document.createElement('input')
             valor.value = value
             valor.readOnly = true
+            line.data.value = value
+            line.data.edit = valor
             line.appendChild(valor)
-            record.push({"field":line.data.head.title,"value":value})
+            line.addEventListener('click',()=>{
+                openHTML('edit_field',line.data,[500,150])
+            })
+            record.push({"field":line.data.field.title,"value":value})
         }
         main_data.roseta.newRecord(record)
     }
@@ -343,20 +344,14 @@
 
     local_form.querySelector('#btn-add').addEventListener('click',()=>{
 
-            const reg = new Object
-            for(let i=0; i<collection.fields.length; i++){
-                reg[collection.fields[i].name] = collection.fields[i].default
-            }
-            collection.values.push(reg)
-            loadRegister(collection.values.length-1)
-            const index = findColecao(collection)
-            editColecao(index,'values',main_data.colecoes[index].values)
-
-//            saveColecao(findColecao(collection))
-//            console.log(findColecao(collection))
-            //        this.newRecord(record)
-
-
+        const reg = new Object
+        for(let i=0; i<collection.fields.length; i++){
+            reg[collection.fields[i].name] = collection.fields[i].default
+        }
+        collection.values.push(reg)
+        loadRegister(collection.values.length-1)
+        const index = findColecao(collection)
+        editColecao(index,'values',main_data.colecoes[index].values)
     })
 
     start()

@@ -1,0 +1,68 @@
+<title>Edição de Dados</title>
+<template>
+    <style>
+
+        .line{
+            border-bottom: unset !important;
+        }
+
+        .input-place{
+            width: 100%;
+        }
+
+        .valor{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80%;
+            gap: 15px;
+        }
+    </style>
+
+    <div class="line">
+        <label for="edtValue" id="lblField"></label>
+        <div class="input-place"></div>
+        <div class="line-center">
+            <button id="btnSave">Salvar</button>
+        </div>
+    </div>
+
+
+
+</template>
+<script>
+    const pageData = main_data.edit_field
+    const local_form = document.querySelector('#edit_field')
+
+    
+    function start(){
+
+        function newElement(type){
+            let el
+            if(type=='textarea'){
+                el = document.createElement('textarea')
+            }else{
+                el = document.createElement('input')
+                el.type = ['number','date','time','datetime-local','url','color','email','password'].includes(type) ? type : 'text'
+            }
+            el.id="edtValue"
+            return el
+        }
+        local_form.querySelector('.input-place').appendChild(newElement(pageData.field.type))
+        local_form.querySelector('.modal-title').innerHTML = pageData.field.title
+        local_form.querySelector('#lblField').innerHTML = pageData.field.title
+        local_form.querySelector('#edtValue').value = pageData.value
+    }
+
+    local_form.querySelector('#btnSave').addEventListener('click',()=>{
+        pageData.edit.value = local_form.querySelector('#edtValue').value
+        console.log(pageData)
+        closeWindow('edit_field')
+    })
+
+
+    
+
+    start()
+
+</script>

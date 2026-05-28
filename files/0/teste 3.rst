@@ -1,1 +1,1 @@
-{"name":"teste 3","modal":"123","fields":[{"name":"campo 11","default":"teste","kind":"text"},{"name":"Nome","default":"","kind":"text"},{"name":"Idade","default":"0","kind":"numeric"}],"values":[]}
+{"name":"teste 3","modal":"123","fields":[{"name":"campo 11","default":"teste","kind":"text"},{"name":"Nome","default":"","kind":"text"},{"name":"Idade","default":"0","kind":"numeric"}],"values":[{"campo 11":"teste","Nome":"","Idade":"0"}]}

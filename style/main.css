@@ -29,6 +29,7 @@ h4{
 
 .line-center{
   justify-content: center;
+  width: 100%;
 }
 
 .line span{
