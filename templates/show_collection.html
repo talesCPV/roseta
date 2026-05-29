@@ -155,9 +155,6 @@
 //    const localScreen = document.querySelector('#impost_csv')
     const local_form = document.querySelector('#show_collection')
     const collection = main_data.show_collection
-
-    console.log(collection)
-
     let roseta = []
 
     function start(){
@@ -252,7 +249,6 @@
             document.querySelector('#reg-img').src = img.length>2 ? img[1]+':'+img[2] : ''
         }catch{null}
 
-
         const panel = document.querySelector('.rigth')
         panel.innerHTML = ''
         const record = []
@@ -345,7 +341,6 @@
         }catch{local_form.querySelector('#edt-goto').value--}
     })
 
-
     local_form.querySelector('#btn-add').addEventListener('click',()=>{
 
         const reg = new Object
@@ -355,7 +350,9 @@
         collection.registers.push(reg)
         loadRegister(collection.registers.length-1)
         const index = findColecao(collection)
-        editColecao(index,'registers',main_data.colecoes[index].registers)
+        if(index>=0){
+            editColecao(index,'registers',main_data.colecoes[index].registers)
+        }
     })
 
     start()

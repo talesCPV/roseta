@@ -82,6 +82,14 @@
 
         if(newField){
             collection.addField(name,kind,def)
+            const opt = document.createElement('option')
+            opt.innerHTML = local_form.querySelector('#edtNome').value
+            opt.data = new Object
+            opt.data.name = local_form.querySelector('#edtNome').value
+            opt.data.kind = local_form.querySelector('#cmbKind').value
+            opt.data.default = local_form.querySelector('#edtDefault').value
+            document.querySelector('#about-fields').appendChild(opt)
+
         }else{
             collection.editField(local_data.data.name,name,kind,def)
             const i = local_data.register.fields.findIndex(p => p.name == name)
