@@ -14,17 +14,19 @@ document.querySelector('.categoria-close').addEventListener('click',()=>{
 class Roseta{
     constructor(name,categoria=''){
         this.name = name
+        this.file = name+'.rst'
         this.categoria = categoria
         this.fields = []
-        this.values = []
+        this.registers = []
     }
 }
 
 Roseta.prototype.about = function(){
     const out = new Object
-    out.registers = this.values.length
+    out.registers = this.registers.length
     out.categoria = this.categoria
     out.name = this.name
+    out.file = this.file    
     out.fields = this.fields
     return out
 }
@@ -38,8 +40,8 @@ Roseta.prototype.addField = function(field,kind='text',def=''){
     if(!this.fields.some(obj => obj.name === field)){
         this.fields.push(fld)
 
-        for(let i=0; i<this.values.length; i++){
-            this.values[i][fld.name] = def
+        for(let i=0; i<this.registers.length; i++){
+            this.registers[i][fld.name] = def
         }
     }
 }
@@ -56,7 +58,22 @@ Roseta.prototype.newRecord = function(record){
             }
         }catch{null}
     }
-    this.values.push(reg)
+    this.registers.push(reg)
+}
+
+Roseta.prototype.editCollection = function(field,value){
+    this[field] = value
+}
+
+Roseta.prototype.cloneCollection = function(){
+    const out = new Roseta(this.name,this.categoria)
+    out.fields = this.fields
+    out.registers = this.registers
+    return out
+}
+
+Roseta.prototype.editRegister = function(index,field,value){
+    this.registers[index][field] = value
 }
 
 Roseta.prototype.importCSV = function(csv){
@@ -71,9 +88,7 @@ Roseta.prototype.importCSV = function(csv){
     }
 
     const lines = csv.split('\n')
-
-    lines[0] = lines[0].replaceAll('taxonomy|', '')
-
+//    lines[0] = lines[0].replaceAll('taxonomy|', '')
     const head = lines[0].split('|')
 
     for(let i=1; i<lines.length; i++){
@@ -89,46 +104,17 @@ Roseta.prototype.importCSV = function(csv){
     }
 }
 
+
 Roseta.prototype.importJSON = function(json){
     this.name = json.name
     this.categoria = json.categoria
     this.fields = json.fields
-    this.values = json.values
+    this.registers = json.registers
 }
-
-Roseta.prototype.fillTable = function(){
-    const tbl = document.createElement('table')
-    tbl.innerHTML = ''
-    const head = document.createElement('tr')
-    tbl.appendChild(head)
-
-    for(let i=0; i<this.values.length; i++){
-        const line = document.createElement('tr')
-        tbl.appendChild(line)
-        for (const [key, value] of Object.entries(this.values[i])) {
-            if(i==0){
-                const th = document.createElement('th')
-                th.innerHTML = key
-                head.appendChild(th)
-        
-            }
-            const td = document.createElement('td')
-            td.innerHTML = value
-            line.appendChild(td)    
-//            console.log(key,value)
-        }
-
-    }
-
-    return tbl
-
-}
-
-main_data.roseta = new Roseta('Obra de Arte')
 
 function findColecao(file){
     try{
-        return main_data.colecoes.findIndex(p => p.name == file.name);
+        return main_data.colecoes.findIndex(p => p.file == file);
     }catch{
         return -1
     }
@@ -139,34 +125,31 @@ function editColecao(index,field,value){
     return  new Promise((resolve,reject) =>{
 
         if(main_data.colecoes[index] != undefined){
-            const newOne = JSON.parse(JSON.stringify(main_data.colecoes[index]))
-            delColecao(main_data.colecoes[index]).then(()=>{
-                newOne[field] = value
-                addColecao(newOne)
-                saveColecao(findColecao(newOne))
-                clearFields()
-                resolve('ok')
-            })
+            main_data.colecoes[index].editCollection(field,value)
+            saveColecao(index)
+//            saveFile(JSON.stringify(main_data.colecoes[index]),`/../files/${main_data.user_id}/`,main_data.colecoes[index].file)
+            resolve('ok')
         }else{
             reject(new Error("Registro não encontrado!"))
         }
     })
 }
 
-function saveColecao(index){
+function saveColecao(index,filename=''){
     const roseta = main_data.colecoes[index]
     if(roseta != undefined){
-        saveFile(JSON.stringify(roseta),`/../files/${main_data.user_id}/`)
+        filename =  filename.length ? filename : roseta.file
+        saveFile(JSON.stringify(roseta),`/../files/${main_data.user_id}/`,filename)
     }
 }
 
 function addColecao(file){
-    if(findColecao(file)<0){
+    if(findColecao(file.file)<0){
         main_data.colecoes.push(file)
         const colec =  document.querySelector('#cmb-colecoes')
         const option = document.createElement('option')
         option.value = colec.querySelectorAll('option').length
-        option.innerHTML = file.name
+        option.innerHTML = file.file
         option.data = file
         colec.appendChild(option)
     }else{
@@ -176,12 +159,12 @@ function addColecao(file){
 
 function delColecao(file){
     return new Promise((resolve,reject) =>{
-        const index = findColecao(file)
+        const index = findColecao(file.file)
         const colec =  document.querySelector('#cmb-colecoes')
         if(colec.options[index].data.name == main_data.colecoes[index].name){
             colec.options[index].remove()
-            const filename =  main_data.colecoes[index].name.split('.')[0]
-            delFile(`/../files/${main_data.user_id}/${filename}.rst`)
+            const filename =  main_data.colecoes[index].file
+            delFile(`/../files/${main_data.user_id}/${filename}`)
             .then((response)=>{
                 resolve('ok')
                 main_data.colecoes.splice(index,1)
@@ -197,9 +180,10 @@ function delColecao(file){
 function about(collection){
     document.querySelector('.registros').data = collection
     const fields = document.querySelector('#about-fields')
+    document.querySelector('#about-file').innerHTML = collection.file
     document.querySelector('#about-nome').innerHTML = collection.name
     document.querySelector('#about-categoria').innerHTML = collection.categoria 
-    document.querySelector('#about-reg').innerHTML = collection.values.length
+    document.querySelector('#about-reg').innerHTML = collection.registers.length
     fields.innerHTML = ''
     for(let i=0; i<collection.fields.length; i++){
         const opt = document.createElement('option')
@@ -219,7 +203,7 @@ function openCSV(file){
             const roseta =  new Roseta(file.name,'Obra de Arte')                        
             roseta.importCSV(csv)
             addColecao(roseta)
-            saveColecao(findColecao(roseta))
+            saveColecao(findColecao(file.name))
         }
         reader.readAsText(file)
     }

@@ -162,7 +162,7 @@
 
     function start(){
         document.querySelector('.categoria-title').innerHTML = collection.name
-        if(collection.values.length){
+        if(collection.registers.length){
             document.querySelector('#edt-goto').value = 0
             loadRegister(0)
         }
@@ -197,8 +197,12 @@
         return out
     }
 
-    function loadRegister(index){
+    function editRegister(index,field,value){
+        collection.editRegister(index,field,value)
+        saveColecao(findColecao(collection.file))
+    }
 
+    function loadRegister(index){
         function slide(side=1){
             const imgs =  show.querySelectorAll('img')
             for(let i=0; i<imgs.length; i++){
@@ -211,8 +215,7 @@
             }
         }
 
-        reg = collection.values[index]
-
+        reg = collection.registers[index]
         const url = getURL(reg)
         
         const left_panel = document.querySelector('.left')
@@ -276,11 +279,12 @@
             line.data.edit = valor
             line.appendChild(valor)
             line.addEventListener('click',()=>{
+                line.data.callback = editRegister
+                line.data.index = index
                 openHTML('edit_field',line.data,[500,150])
             })
             record.push({"field":line.data.field.title,"value":value})
         }
-        main_data.roseta.newRecord(record)
     }
 
     function fragmenta(line,sep){
@@ -318,7 +322,7 @@
     }
 
     local_form.querySelector('#edt-goto').addEventListener('change',(e)=>{
-        const index = (local_form.querySelector('#edt-goto').value>collection.values.length-1) ? collection.values.length-1 : document.querySelector('#edt-goto').value
+        const index = (local_form.querySelector('#edt-goto').value>collection.registers.length-1) ? collection.registers.length-1 : document.querySelector('#edt-goto').value
         local_form.querySelector('#edt-goto').value = index
         loadRegister(index)
     })
@@ -336,7 +340,7 @@
     local_form.querySelector('#btn-right').addEventListener('click',()=>{
         local_form.querySelector('#edt-goto').value++
         try{
-            const index = local_form.querySelector('#edt-goto').value
+            const index = Number(local_form.querySelector('#edt-goto').value)
             loadRegister(index)
         }catch{local_form.querySelector('#edt-goto').value--}
     })
@@ -348,10 +352,10 @@
         for(let i=0; i<collection.fields.length; i++){
             reg[collection.fields[i].name] = collection.fields[i].default
         }
-        collection.values.push(reg)
-        loadRegister(collection.values.length-1)
+        collection.registers.push(reg)
+        loadRegister(collection.registers.length-1)
         const index = findColecao(collection)
-        editColecao(index,'values',main_data.colecoes[index].values)
+        editColecao(index,'registers',main_data.colecoes[index].registers)
     })
 
     start()

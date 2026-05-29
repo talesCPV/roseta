@@ -46,17 +46,21 @@
                 el.type = ['number','date','time','datetime-local','url','color','email','password'].includes(type) ? type : 'text'
             }
             el.id="edtValue"
+            el.focus()
             return el
         }
-        local_form.querySelector('.input-place').appendChild(newElement(pageData.field.type))
+        const el = newElement(pageData.field.type)
+        local_form.querySelector('.input-place').appendChild(el)
         local_form.querySelector('.categoria-title').innerHTML = pageData.field.title
         local_form.querySelector('#lblField').innerHTML = pageData.field.title
         local_form.querySelector('#edtValue').value = pageData.value
+        el.focus()
+        el.select()
     }
 
     local_form.querySelector('#btnSave').addEventListener('click',()=>{
         pageData.edit.value = local_form.querySelector('#edtValue').value
-        console.log(pageData)
+        pageData.callback(pageData.index,pageData.field.title,local_form.querySelector('#edtValue').value)
         closeWindow('edit_field')
     })
 

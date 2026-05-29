@@ -42,33 +42,55 @@ document.querySelector('#about-del').addEventListener('click',()=>{
 document.querySelector('#about-clone').addEventListener('click',()=>{
     const roseta = document.querySelector('.registros').data
     if(roseta != undefined){
-        const obj = new Object       
-        obj.name = prompt('Digite um novo nome:')
-        if(obj.name!=null){
-            const index = findColecao(obj)
+        const filename = prompt('Digite um novo nome:')+'.rst'
+        if(filename!=null){
+            const index = findColecao(filename)
             if(index<0){
-                const newOne = JSON.parse(JSON.stringify(roseta))
-                newOne.name = obj.name
+                const newOne = roseta.cloneCollection()
+                newOne.editCollection('file',filename)
                 addColecao(newOne)           
-                saveColecao(findColecao(obj))
+                saveColecao(findColecao(filename))
+            }else{
+                alert('Já existe um arquivo com este nome!')
             }
         }
+    }
+})
+
+document.querySelector('#about-edit-file').addEventListener('click',()=>{
+    const file = prompt('Nome do arquivo:',document.querySelector('#about-file').innerHTML)
+    if(file!=null){
+        const index = findColecao(document.querySelector('.registros').data.file)
+        renameFile(`/../files/${main_data.user_id}/${main_data.colecoes[index].file}`,`/../files/${main_data.user_id}/${file}`)
+        .then(()=>{
+            editColecao(index,'file',file)
+            .then(()=>{
+                document.querySelector('#about-file').innerHTML = file
+                document.querySelector('#cmb-colecoes').options[index].innerHTML = file
+            })
+        })
     }
 })
 
 document.querySelector('#about-edit-nome').addEventListener('click',()=>{
     const name = prompt('Digite o nome da coleção:',document.querySelector('#about-nome').innerHTML)
     if(name!=null){
-        const index = findColecao(document.querySelector('.registros').data)
+        const index = findColecao(document.querySelector('.registros').data.file)
         editColecao(index,'name',name)
+        .then(()=>{
+            document.querySelector('#about-nome').innerHTML = name
+        })
     }
 })
 
 document.querySelector('#about-edit-categoria').addEventListener('click',()=>{
     const categoria = prompt('Tipo de Coleção:(ex: Obra de Arte, Revista, etc)',document.querySelector('#about-categoria').innerHTML)
     if(categoria!=null){
-        const index = findColecao(document.querySelector('.registros').data)
+        const index = findColecao(document.querySelector('.registros').data.file)
         editColecao(index,'categoria',categoria)
+        .then(()=>{
+            document.querySelector('#about-categoria').innerHTML = categoria
+        })
     }
 })
 
@@ -79,7 +101,7 @@ document.querySelector('#btn-new-colec').addEventListener('click',()=>{
         if(categoria!=null){
             const roseta = new Roseta(nome,categoria)
             addColecao(roseta)
-            saveColecao(findColecao(roseta))
+            saveColecao(findColecao(roseta.file))
         }
     }
 })

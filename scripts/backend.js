@@ -1,7 +1,8 @@
-function saveFile(file,path){
+function saveFile(file,path,filename=''){
     const data = new URLSearchParams()
         data.append("file", JSON.stringify(file))
         data.append("path", path)
+        data.append("filename", filename)
     const myRequest = new Request("backend/saveRST.php",{
         method : "POST",
         body : data
@@ -93,6 +94,7 @@ function loadUserFiles(user_id){
             .then( text => {
                 const obj = new Roseta
                 obj.importJSON(JSON.parse(text))
+                obj.file = json[i]
                 addColecao(obj)
                 i++
             })

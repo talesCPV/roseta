@@ -75,7 +75,7 @@
     }
 
     function saveField(){
-        editColecao(index,'values',main_data.colecoes[index].values)
+        editColecao(index,'registers',main_data.colecoes[index].registers)
         .then(()=>{
             editColecao(index,'fields',main_data.colecoes[index].fields)
             closeWindow('new_field')
@@ -89,18 +89,18 @@
         field.kind = local_form.querySelector('#cmbKind').value
         if(newField){
             local_data.register.fields.push(field)
-            for(let i=0; i<local_data.register.values.length; i++){
-                local_data.register.values[i][`${field.kind},${field.name}`] = field.default
+            for(let i=0; i<local_data.register.registers.length; i++){
+                local_data.register.registers[i][`${field.kind},${field.name}`] = field.default
             }
         }else{    
             const key = `${local_data.data.kind},${local_data.data.name}`
             local_data.register.fields.push(field)
             let i = local_data.register.fields.findIndex(p => p.name == local_data.data.name)
             local_data.register.fields.splice(i,1)
-            for(let i=0; i<local_data.register.values.length; i++){     
-                console.log(local_data.register.values[i][key])           
-                local_data.register.values[i][`${field.kind},${field.name}`] = local_data.register.values[i][key]
-                delete(local_data.register.values[i][key])
+            for(let i=0; i<local_data.register.registers.length; i++){     
+                console.log(local_data.register.registers[i][key])           
+                local_data.register.registers[i][`${field.kind},${field.name}`] = local_data.register.registers[i][key]
+                delete(local_data.register.registers[i][key])
             }
             
         }
@@ -111,8 +111,8 @@
         if(confirm('A remoção deste campo implica na perda de todos os dados referentes nos registros. Deseja continuar?')){
             let i = local_data.register.fields.findIndex(p => p.name == local_data.data.name)
             local_data.register.fields.splice(i,1)
-            for(i=0; i<local_data.register.values.length; i++){ 
-                delete(local_data.register.values[local_data.data.name])
+            for(i=0; i<local_data.register.registers.length; i++){ 
+                delete(local_data.register.registers[local_data.data.name])
             }
             saveField()
         }
