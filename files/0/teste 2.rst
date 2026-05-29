@@ -1,1 +1,1 @@
-{"name":"teste 2","modal":"","fields":[],"values":[]}
+{"name":"teste 2","categoria":"","fields":[],"values":[]}

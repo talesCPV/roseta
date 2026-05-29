@@ -4,17 +4,17 @@ const main_data = new Object
 main_data.colecoes = []
 main_data.user_id = 0
 
-/* MODAL */
+/* CATEGORIA */
 /*
-document.querySelector('.modal-close').addEventListener('click',()=>{
-    showModal()
+document.querySelector('.categoria-close').addEventListener('click',()=>{
+    showcategoria()
 })
     */
 
 class Roseta{
-    constructor(name,modal=''){
+    constructor(name,categoria=''){
         this.name = name
-        this.modal = modal
+        this.categoria = categoria
         this.fields = []
         this.values = []
     }
@@ -23,7 +23,7 @@ class Roseta{
 Roseta.prototype.about = function(){
     const out = new Object
     out.registers = this.values.length
-    out.modal = this.modal
+    out.categoria = this.categoria
     out.name = this.name
     out.fields = this.fields
     return out
@@ -91,7 +91,7 @@ Roseta.prototype.importCSV = function(csv){
 
 Roseta.prototype.importJSON = function(json){
     this.name = json.name
-    this.modal = json.modal
+    this.categoria = json.categoria
     this.fields = json.fields
     this.values = json.values
 }
@@ -198,7 +198,7 @@ function about(collection){
     document.querySelector('.registros').data = collection
     const fields = document.querySelector('#about-fields')
     document.querySelector('#about-nome').innerHTML = collection.name
-    document.querySelector('#about-modal').innerHTML = collection.modal 
+    document.querySelector('#about-categoria').innerHTML = collection.categoria 
     document.querySelector('#about-reg').innerHTML = collection.values.length
     fields.innerHTML = ''
     for(let i=0; i<collection.fields.length; i++){

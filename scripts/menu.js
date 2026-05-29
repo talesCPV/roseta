@@ -64,20 +64,20 @@ document.querySelector('#about-edit-nome').addEventListener('click',()=>{
     }
 })
 
-document.querySelector('#about-edit-modal').addEventListener('click',()=>{
-    const modal = prompt('Tipo de Coleção:(ex: Obra de Arte, Revista, etc)',document.querySelector('#about-modal').innerHTML)
-    if(modal!=null){
+document.querySelector('#about-edit-categoria').addEventListener('click',()=>{
+    const categoria = prompt('Tipo de Coleção:(ex: Obra de Arte, Revista, etc)',document.querySelector('#about-categoria').innerHTML)
+    if(categoria!=null){
         const index = findColecao(document.querySelector('.registros').data)
-        editColecao(index,'modal',modal)
+        editColecao(index,'categoria',categoria)
     }
 })
 
 document.querySelector('#btn-new-colec').addEventListener('click',()=>{
     const nome = prompt('Nome da Coleção')
     if(nome!=null){
-        const modal = prompt('Tipo de Coleção:(ex: Obra de Arte, Revista, etc)')
-        if(modal!=null){
-            const roseta = new Roseta(nome,modal)
+        const categoria = prompt('Tipo de Coleção:(ex: Obra de Arte, Revista, etc)')
+        if(categoria!=null){
+            const roseta = new Roseta(nome,categoria)
             addColecao(roseta)
             saveColecao(findColecao(roseta))
         }

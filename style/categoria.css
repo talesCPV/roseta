@@ -1,6 +1,6 @@
 
-/* MODAL */
-.modal{
+/* categoria */
+.categoria{
     display: flex;
     position: absolute;
     top: 0;
@@ -13,14 +13,14 @@
     z-index: 99;
 }
 
-.modal-form{
+.categoria-form{
     width: 90%;
     height: 90%;
     background-color: #f0f0f0;
     border-radius: 15px;
 }
 
-.modal-head{
+.categoria-head{
     position: relative;
     height: 30px;
     border-bottom: solid 1px;
@@ -34,17 +34,17 @@
     border-radius: 10px 10px 0 0;
 }
 
-.modal-close{
+.categoria-close{
     position: absolute;
     right: 10px;
 }
 
-.modal-close:hover{
+.categoria-close:hover{
     cursor: pointer;
     color: rgb(5, 5, 5);
 }
 
-.modal-content{ 
+.categoria-content{ 
     padding: 10px 20px;
     overflow: scroll;
     height: 95%;
