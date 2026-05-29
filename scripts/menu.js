@@ -118,7 +118,6 @@ document.querySelector('#about-novo-campo').addEventListener('click',()=>{
 document.querySelector('#about-fields').addEventListener('click',()=>{
     const sel = document.querySelector('#about-fields')
     const option = sel.options[sel.selectedIndex]        
-    console.log(option.data)
     const obj = new Object
     obj.register = document.querySelector('.registros').data
     obj.data = option.data

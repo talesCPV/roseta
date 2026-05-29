@@ -31,6 +31,16 @@ Roseta.prototype.about = function(){
     return out
 }
 
+Roseta.prototype.delField = function(field){
+    const index = this.fields.findIndex(p => p.name == field)
+    if(index>=0){
+        this.fields.splice(index,1)
+        for(let i=0; i<this.registers.length; i++){
+            delete(this.registers[i][field])
+        }
+    }
+}
+
 Roseta.prototype.addField = function(field,kind='text',def=''){
     const fld = new Object
     fld.name = field
@@ -39,9 +49,28 @@ Roseta.prototype.addField = function(field,kind='text',def=''){
 
     if(!this.fields.some(obj => obj.name === field)){
         this.fields.push(fld)
-
         for(let i=0; i<this.registers.length; i++){
             this.registers[i][fld.name] = def
+        }
+    }
+}
+
+Roseta.prototype.editField = function(old_name,new_name,kind='text',def=''){
+    if(this.fields.some(obj => obj.name === new_name)){
+        const index = this.fields.findIndex(p => p.name == new_name)
+        this.fields[index].kind = kind
+        this.fields[index].default = def
+    }else{
+        const index = this.fields.findIndex(p => p.name == old_name)
+        this.fields.splice(index,1)
+        const fld = new Object
+        fld.name = new_name
+        fld.kind = kind
+        fld.default = def
+        this.fields.push(fld)
+        for(let i=0; i<this.registers.length; i++){
+            this.registers[i][new_name] = this.registers[i][old_name]                
+            delete(this.registers[i][old_name])
         }
     }
 }
@@ -127,7 +156,6 @@ function editColecao(index,field,value){
         if(main_data.colecoes[index] != undefined){
             main_data.colecoes[index].editCollection(field,value)
             saveColecao(index)
-//            saveFile(JSON.stringify(main_data.colecoes[index]),`/../files/${main_data.user_id}/`,main_data.colecoes[index].file)
             resolve('ok')
         }else{
             reject(new Error("Registro não encontrado!"))

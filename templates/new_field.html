@@ -62,7 +62,7 @@
 
     const local_form = document.querySelector('#new_field')
     const local_data = main_data.new_field
-    const index = findColecao(local_data.register)
+    const index = findColecao(local_data.register.file)
     const newField = local_data.data == null
 
     if(!newField){
@@ -74,49 +74,32 @@
         local_form.querySelector('#btndel').disabled = 1
     }
 
-    function saveField(){
-        editColecao(index,'registers',main_data.colecoes[index].registers)
-        .then(()=>{
-            editColecao(index,'fields',main_data.colecoes[index].fields)
-            closeWindow('new_field')
-        })
-    }
-
     local_form.querySelector('#btnAdd').addEventListener('click',()=>{
-        const field = new Object
-        field.name = local_form.querySelector('#edtNome').value
-        field.default = local_form.querySelector('#edtDefault').value
-        field.kind = local_form.querySelector('#cmbKind').value
+        const collection = main_data.colecoes[index]
+        const name = local_form.querySelector('#edtNome').value
+        const def = local_form.querySelector('#edtDefault').value
+        const kind = local_form.querySelector('#cmbKind').value
+
         if(newField){
-            local_data.register.fields.push(field)
-            for(let i=0; i<local_data.register.registers.length; i++){
-                local_data.register.registers[i][`${field.kind},${field.name}`] = field.default
-            }
-        }else{    
-            const key = `${local_data.data.kind},${local_data.data.name}`
-            local_data.register.fields.push(field)
-            let i = local_data.register.fields.findIndex(p => p.name == local_data.data.name)
-            local_data.register.fields.splice(i,1)
-            for(let i=0; i<local_data.register.registers.length; i++){     
-                console.log(local_data.register.registers[i][key])           
-                local_data.register.registers[i][`${field.kind},${field.name}`] = local_data.register.registers[i][key]
-                delete(local_data.register.registers[i][key])
-            }
-            
+            collection.addField(name,kind,def)
+        }else{
+            collection.editField(local_data.data.name,name,kind,def)
+            const i = local_data.register.fields.findIndex(p => p.name == name)
+            document.querySelector('#about-fields').options[i].innerHTML = name
         }
-        saveField()
+        saveColecao(index)
+        closeWindow('new_field')
+
     })
 
     document.querySelector('#btndel').addEventListener('click',()=>{
         if(confirm('A remoção deste campo implica na perda de todos os dados referentes nos registros. Deseja continuar?')){
-            let i = local_data.register.fields.findIndex(p => p.name == local_data.data.name)
-            local_data.register.fields.splice(i,1)
-            for(i=0; i<local_data.register.registers.length; i++){ 
-                delete(local_data.register.registers[local_data.data.name])
-            }
-            saveField()
+            const i = local_data.register.fields.findIndex(p => p.name == local_data.data.name)
+            document.querySelector('#about-fields').options[i].remove()
+            main_data.colecoes[index].delField(local_data.data.name)
+            saveColecao(index)
+            closeWindow('new_field')
         }
     })
-
 
 </script>
