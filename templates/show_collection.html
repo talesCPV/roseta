@@ -94,6 +94,10 @@
         }
 
         .slideshow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
             position: relative;
             height: 400px;
             width: 100%;
@@ -119,12 +123,12 @@
                 height: 100%;
             }
             .rigth{width: 100%;}
-
+/*
             .slideshow, .slideshow img{
                 position: unset;
                 height: unset;
             }
-
+*/
         }
 
 
@@ -180,7 +184,7 @@
                 let ext = ''
                 while(i>0 && vl[i]!='/'){
                     if(vl[i]=='.' && ext.length){
-                        isImg = ['png','jpg','jpeg','gif','bmp'].includes(ext)
+                        isImg = ['png','jpg','jpeg','gif','bmp','svg'].includes(ext)
                         i=0
                     }else{
                         ext = vl[i] + ext
