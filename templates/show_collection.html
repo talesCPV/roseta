@@ -162,7 +162,7 @@
     let roseta = []
 
     function start(){
-        document.querySelector('.categoria-title').innerHTML = collection.name
+        document.querySelector('.window-title').innerHTML = collection.name
         if(collection.registers.length){
             document.querySelector('#edt-goto').value = 0
             loadRegister(0)
@@ -218,7 +218,7 @@
 
         reg = collection.registers[index]
         const url = getURL(reg)
-        
+
         const left_panel = document.querySelector('.left')
         left_panel.innerHTML = ''
         const show = document.createElement('div')
@@ -247,7 +247,7 @@
             i==0 ? img.classList.add('active') : null
             show.appendChild(img)
         }
-        
+
         try{
             img = reg['Categorias,URL de Origem'].split(':')
             document.querySelector('#reg-img').src = img.length>2 ? img[1]+':'+img[2] : ''
@@ -256,18 +256,17 @@
         const panel = document.querySelector('.rigth')
         panel.innerHTML = ''
         const record = []
-        for (const [key, value] of Object.entries(reg)) {            
+        for (const [key, value] of Object.entries(reg)) {
             const line = document.createElement('div')
             line.className = 'line'
             panel.appendChild(line)
-
+            const field_index = collection.fields.findIndex(p => p.name == key)
             line.data = new Object
             line.data.field = new Object
             line.data.field.data = key.split(',')
             line.data.field.data.length <2 ? line.data.field.data.unshift('text') : null
-            line.data.field.type = line.data.field.data[0] 
-            line.data.field.title = line.data.field.data[1]
-
+            line.data.field.type = collection.fields[field_index].kind//line.data.field.data[0] 
+            line.data.field.title = collection.fields[field_index].name//line.data.field.data[1]
             const label = document.createElement('label')
             label.innerHTML = line.data.field.title
             line.appendChild(label)
@@ -281,7 +280,7 @@
             line.addEventListener('click',()=>{
                 line.data.callback = editRegister
                 line.data.index = index
-                openHTML('edit_field',line.data,[500,150])
+                openHTML('edit_field',line.data,[500,0])
             })
             record.push({"field":line.data.field.title,"value":value})
         }

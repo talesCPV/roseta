@@ -1,6 +1,6 @@
 
-/* categoria */
-.categoria{
+/* window */
+.window{
     display: flex;
     position: absolute;
     top: 0;
@@ -13,14 +13,14 @@
     z-index: 99;
 }
 
-.categoria-form{
+.window-form{
     width: 90%;
     height: 90%;
     background-color: #f0f0f0;
     border-radius: 15px;
 }
 
-.categoria-head{
+.window-head{
     position: relative;
     height: 30px;
     border-bottom: solid 1px;
@@ -34,17 +34,17 @@
     border-radius: 10px 10px 0 0;
 }
 
-.categoria-close{
+.window-close{
     position: absolute;
     right: 10px;
 }
 
-.categoria-close:hover{
+.window-close:hover{
     cursor: pointer;
     color: rgb(5, 5, 5);
 }
 
-.categoria-content{ 
+.window-content{ 
     padding: 10px 20px;
     overflow: scroll;
     height: 95%;
