@@ -1,3 +1,7 @@
+input[type="text"]{
+  padding: 5px;
+}
+
 button{
     padding: 5px 10px;
     cursor: pointer;
@@ -6,9 +10,20 @@ button{
     border: solid 1px #cfcfcf;
 }
 
-
 button:hover{
     background-color: #ece0e0;
+}
+
+fieldset{
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+legend{
+  padding: 5px;
 }
 
 h4{

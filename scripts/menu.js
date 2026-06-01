@@ -1,14 +1,12 @@
 /* MENU */
 
-document.querySelector('#menu-tipo-dados').addEventListener('click',()=>{
-    openHTML('data_type')
-})
-
 document.querySelector('#menu-import-csv').addEventListener('click',()=>{
     openHTML('load_file',{"accept":".csv","callback": openCSV},[500,300])
 })
 
-
+document.querySelector('#menu-categoria').addEventListener('click',()=>{
+    openHTML('view_category',{},[600,0])
+})
 
 /* DOM */
 

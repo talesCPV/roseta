@@ -1,0 +1,59 @@
+<title>Nova Categoria de Coleção</title>
+<template>
+    <style>
+        .form{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+        }        
+
+    </style>
+
+    <div class="form">
+        <label for="edtNome">Nome</label>        
+        <input type="text" id="edtNome">
+
+        <fieldset>
+            <legend>Campos</legend>
+            <select id="cmbFields" size="10"></select>
+            <button id="btnNewField">Novo Campo</button>
+        </fieldset>
+
+    </div>
+
+
+</template>
+<script>
+    const local_form = document.querySelector('#view_category')
+    const local_data = main_data.view_category
+    const newCategory = local_data.data == null
+
+    function start(){
+        loadCategory()
+    }
+
+    function loadCategory(){
+        loadFile('/../files/config/category.json')
+        .then( text => {
+            try{
+                const json = JSON.parse(text)
+                console.log(json)
+            }catch{
+                console.log('Arquivo de categorias não encontrado!')
+            }
+        })
+    }
+
+    local_form.querySelector('#btnNewField').addEventListener('click',()=>{
+        const obj = new Object
+        obj.register = []
+        obj.fields = []        
+        obj.data = null
+        openHTML('new_field_def',obj,[500,280])
+    })
+
+
+    start()
+
+</script>

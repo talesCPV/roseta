@@ -1,0 +1,113 @@
+<title>Novo Campo</title>
+<template>
+    <style>
+        .form{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            height: 100%;
+        }
+
+        .line label:nth-child(1){
+            min-width: 60px;
+            text-align: end;
+        }
+
+        .line select, .line input, .line textarea{
+            min-width: 300px;
+            padding: 5px;
+            font-size: 0.8em;
+            resize: none;
+        }
+
+
+    </style>
+
+    <div class="form">
+        <div class="line">
+            <label for="edtNome">Nome:</label>
+            <input type="text" id="edtNome">
+        </div>
+        <div class="line">
+            <label for="edtDefault">Padrão:</label>
+            <textarea id="edtDefault" rows="5"></textarea>
+
+        </div>
+        <div class="line">
+            <label for="cmbKind">Tipo:</label>
+            <select id="cmbKind">
+                <option value="text" default="">Texto</option>
+                <option value="textarea" default="">Texto Longo</option>
+                <option value="number" default="0">Numérico</option>
+                <option value="date" default="">Data</option>
+                <option value="time" default="">Hora</option>
+                <option value="datetime-local" default="">Data e Hora</option>
+                <option value="url" default="">URL</option>
+                <option value="color" default="">Cor</option>
+                <option value="email" default="">Email</option>
+                <option value="password" default="">Senha</option>
+            </select>
+        </div>
+        <div class="line">
+            <button id="btndel">Deletar</button>
+            <button id="btnAdd">Salvar</button>
+        </div>
+    </div>
+
+
+</template>
+<script>
+
+    const local_form = document.querySelector('#new_field_def')
+    const local_data = main_data.new_field_def
+    const index = findColecao(local_data.register.file)
+    const newField = local_data.data == null
+
+    if(!newField){
+        const fullfield = local_data.data.name.split(',')
+        local_form.querySelector('#edtNome').value = fullfield[fullfield.length==1 ? 0 : 1]
+        local_form.querySelector('#edtDefault').value = local_data.data.default
+        local_form.querySelector('#cmbKind').value = local_data.data.kind
+    }else{
+        local_form.querySelector('#btndel').disabled = 1
+    }
+
+    local_form.querySelector('#btnAdd').addEventListener('click',()=>{
+        const collection = main_data.colecoes[index]
+        const name = local_form.querySelector('#edtNome').value
+        const def = local_form.querySelector('#edtDefault').value
+        const kind = local_form.querySelector('#cmbKind').value
+
+        if(newField){
+            collection.addField(name,kind,def)
+            const opt = document.createElement('option')
+            opt.innerHTML = local_form.querySelector('#edtNome').value
+            opt.data = new Object
+            opt.data.name = local_form.querySelector('#edtNome').value
+            opt.data.kind = local_form.querySelector('#cmbKind').value
+            opt.data.default = local_form.querySelector('#edtDefault').value
+            document.querySelector('#about-fields').appendChild(opt)
+
+        }else{
+            collection.editField(local_data.data.name,name,kind,def)
+            const i = local_data.register.fields.findIndex(p => p.name == name)
+            document.querySelector('#about-fields').options[i].innerHTML = name
+        }
+        saveColecao(index)
+        closeWindow('new_field')
+
+    })
+
+    document.querySelector('#btndel').addEventListener('click',()=>{
+        if(confirm('A remoção deste campo implica na perda de todos os dados referentes nos registros. Deseja continuar?')){
+            const i = local_data.register.fields.findIndex(p => p.name == local_data.data.name)
+            document.querySelector('#about-fields').options[i].remove()
+            main_data.colecoes[index].delField(local_data.data.name)
+            saveColecao(index)
+            closeWindow('new_field')
+        }
+    })
+
+</script>
