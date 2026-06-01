@@ -10,6 +10,7 @@ then
 
     git init
 
+    git add anexos/
     git add assets/
     git add data/
     git add scripts/
