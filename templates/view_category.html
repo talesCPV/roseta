@@ -19,7 +19,7 @@
             <select id="cmbFields" size="10"></select>
             <button id="btnNewField">Novo Campo</button>
         </fieldset>
-
+        <button id="btnSave">Salvar</button>
     </div>
 
 
@@ -27,7 +27,12 @@
 <script>
     const local_form = document.querySelector('#view_category')
     const local_data = main_data.view_category
-    const newCategory = local_data.data == null
+    local_data.newCategory = local_data.data == null
+    local_data.categories = []
+    local_data.new = new Object
+    local_data.new.name = ''
+    local_data.new.fields = []
+    let index = -1
 
     function start(){
         loadCategory()
@@ -37,8 +42,13 @@
         loadFile('/../files/config/category.json')
         .then( text => {
             try{
-                const json = JSON.parse(text)
-                console.log(json)
+                local_data.categories = JSON.parse(text)
+console.log(local_data.categories)                
+                if(local_data.newCategory){
+
+                }else{
+                    index = local_data.categories.findIndex(p => p.name == local_data.data.name)
+                }
             }catch{
                 console.log('Arquivo de categorias não encontrado!')
             }
@@ -51,6 +61,28 @@
         obj.fields = []        
         obj.data = null
         openHTML('new_field_def',obj,[500,280])
+    })
+
+    local_form.querySelector('#btnSave').addEventListener('click',()=>{
+        const name = local_form.querySelector('#edtNome').value.trim()
+        if(name.length){
+            index = local_data.categories.findIndex(p => p.name == name)
+            if(index <0){
+                local_data.new.name = name
+                local_data.categories.push(local_data.new)
+                saveFile(local_data.categories,'/../files/config/','category.json')
+                .then(()=>{
+                    closeWindow('view_category')
+                })
+            }else{
+                alert(`A categoria ${name} já existe, digite outro nome.`)
+                local_form.querySelector('#edtNome').focus()
+                local_form.querySelector('#edtNome').select()
+            }
+        }else{
+            alert('Digite um nome para a categoria')
+            local_form.querySelector('#edtNome').focus()
+        }
     })
 
 

@@ -3,7 +3,8 @@ function saveFile(file,path,filename=''){
         data.append("file", JSON.stringify(file))
         data.append("path", path)
         data.append("filename", filename)
-    const myRequest = new Request("backend/saveRST.php",{
+
+    const myRequest = new Request("backend/saveFile.php",{
         method : "POST",
         body : data
     })
