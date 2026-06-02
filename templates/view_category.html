@@ -82,11 +82,6 @@
                 local_data.categories = JSON.parse(text)
                 fillTable(local_data.categories,'#tblCategorias')
 
-                if(local_data.newCategory){
-
-                }else{
-//                    index = local_data.categories.findIndex(p => p.name == local_data.data.name)
-                }
             }catch{
                 console.log('Arquivo de categorias não encontrado!')
             }
@@ -105,7 +100,18 @@
     }
 
     local_form.querySelector('#btnNewField').addEventListener('click',()=>{
-        openHTML('new_field_def',{},[500,0])
+        const param = new Object            
+            const field = new Object
+                field.name = ''
+                field.default = ''
+                field.kind = 'text'
+                field.parameters = []
+                local_data.categories[index].fields.push(field)     
+            param.index = local_data.categories[index].fields.length-1
+            param.fields = local_data.categories[index].fields
+            param.callback = addField
+
+        openHTML('new_field_def',param,[500,0])
     })
 
     local_form.querySelector('#btnNewCat').addEventListener('click',()=>{
@@ -153,11 +159,11 @@
     local_form.querySelector('#tblFields').addEventListener('click',(e)=>{
         const data = e.target.tagName=='TD'? e.target.parentNode.data : e.target.tagName=='TR' ? e.target.data : 0
         if(data){
-            const f_index = local_data.categories[index].fields.findIndex(p => p.name == data.name)
             const param = new Object
-            param.field = local_data.categories[index].fields[f_index]
+            param.fields = local_data.categories[index].fields
+            param.index = local_data.categories[index].fields.findIndex(p => p.name == data.name)
             param.callback = addField
-            if(f_index>=0){
+            if(param.index>=0){
                 openHTML('new_field_def',param,[500,0])
             }
         }

@@ -1,1 +1,1 @@
-[{"name":"Revista","fields":[{"name":"Nome","kind":"text","default":"","parameters":{"Schema.org":"name","Dublin Core":"name","Teste":""}}]},{"name":"teste","fields":[]}]
+[{"name":"Revista","fields":[{"name":"Nome 2","kind":"text","default":"","parameters":{"Schema.org":"namewwww","Dublin Core":"name","Teste":"www"}}]},{"name":"teste","fields":[{"name":"Teste 2","default":"Valor Padrão","kind":"text","parameters":[]},{"name":"Hello Wolrd","default":"sdsds","kind":"text","parameters":[]},{"name":"","default":"","kind":"text","parameters":[]}]}]
