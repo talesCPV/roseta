@@ -56,6 +56,7 @@ function newWindow(id,ttl,body,script,data={},dimension){
         content.innerHTML = body.innerHTML
         form.appendChild(content)
         area.appendChild(wd)
+//console.log(script.innerHTML)        
         eval(script.innerHTML)
     }catch{null}
 

@@ -2,6 +2,15 @@
 <template>
     <style>
 
+        table{
+            height: 100px;
+            display: block;
+        }
+
+        tr{
+            display: flex;
+        }
+
         .form{
             display: flex;
             flex-direction: column;
@@ -21,7 +30,8 @@
 
         <fieldset>
             <legend>Campos</legend>
-            <select id="cmbFields" size="10"></select>
+            <table id="tblFields"></table>
+<!--            <select id="cmbFields" size="10"></select> -->
             <button id="btnNewField">Novo Campo</button>
         </fieldset>
         <button id="btnSave">Salvar</button>
@@ -34,15 +44,14 @@
     const local_data = main_data.view_category
     local_data.newCategory = local_data.data == null
     local_data.categories = []
-    local_data.fields = []
     let index = -1
 
     function start(){
         loadCategory()
     }
 
-    function fillTable(arr){
-        const tbl = local_form.querySelector('#tblCategorias')
+    function fillTable(arr,id_table){
+        const tbl = local_form.querySelector(id_table)
         tbl.innerHTML = ''
         for(let i=0; i<arr.length; i++){
             const tr = document.createElement('tr')
@@ -71,12 +80,12 @@
         .then( text => {
             try{
                 local_data.categories = JSON.parse(text)
-                fillTable(local_data.categories)
+                fillTable(local_data.categories,'#tblCategorias')
 
                 if(local_data.newCategory){
 
                 }else{
-                    index = local_data.categories.findIndex(p => p.name == local_data.data.name)
+//                    index = local_data.categories.findIndex(p => p.name == local_data.data.name)
                 }
             }catch{
                 console.log('Arquivo de categorias não encontrado!')
@@ -84,18 +93,25 @@
         })
     }
 
+    function markLine(id_table,line){
+        const rows = local_form.querySelector(`#${id_table}`).rows        
+        for(let i=0; i<rows.length; i++){            
+            i==line ? rows[i].classList.add('mark') : rows[i].classList.remove('mark')
+        }
+    }
+
+    function addField(field){
+        saveFile(local_data.categories,'/../files/config/','category.json')
+    }
+
     local_form.querySelector('#btnNewField').addEventListener('click',()=>{
-        const obj = new Object
-        obj.register = []
-        obj.fields = []        
-        obj.data = null
-        openHTML('new_field_def',obj,[500,280])
+        openHTML('new_field_def',{},[500,0])
     })
 
     local_form.querySelector('#btnNewCat').addEventListener('click',()=>{
         const name = prompt('Nome da categoria')
         if(name!=null){
-            index = local_data.categories.findIndex(p => p.name == name)
+            const index = local_data.categories.findIndex(p => p.name == name)
             if(index <0){
                 const nw = new Object
                 nw.name = name
@@ -103,7 +119,7 @@
                 local_data.categories.push(nw)
                 saveFile(local_data.categories,'/../files/config/','category.json')
                 .then(()=>{
-                    fillTable(local_data.categories)
+                    fillTable(local_data.categories,'#tblCategorias')
                 })
             }else{
                 alert(`A categoria ${name} já existe, digite outro nome.`)
@@ -112,18 +128,38 @@
     })
 
     local_form.querySelector('#tblCategorias').addEventListener('click',(e)=>{
-
-        console.log(e.target.rowIndex)
-
-//        fillFields(e.target.index)
+        const data = e.target.tagName=='TD'? e.target.parentNode.data : e.target.tagName=='TR' ? e.target.data : 0
+        if(data){
+            index = local_data.categories.findIndex(p => p.name == data.name)
+            markLine('tblCategorias',index)
+            fillTable(local_data.categories[index].fields,'#tblFields')
+        }
     })
 
-    local_form.querySelector('#tblCategorias').addEventListener('dblclick',(e)=>{        
-        const index = e.target.rowIndex
-        if(confirm(`Deseja deletar a categoria ${local_data.categories[index].name}?`)){
-            local_data.categories.splice(index,1)
-            document.querySelector('#tblCategorias').rows[index].remove()
-            saveFile(local_data.categories,'/../files/config/','category.json')
+    local_form.querySelector('#tblCategorias').addEventListener('dblclick',(e)=>{                
+        const data = e.target.tagName=='TD'? e.target.parentNode.data : e.target.tagName=='TR' ? e.target.data : 0
+        if(data){
+            const index = local_data.categories.findIndex(p => p.name == data.name)
+            if(index >=0){
+                if(confirm(`Deseja deletar a categoria ${local_data.categories[index].name}?`)){
+                    local_data.categories.splice(index,1)
+                    document.querySelector('#tblCategorias').rows[index].remove()
+                    saveFile(local_data.categories,'/../files/config/','category.json')
+                }
+            }
+        }
+    })
+
+    local_form.querySelector('#tblFields').addEventListener('click',(e)=>{
+        const data = e.target.tagName=='TD'? e.target.parentNode.data : e.target.tagName=='TR' ? e.target.data : 0
+        if(data){
+            const f_index = local_data.categories[index].fields.findIndex(p => p.name == data.name)
+            const param = new Object
+            param.field = local_data.categories[index].fields[f_index]
+            param.callback = addField
+            if(f_index>=0){
+                openHTML('new_field_def',param,[500,0])
+            }
         }
     })
 

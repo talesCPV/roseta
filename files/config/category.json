@@ -1,1 +1,1 @@
-[]
+[{"name":"Revista","fields":[{"name":"Nome","kind":"text","default":"","parameters":{"Schema.org":"name","Dublin Core":"name","Teste":""}}]},{"name":"teste","fields":[]}]

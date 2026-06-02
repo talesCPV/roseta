@@ -73,11 +73,14 @@
     })
 
     local_form.querySelector('#tblPadroes').addEventListener('dblclick',(e)=>{
-        const index = e.target.rowIndex
-        if(confirm(`Deseja deletar o padrão ${local_data.defaults[index].name}?`)){
-            local_data.defaults.splice(index,1)
-            document.querySelector('#tblPadroes').rows[index].remove()
-            saveFile(local_data.defaults,'/../files/config/','defaults.json')
+        const data = e.target.data
+        const index = local_data.defaults.findIndex(p => p.name == data.name)
+        if(index >=0){
+            if(confirm(`Deseja deletar o padrão ${local_data.defaults[index].name}?`)){
+                local_data.defaults.splice(index,1)
+                document.querySelector('#tblPadroes').rows[index].remove()
+                saveFile(local_data.defaults,'/../files/config/','defaults.json')
+            }
         }
     })
 

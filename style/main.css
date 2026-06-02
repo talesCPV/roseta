@@ -35,7 +35,6 @@ h4{
 }
 
 table{
-  max-height: 100px;
   overflow-y: scroll;
   width: 100%;
   display: inline-grid;
@@ -52,6 +51,11 @@ tr:hover{
 
 td{
   padding: 2px 10px;
+}
+
+.mark{
+  background-color: brown !important;
+  color: white;
 }
 
 .line, .line-center{
