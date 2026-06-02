@@ -224,7 +224,8 @@ nav .wrapper{
     box-shadow: none;
     transition: all 0.3s ease;
   }
-  #showDrop:checked ~ .drop-menu,
+  #showImport:checked ~ .drop-menu,
+  #showExport:checked ~ .drop-menu,
   #showMega:checked ~ .mega-box{
     max-height: 100%;
   }
