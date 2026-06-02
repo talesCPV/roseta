@@ -1,11 +1,15 @@
 /* MENU */
 
 document.querySelector('#menu-import-csv').addEventListener('click',()=>{
-    openHTML('load_file',{"accept":".csv","callback": openCSV},[500,300])
+    openHTML('load_file',{"accept":".csv","callback": openCSV},[500,0])
 })
 
 document.querySelector('#menu-categoria').addEventListener('click',()=>{
     openHTML('view_category',{},[600,0])
+})
+
+document.querySelector('#menu-padroes').addEventListener('click',()=>{
+    openHTML('view_defaults',{},[600,0])
 })
 
 /* DOM */

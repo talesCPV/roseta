@@ -102,11 +102,7 @@
 
     document.querySelector('#btndel').addEventListener('click',()=>{
         if(confirm('A remoção deste campo implica na perda de todos os dados referentes nos registros. Deseja continuar?')){
-            const i = local_data.register.fields.findIndex(p => p.name == local_data.data.name)
-            document.querySelector('#about-fields').options[i].remove()
-            main_data.colecoes[index].delField(local_data.data.name)
-            saveColecao(index)
-            closeWindow('new_field')
+
         }
     })
 

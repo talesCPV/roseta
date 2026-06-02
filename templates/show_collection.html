@@ -143,7 +143,8 @@
             <div class="btn-round" id="btn-left"><span class="mdi mdi-arrow-left-bold-circle"></span></div>
             <input type="number" id="edt-goto">
             <div class="btn-round" id="btn-right"><span class="mdi mdi-arrow-right-bold-circle"></span></div>
-            <div class="btn-round" id="btn-add"><span class="mdi mdi-plus-circle"></span></div>
+            <div class="btn-round" id="btn-add"><span class="mdi mdi-plus-circle green"></span></div>
+            <div class="btn-round" id="btn-del"><span class="mdi mdi-minus-circle red"></span></div>
         </div>
 
         <div class="register">
@@ -204,6 +205,7 @@
     }
 
     function loadRegister(index){
+
         function slide(side=1){
             const imgs =  show.querySelectorAll('img')
             for(let i=0; i<imgs.length; i++){
@@ -215,6 +217,8 @@
                 }
             }
         }
+
+        local_form.querySelector('#edt-goto').value = index
 
         reg = collection.registers[index]
         const url = getURL(reg)
@@ -355,6 +359,25 @@
         const index = findColecao(collection)
         if(index>=0){
             editColecao(index,'registers',main_data.colecoes[index].registers)
+        }
+    })
+
+    local_form.querySelector('#btn-del').addEventListener('click',()=>{
+        if(confirm('A remoção deste registro implica na perda de todos os dados relativos a ele. Deseja cotinuar?')){
+            const index = Number(local_form.querySelector('#edt-goto').value)
+            collection.registers.splice(index,1)
+            saveColecao(findColecao(collection.file))
+            try{
+                loadRegister(index)
+            }catch{
+                try{
+                    loadRegister(index-1)
+                }catch{
+                    local_form.querySelector('.left').innerHTML = ''
+                    local_form.querySelector('.rigth').innerHTML = ''
+                    local_form.querySelector('#edt-goto').value = 0
+                }
+            }
         }
     })
 

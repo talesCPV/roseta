@@ -1,0 +1,86 @@
+<title>Padrões de Dados</title>
+<template>
+    <style></style>
+
+    <fieldset>
+        <legend>Padrões</legend>
+        <table id="tblPadroes"></table>
+        <button id="btnNewPad">Novo Padrão</button>
+    </fieldset>
+
+
+</template>
+<script>
+    
+    const local_form = document.querySelector('#view_defaults')
+    const local_data = main_data.view_defaults
+    local_data.newDefault = local_data.data == null
+    local_data.defaults = []
+    let index = -1
+
+    function start(){
+        loadDefaults()
+    }
+
+    function loadDefaults(){
+        loadFile('/../files/config/defaults.json')
+        .then( text => {
+            try{
+                local_data.defaults = JSON.parse(text)
+                fillTable(local_data.defaults)
+
+                if(local_data.newCategory){
+
+                }else{
+                    index = local_data.defaults.findIndex(p => p.name == local_data.data.name)
+                }
+            }catch{
+                console.log('Arquivo de padrões não encontrado!')
+            }
+        })
+    }
+
+    function fillTable(arr){
+        const tbl = local_form.querySelector('#tblPadroes')
+        tbl.innerHTML = ''
+        for(let i=0; i<arr.length; i++){
+            const tr = document.createElement('tr')
+            tr.data = arr[i]
+            tbl.appendChild(tr)
+            
+            const td = document.createElement('td')
+            td.innerHTML = arr[i].name
+            tr.appendChild(td)
+        }
+    }
+
+    local_form.querySelector('#btnNewPad').addEventListener('click',()=>{
+        const name = prompt('Nome do novo padrão:')
+        if(name!=null){
+            index = local_data.defaults.findIndex(p => p.name == name)
+            if(index <0){
+                const nw = new Object
+                nw.name = name
+                local_data.defaults.push(nw)
+                saveFile(local_data.defaults,'/../files/config/','defaults.json')
+                .then(()=>{
+                    fillTable(local_data.defaults)
+                })
+            }else{
+                alert(`O padrão ${name} já existe, digite outro nome.`)
+            }
+        }
+    })
+
+    local_form.querySelector('#tblPadroes').addEventListener('dblclick',(e)=>{
+        const index = e.target.rowIndex
+        if(confirm(`Deseja deletar o padrão ${local_data.defaults[index].name}?`)){
+            local_data.defaults.splice(index,1)
+            document.querySelector('#tblPadroes').rows[index].remove()
+            saveFile(local_data.defaults,'/../files/config/','defaults.json')
+        }
+    })
+
+    start()
+
+</script>

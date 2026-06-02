@@ -1,6 +1,7 @@
-<title>Nova Categoria de Coleção</title>
+<title>Categorias de Coleção</title>
 <template>
     <style>
+
         .form{
             display: flex;
             flex-direction: column;
@@ -11,8 +12,12 @@
     </style>
 
     <div class="form">
-        <label for="edtNome">Nome</label>        
-        <input type="text" id="edtNome">
+
+        <fieldset>
+            <legend>Categorias</legend>
+            <table id="tblCategorias"></table>
+            <button id="btnNewCat">Nova Categoria</button>
+        </fieldset>
 
         <fieldset>
             <legend>Campos</legend>
@@ -29,13 +34,36 @@
     const local_data = main_data.view_category
     local_data.newCategory = local_data.data == null
     local_data.categories = []
-    local_data.new = new Object
-    local_data.new.name = ''
-    local_data.new.fields = []
+    local_data.fields = []
     let index = -1
 
     function start(){
         loadCategory()
+    }
+
+    function fillTable(arr){
+        const tbl = local_form.querySelector('#tblCategorias')
+        tbl.innerHTML = ''
+        for(let i=0; i<arr.length; i++){
+            const tr = document.createElement('tr')
+            tr.data = arr[i]
+            tbl.appendChild(tr)
+            
+            const td = document.createElement('td')
+            td.innerHTML = arr[i].name
+            tr.appendChild(td)
+        }
+    }
+
+    function fillFields(index){
+        const fields = local_form.querySelector('#cmbFields')
+        fields.innerHTML = ''
+        for(let i=0; i<local_data.categories[index].fields.length; i++){
+            const opt = document.createElement('option')
+            opt.innerHTML = local_data.categories[index].fields[i].name
+            opt.value = local_data.categories[index].fields[i].name
+            fields.appendChild(opt)
+        }
     }
 
     function loadCategory(){
@@ -43,7 +71,8 @@
         .then( text => {
             try{
                 local_data.categories = JSON.parse(text)
-console.log(local_data.categories)                
+                fillTable(local_data.categories)
+
                 if(local_data.newCategory){
 
                 }else{
@@ -63,28 +92,40 @@ console.log(local_data.categories)
         openHTML('new_field_def',obj,[500,280])
     })
 
-    local_form.querySelector('#btnSave').addEventListener('click',()=>{
-        const name = local_form.querySelector('#edtNome').value.trim()
-        if(name.length){
+    local_form.querySelector('#btnNewCat').addEventListener('click',()=>{
+        const name = prompt('Nome da categoria')
+        if(name!=null){
             index = local_data.categories.findIndex(p => p.name == name)
             if(index <0){
-                local_data.new.name = name
-                local_data.categories.push(local_data.new)
+                const nw = new Object
+                nw.name = name
+                nw.fields = local_data.fields
+                local_data.categories.push(nw)
                 saveFile(local_data.categories,'/../files/config/','category.json')
                 .then(()=>{
-                    closeWindow('view_category')
+                    fillTable(local_data.categories)
                 })
             }else{
                 alert(`A categoria ${name} já existe, digite outro nome.`)
-                local_form.querySelector('#edtNome').focus()
-                local_form.querySelector('#edtNome').select()
             }
-        }else{
-            alert('Digite um nome para a categoria')
-            local_form.querySelector('#edtNome').focus()
         }
     })
 
+    local_form.querySelector('#tblCategorias').addEventListener('click',(e)=>{
+
+        console.log(e.target.rowIndex)
+
+//        fillFields(e.target.index)
+    })
+
+    local_form.querySelector('#tblCategorias').addEventListener('dblclick',(e)=>{        
+        const index = e.target.rowIndex
+        if(confirm(`Deseja deletar a categoria ${local_data.categories[index].name}?`)){
+            local_data.categories.splice(index,1)
+            document.querySelector('#tblCategorias').rows[index].remove()
+            saveFile(local_data.categories,'/../files/config/','category.json')
+        }
+    })
 
     start()
 
