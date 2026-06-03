@@ -224,7 +224,7 @@
 
         reg = collection.registers[index]
         const url = getURL(reg)
-//console.log(reg)
+console.log(reg)
         const left_panel = document.querySelector('.left')
         left_panel.innerHTML = ''
         const show = document.createElement('div')
@@ -261,38 +261,41 @@
         const panel = document.querySelector('.rigth')
         panel.innerHTML = ''
         const record = []
-//console.log(collection)
-        for (const [key, value] of Object.entries(reg)) {
-//        for(let i=0; i<collection.fields.length; i++){
-try{
+console.log(collection)
+//        for (const [key, value] of Object.entries(reg)) {
+        for(let i=0; i<collection.fields.length; i++){
+            const field = collection.fields[i]
+console.log(field)
+console.log(reg[field.name])
+//try{
     const line = document.createElement('div')
             line.className = 'line'
             panel.appendChild(line)
-            const field_index = collection.fields.findIndex(p => p.name == key)
+//            const field_index = collection.fields.findIndex(p => p.name == key)
 //console.log(key,field_index)
-            line.data = new Object
-            line.data.field = new Object
-            line.data.field.data = key.split(',')
-            line.data.field.data.length <2 ? line.data.field.data.unshift('text') : null
-            line.data.field.type = collection.fields[field_index].kind//line.data.field.data[0] 
-            line.data.field.title = collection.fields[field_index].name//line.data.field.data[1]
+//            line.data = new Object
+//            line.data.field = new Object
+//            line.data.field.data = key.split(',')
+//            line.data.field.data.length <2 ? line.data.field.data.unshift('text') : null
+//            line.data.field.type = collection.fields[field_index].kind//line.data.field.data[0]
+//            line.data.field.title = collection.fields[field_index].name//line.data.field.data[1]
             const label = document.createElement('label')
-            label.innerHTML = line.data.field.title
+            label.innerHTML =  field.name//line.data.field.title
             line.appendChild(label)
 
             const valor = document.createElement('input')
-            valor.value = value
+            valor.value = reg[field.name]//value
             valor.readOnly = true
-            line.data.value = value
-            line.data.edit = valor
+//            line.data.value = reg[field.name]//value
+//            line.data.edit = valor
             line.appendChild(valor)
             line.addEventListener('click',()=>{
-                line.data.callback = editRegister
-                line.data.index = index
+//                line.data.callback = editRegister
+//                line.data.index = index
                 openHTML('edit_field',line.data,[500,0])
             })
-            record.push({"field":line.data.field.title,"value":value})
-}catch{}         
+//            record.push({"field":line.data.field.title,"value":value})
+//}catch{}         
 
         }
     }
