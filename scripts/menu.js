@@ -101,12 +101,17 @@ document.querySelector('#btn-new-colec').addEventListener('click',()=>{
 })
 
 document.querySelector('#about-novo-campo').addEventListener('click',()=>{
-    const obj = new Object
-    obj.register = document.querySelector('.registros').data
-    obj.data = null
-    if(obj.register != undefined){
-        openHTML('new_field',obj,[500,280])
+    const index = findColecao(document.querySelector('.registros').data.file)
+    const out = new Object
+    out.fields = JSON.parse(JSON.stringify(main_data.colecoes[index].fields))
+    out.index = -1
+    out.callback = (field)=>{
+        const fd = field[field.length-1]
+        main_data.colecoes[index].addField(fd.name,fd.kind,fd.default)
+        about(main_data.colecoes[index])
+        saveColecao(index)
     }
+    openHTML('new_field_def',out,[500,0])
 })
 
 document.querySelector('#about-fields').addEventListener('click',()=>{
@@ -120,8 +125,6 @@ document.querySelector('#about-fields').addEventListener('click',()=>{
     const old_name = option.data.name
     out.callback = (field)=>{
         const new_name = field[out.index].name
-        console.log(field[out.index])
-        console.log(old_name)
         main_data.colecoes[index].editField(old_name,new_name,field[out.index].kind,field[out.index].default)
         about(main_data.colecoes[index])
         saveColecao(index)

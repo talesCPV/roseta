@@ -42,6 +42,7 @@ Roseta.prototype.delField = function(field){
 }
 
 Roseta.prototype.addField = function(field,kind='text',def=''){
+console.log(field,kind,def)    
     const fld = new Object
     fld.name = field
     fld.kind = kind

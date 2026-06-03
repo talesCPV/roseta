@@ -69,8 +69,6 @@
     let field
     const newField = local_data.index < 0
 
-    console.log(local_data)
-
     function start(){
         if(newField){
             local_form.querySelector('#btndel').disabled = 1
@@ -135,7 +133,7 @@
                 delete(field.parameters[key])
             }
         }
-        newField ? local_data.fields.push(field) : null
+        newField ? local_data.fields.push(field) : null        
         local_data.callback(local_data.fields)
         closeWindow('new_field_def')
     })
