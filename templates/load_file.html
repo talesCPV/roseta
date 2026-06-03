@@ -10,22 +10,26 @@
 </template>
 <script>
 
-    try{
-        document.querySelector('#load_file').querySelector('#up_file').accept = main_data.load_file.accept
-    }catch{
-        document.querySelector('#load_file').querySelector('#up_file').accept = ''
+    const local_form = document.querySelector('#load_file')
+    const local_data = main_data.load_file
+
+    function start(){
+        try{
+            local_form.querySelector('#up_file').accept = local_data.accept
+        }catch{
+            local_form.querySelector('#up_file').accept = ''
+        }
     }
 
-    document.querySelector('#load_file').querySelector('#up_file').addEventListener('change',(e)=>{
-
+    local_form.querySelector('#up_file').addEventListener('change',(e)=>{
         try{
-//            const call = document.querySelector('#load_file').previousElementSibling
-            main_data.load_file.callback(e.target.files[0])
-            removecategoria('load_file')
+            local_data.callback(e.target.files[0])
+            closeWindow('load_file')
         }catch{
             console.error('Not set callback function.')
         }
-
     })
+
+    start()
 
 </script>

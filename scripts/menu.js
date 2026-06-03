@@ -116,15 +116,16 @@ document.querySelector('#about-fields').addEventListener('click',()=>{
 
     const out = new Object
     out.fields = main_data.colecoes[index].fields
-    out.index = main_data.colecoes[index].fields.findIndex(p => p.name == option.value)
-    out.callback = (fields)=>{
-        console.log(fields)
-        saveColecao(findColecao(main_data.colecoes[index].file))
+    out.index = main_data.colecoes[index].fields.findIndex(p => p.name == option.data.name)
+    const old_name = option.data.name
+    out.callback = (field)=>{
+        const new_name = field[out.index].name
+        console.log(field[out.index])
+        console.log(old_name)
+        main_data.colecoes[index].editField(old_name,new_name,field[out.index].kind,field[out.index].default)
+        about(main_data.colecoes[index])
+        saveColecao(index)
     }
-
-    console.log(main_data.colecoes[index].file)
-
-    console.log(findColecao(main_data.colecoes[index].file))
 
     openHTML('new_field_def',out,[500,0])
 

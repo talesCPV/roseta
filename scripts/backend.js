@@ -1,5 +1,4 @@
 function saveFile(file,path,filename=''){
-console.log(file,path,filename)    
     const data = new URLSearchParams()
         data.append("file", JSON.stringify(file))
         data.append("path", path)

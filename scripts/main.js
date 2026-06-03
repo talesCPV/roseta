@@ -57,7 +57,7 @@ Roseta.prototype.addField = function(field,kind='text',def=''){
 }
 
 Roseta.prototype.editField = function(old_name,new_name,kind='text',def=''){
-    if(this.fields.some(obj => obj.name === new_name)){
+    if(old_name === new_name){
         const index = this.fields.findIndex(p => p.name == new_name)
         this.fields[index].kind = kind
         this.fields[index].default = def
@@ -165,7 +165,6 @@ function editColecao(index,field,value){
 }
 
 function saveColecao(index,filename=''){
-console.log(index)    
     const roseta = main_data.colecoes[index]
     if(roseta != undefined){
         filename =  filename.length ? filename : roseta.file
@@ -230,10 +229,10 @@ function openCSV(file){
         const reader = new FileReader()
         reader.onload = (e) => {
             const csv = e.target.result              
-            const roseta =  new Roseta(file.name,'Obra de Arte')                        
+            const roseta =  new Roseta(file.name,'DEFAULT')                        
             roseta.importCSV(csv)
             addColecao(roseta)
-            saveColecao(findColecao(file.name))
+            saveColecao(findColecao(file.name+'.rst'))
         }
         reader.readAsText(file)
     }
