@@ -206,6 +206,8 @@
 
     function loadRegister(index){
 
+//        console.log(index)
+
         function slide(side=1){
             const imgs =  show.querySelectorAll('img')
             for(let i=0; i<imgs.length; i++){
@@ -222,7 +224,7 @@
 
         reg = collection.registers[index]
         const url = getURL(reg)
-
+//console.log(reg)
         const left_panel = document.querySelector('.left')
         left_panel.innerHTML = ''
         const show = document.createElement('div')
@@ -256,15 +258,18 @@
             img = reg['Categorias,URL de Origem'].split(':')
             document.querySelector('#reg-img').src = img.length>2 ? img[1]+':'+img[2] : ''
         }catch{null}
-
         const panel = document.querySelector('.rigth')
         panel.innerHTML = ''
         const record = []
+//console.log(collection)
         for (const [key, value] of Object.entries(reg)) {
-            const line = document.createElement('div')
+//        for(let i=0; i<collection.fields.length; i++){
+try{
+    const line = document.createElement('div')
             line.className = 'line'
             panel.appendChild(line)
             const field_index = collection.fields.findIndex(p => p.name == key)
+//console.log(key,field_index)
             line.data = new Object
             line.data.field = new Object
             line.data.field.data = key.split(',')
@@ -287,6 +292,8 @@
                 openHTML('edit_field',line.data,[500,0])
             })
             record.push({"field":line.data.field.title,"value":value})
+}catch{}         
+
         }
     }
 
