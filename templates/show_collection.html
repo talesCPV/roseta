@@ -278,7 +278,6 @@
                     data.callback = (value)=>{
                         valor.value = value
                         reg[field.name] = value
-                        console.log(findColecao(collection.file))
                         saveColecao(findColecao(collection.file))
                     }
                 openHTML('edit_field',data,[500,0])
