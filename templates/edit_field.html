@@ -37,7 +37,7 @@
 
 </template>
 <script>
-    const pageData = main_data.edit_field
+    const local_data = main_data.edit_field
     const local_form = document.querySelector('#edit_field')
     
     function start(){
@@ -50,23 +50,24 @@
                 el = document.createElement('input')
                 el.type = ['number','date','time','datetime-local','url','color','email','password'].includes(type) ? type : 'text'
             }
-            el.value = pageData.value
+            el.value = local_data.value
             el.id="edtValue"
             return el
         }
-        const el = newElement(pageData.field.type)
+
+        console.log(local_data)
+
+        const el = newElement(local_data.field.kind)
         local_form.querySelector('.input-place').appendChild(el)        
-        local_form.querySelector('.window-title').innerHTML = pageData.field.title
-        local_form.querySelector('#lblField').innerHTML = pageData.field.title
-        local_form.querySelector('#edtValue').value = pageData.value
+        local_form.querySelector('.window-title').innerHTML = local_data.field.name
+        local_form.querySelector('#lblField').innerHTML = local_data.field.name
+        local_form.querySelector('#edtValue').value = local_data.value
         el.focus()
         el.select()
     }
 
     local_form.querySelector('#btnSave').addEventListener('click',()=>{
-        pageData.edit.value = local_form.querySelector('#edtValue').value
-        pageData.value = local_form.querySelector('#edtValue').value
-        pageData.callback(pageData.index,pageData.field.title,local_form.querySelector('#edtValue').value)
+        local_data.callback(local_form.querySelector('#edtValue').value)
         closeWindow('edit_field')
     })
 

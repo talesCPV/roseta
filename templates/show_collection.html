@@ -206,8 +206,6 @@
 
     function loadRegister(index){
 
-//        console.log(index)
-
         function slide(side=1){
             const imgs =  show.querySelectorAll('img')
             for(let i=0; i<imgs.length; i++){
@@ -224,7 +222,6 @@
 
         reg = collection.registers[index]
         const url = getURL(reg)
-console.log(reg)
         const left_panel = document.querySelector('.left')
         left_panel.innerHTML = ''
         const show = document.createElement('div')
@@ -261,41 +258,31 @@ console.log(reg)
         const panel = document.querySelector('.rigth')
         panel.innerHTML = ''
         const record = []
-console.log(collection)
-//        for (const [key, value] of Object.entries(reg)) {
         for(let i=0; i<collection.fields.length; i++){
             const field = collection.fields[i]
-console.log(field)
-console.log(reg[field.name])
-//try{
-    const line = document.createElement('div')
+            const line = document.createElement('div')
             line.className = 'line'
             panel.appendChild(line)
-//            const field_index = collection.fields.findIndex(p => p.name == key)
-//console.log(key,field_index)
-//            line.data = new Object
-//            line.data.field = new Object
-//            line.data.field.data = key.split(',')
-//            line.data.field.data.length <2 ? line.data.field.data.unshift('text') : null
-//            line.data.field.type = collection.fields[field_index].kind//line.data.field.data[0]
-//            line.data.field.title = collection.fields[field_index].name//line.data.field.data[1]
             const label = document.createElement('label')
-            label.innerHTML =  field.name//line.data.field.title
+            label.innerHTML =  field.name
             line.appendChild(label)
 
             const valor = document.createElement('input')
-            valor.value = reg[field.name]//value
+            valor.value = reg[field.name]
             valor.readOnly = true
-//            line.data.value = reg[field.name]//value
-//            line.data.edit = valor
             line.appendChild(valor)
             line.addEventListener('click',()=>{
-//                line.data.callback = editRegister
-//                line.data.index = index
-                openHTML('edit_field',line.data,[500,0])
+                const data = new Object
+                    data.value = reg[field.name]
+                    data.field = field
+                    data.callback = (value)=>{
+                        valor.value = value
+                        reg[field.name] = value
+                        console.log(findColecao(collection.file))
+                        saveColecao(findColecao(collection.file))
+                    }
+                openHTML('edit_field',data,[500,0])
             })
-//            record.push({"field":line.data.field.title,"value":value})
-//}catch{}         
 
         }
     }
