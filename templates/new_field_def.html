@@ -79,6 +79,7 @@
             field.parameters = new Object
         }else{
             field = local_data.fields[local_data.index]
+            field.parameters = field.parameters==undefined ? new Object : field.parameters
             local_form.querySelector('#edtNome').value = field.name
             local_form.querySelector('#edtDefault').value = field.default
             local_form.querySelector('#cmbKind').value = field.kind
@@ -90,7 +91,7 @@
         loadFile('/../files/config/defaults.json')
         .then( text => {
             try{
-                const defaults = JSON.parse(text)    
+                const defaults = JSON.parse(text)
                 for(let i=0; i<defaults.length; i++){                    
                     if(!field.parameters.hasOwnProperty(defaults[i].name)){
                         field.parameters[defaults[i].name] = ''

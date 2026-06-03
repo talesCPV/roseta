@@ -1,0 +1,1 @@
+{"name":"qq","file":"qq.rst","categoria":"Revista","fields":[{"name":"Nome","kind":"text","default":"padrão","parameters":{"Schema.org":"name","Dublin Core":"name","Teste":""}},{"name":"Idade","default":"10","kind":"number","parameters":{"Schema.org":"age","Dublin Core":"age","Teste":"www"}}],"registers":[]}

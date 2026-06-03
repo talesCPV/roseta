@@ -1,0 +1,1 @@
+{"name":"w","file":"w.rst","categoria":"Revista","fields":[{"name":"Nome","kind":"text","default":"padrão","parameters":{"Schema.org":"name","Dublin Core":"name"}},{"name":"Idade","default":"10","kind":"number","parameters":{"Schema.org":"age","Dublin Core":"age"}}],"registers":[]}

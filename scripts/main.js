@@ -46,6 +46,7 @@ Roseta.prototype.addField = function(field,kind='text',def=''){
     fld.name = field
     fld.kind = kind
     fld.default = def
+    fld.parameters = new Object
 
     if(!this.fields.some(obj => obj.name === field)){
         this.fields.push(fld)
@@ -164,6 +165,7 @@ function editColecao(index,field,value){
 }
 
 function saveColecao(index,filename=''){
+console.log(index)    
     const roseta = main_data.colecoes[index]
     if(roseta != undefined){
         filename =  filename.length ? filename : roseta.file
