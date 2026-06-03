@@ -1,1 +1,0 @@
-{"name":"teste","file":"Teste.rst","categoria":"Revista","fields":[],"registers":[]}
