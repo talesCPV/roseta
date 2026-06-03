@@ -1,0 +1,105 @@
+<title>Nova Coleção</title>
+<template>
+    <style>
+        .form, #newCat{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+/*            align-items: center;*/
+            gap: 10px;
+            height: 100%;
+        }
+
+        .form select{
+            padding: 5px;
+        }
+
+    </style>
+
+    <div class="form">
+
+        <fieldset>
+            <legend>Nome da Coleção</legend>
+            <input type="text" id="edtNome">
+        </fieldset>
+
+        <fieldset>
+            <legend>Categoria</legend>
+            <select id="cmbCat"></select>
+            <div id="newCat" class="hide">
+                <label for="edtNewCat">Nome:</label>
+                <input type="text" id="edtNewCat">
+            </div>
+        </fieldset>
+        <button id="btnNew">Criar</button>
+    </div>
+
+
+</template>
+<script>
+
+    const local_form = document.querySelector('#new_collection')
+    const local_data = main_data.new_collection
+
+    function start(){
+        loadDefaults()
+    }
+
+    function loadDefaults(){
+        loadFile('/../files/config/category.json')
+        .then( text => {
+            try{
+
+                function opt(value,fields=[]){
+                    const out = document.createElement('option')
+                    out.innerHTML = value
+                    out.value = value
+                    out.fields=fields
+                    return out
+                }
+
+                const defaults = JSON.parse(text)
+                const cmb = local_form.querySelector('#cmbCat')
+                cmb.innerHTML = ''
+                for(let i=0; i<defaults.length; i++){
+                    cmb.appendChild(opt(defaults[i].name,defaults[i].fields))
+                }
+                cmb.appendChild(opt('Nova Categoria'))
+
+            }catch{
+                console.log('Arquivo de padrões não encontrado!')
+            }
+        })
+    }
+
+    local_form.querySelector('#cmbCat').addEventListener('change',()=>{
+        const value = local_form.querySelector('#cmbCat').value
+        if(value == 'Nova Categoria'){
+            local_form.querySelector('#newCat').classList.remove('hide')
+        }else{
+            local_form.querySelector('#newCat').classList.add('hide')
+        }
+
+    })
+
+    local_form.querySelector('#btnNew').addEventListener('click',()=>{
+        const nome = local_form.querySelector('#edtNome').value
+        if(nome.trim().length){
+            const sel = local_form.querySelector('#cmbCat')
+            const categoria = sel.value=='Nova Categoria' ? local_form.querySelector('#edtNewCat').value : sel.value
+            if(categoria!=null){
+                const roseta = new Roseta(nome,categoria)
+                roseta.editCollection('fields',sel.options[sel.selectedIndex].fields)
+                addColecao(roseta)
+                saveColecao(findColecao(roseta.file))
+                closeWindow('new_collection')
+            }
+        }else{
+            alert('Digite um nome válido!')
+            local_form.querySelector('#edtNome').focus()
+        }
+    })
+
+    start()
+
+</script>

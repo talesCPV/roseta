@@ -66,25 +66,23 @@
 
     const local_form = document.querySelector('#new_field_def')
     const local_data = main_data.new_field_def
-    const fields = local_data.fields[local_data.index]
-    const newField = !fields.name.length
-    console.log(fields)
-    console.log(newField)
+    let field
+    const newField = local_data.index < 0
 
     function start(){
-        if(!newField){
-            local_form.querySelector('#edtNome').value = fields.name
-            local_form.querySelector('#edtDefault').value = fields.default
-            local_form.querySelector('#cmbKind').value = fields.kind
-        }else{
+        if(newField){
             local_form.querySelector('#btndel').disabled = 1
-            local_data.field = new Object
-            local_data.field.name = ''
-            local_data.field.default = ''
-            local_data.field.kind = 'text'
-            local_data.field.parameters = []
+            field = new Object
+            field.name = ''
+            field.default = ''
+            field.kind = 'text'
+            field.parameters = new Object
+        }else{
+            field = local_data.fields[local_data.index]
+            local_form.querySelector('#edtNome').value = field.name
+            local_form.querySelector('#edtDefault').value = field.default
+            local_form.querySelector('#cmbKind').value = field.kind
         }
-
         loadDefaults()
     }
 
@@ -92,10 +90,10 @@
         loadFile('/../files/config/defaults.json')
         .then( text => {
             try{
-                const defaults = JSON.parse(text)           
+                const defaults = JSON.parse(text)    
                 for(let i=0; i<defaults.length; i++){                    
-                    if(!fields.parameters.hasOwnProperty(defaults[i].name)){
-                        fields.parameters[defaults[i].name] = ''
+                    if(!field.parameters.hasOwnProperty(defaults[i].name)){
+                        field.parameters[defaults[i].name] = ''
                     }
                 }
                 fillParameters()
@@ -106,7 +104,7 @@
     }
 
     function fillParameters(){
-        const param = fields.parameters
+        const param = field.parameters
         const tbl = local_form.querySelector('#tblPadroes')
         tbl.innerHTML = ''
 
@@ -114,7 +112,7 @@
             const tr = document.createElement('tr')
             tr.innerHTML = `<td>${key}</td><td>${value}</td>`
             tr.addEventListener('click',()=>{
-                const new_value = prompt(`${fields.name} no padrão ${key}:`,value)
+                const new_value = prompt(`${field.name} no padrão ${key}:`,value)
                 if(new_value!=null){
                     param[key] = new_value
                     tr.innerHTML = `<td>${key}</td><td>${param[key]}</td>`
@@ -124,20 +122,25 @@
         }
     }
 
-
     local_form.querySelector('#btnAdd').addEventListener('click',()=>{
 
-        fields.name = local_form.querySelector('#edtNome').value
-        fields.default = local_form.querySelector('#edtDefault').value
-        fields.kind = local_form.querySelector('#cmbKind').value
-        local_data.callback(fields)
+        field.name = local_form.querySelector('#edtNome').value
+        field.default = local_form.querySelector('#edtDefault').value
+        field.kind = local_form.querySelector('#cmbKind').value
+        for (const [key, value] of Object.entries(field.parameters)) {
+            if(!value.length){
+                delete(field.parameters[key])
+            }
+        }
+        newField ? local_data.fields.push(field) : null
+        local_data.callback(local_data.fields)
         closeWindow('new_field_def')
     })
 
     local_form.querySelector('#btndel').addEventListener('click',()=>{
         if(confirm('A remoção deste campo implica na perda de todos os dados referentes nos registros. Deseja continuar?')){
             local_data.fields.splice(local_data.index,1)
-            local_data.callback(fields)
+            local_data.callback(local_data.fields)
             closeWindow('new_field_def')
         }
     })

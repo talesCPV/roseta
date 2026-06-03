@@ -58,6 +58,10 @@ td{
   color: white;
 }
 
+.hide{
+  display: none !important;
+}
+
 .line, .line-center{
   display: flex;
   flex-direction: row;

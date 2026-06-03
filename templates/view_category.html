@@ -31,10 +31,8 @@
         <fieldset>
             <legend>Campos</legend>
             <table id="tblFields"></table>
-<!--            <select id="cmbFields" size="10"></select> -->
-            <button id="btnNewField">Novo Campo</button>
+                <button id="btnNewField">Novo Campo</button>
         </fieldset>
-        <button id="btnSave">Salvar</button>
     </div>
 
 
@@ -64,17 +62,6 @@
         }
     }
 
-    function fillFields(index){
-        const fields = local_form.querySelector('#cmbFields')
-        fields.innerHTML = ''
-        for(let i=0; i<local_data.categories[index].fields.length; i++){
-            const opt = document.createElement('option')
-            opt.innerHTML = local_data.categories[index].fields[i].name
-            opt.value = local_data.categories[index].fields[i].name
-            fields.appendChild(opt)
-        }
-    }
-
     function loadCategory(){
         loadFile('/../files/config/category.json')
         .then( text => {
@@ -95,23 +82,20 @@
         }
     }
 
-    function addField(field){
+    function addField(fields){
+        fillTable(fields,'#tblFields')
         saveFile(local_data.categories,'/../files/config/','category.json')
     }
 
     local_form.querySelector('#btnNewField').addEventListener('click',()=>{
-        const param = new Object            
-            const field = new Object
-                field.name = ''
-                field.default = ''
-                field.kind = 'text'
-                field.parameters = []
-                local_data.categories[index].fields.push(field)     
-            param.index = local_data.categories[index].fields.length-1
+        try{
+            const param = new Object               
+            param.index = -1
             param.fields = local_data.categories[index].fields
             param.callback = addField
+            openHTML('new_field_def',param,[500,0])
 
-        openHTML('new_field_def',param,[500,0])
+        }catch{}
     })
 
     local_form.querySelector('#btnNewCat').addEventListener('click',()=>{
@@ -121,7 +105,7 @@
             if(index <0){
                 const nw = new Object
                 nw.name = name
-                nw.fields = local_data.fields
+                nw.fields = []
                 local_data.categories.push(nw)
                 saveFile(local_data.categories,'/../files/config/','category.json')
                 .then(()=>{

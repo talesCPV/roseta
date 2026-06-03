@@ -97,6 +97,8 @@ document.querySelector('#about-edit-categoria').addEventListener('click',()=>{
 })
 
 document.querySelector('#btn-new-colec').addEventListener('click',()=>{
+    openHTML('new_collection',{},[400,0])
+/*    
     const nome = prompt('Nome da Coleção')
     if(nome!=null){
         const categoria = prompt('Tipo de Coleção:(ex: Obra de Arte, Revista, etc)')
@@ -106,6 +108,7 @@ document.querySelector('#btn-new-colec').addEventListener('click',()=>{
             saveColecao(findColecao(roseta.file))
         }
     }
+*/
 })
 
 document.querySelector('#about-novo-campo').addEventListener('click',()=>{
@@ -118,6 +121,26 @@ document.querySelector('#about-novo-campo').addEventListener('click',()=>{
 })
 
 document.querySelector('#about-fields').addEventListener('click',()=>{
+    const out = new Object
+    
+    const index = findColecao(document.querySelector('.registros').data.file)
+    out.fields = main_data.colecoes[index].fields
+
+    const sel = document.querySelector('#about-fields')
+    const option = sel.options[sel.selectedIndex]
+
+    out.index = main_data.colecoes[index].fields.findIndex(p => p.name == option.value)
+    out.callback = ()=>{
+        saveColecao(main_data.colecoes[index].filename)
+    }
+
+
+    console.log(out)
+
+    openHTML('new_field_def',out,[500,0])
+
+
+/*    
     const sel = document.querySelector('#about-fields')
     const option = sel.options[sel.selectedIndex]        
     const obj = new Object
@@ -126,4 +149,5 @@ document.querySelector('#about-fields').addEventListener('click',()=>{
     if(obj.register != undefined){
         openHTML('new_field',obj,[500,280])
     }
+*/
 })
