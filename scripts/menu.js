@@ -107,11 +107,11 @@ document.querySelector('#about-novo-campo').addEventListener('click',()=>{
     out.index = -1
     out.callback = (field)=>{
         const fd = field[field.length-1]
-        main_data.colecoes[index].addField(fd.name,fd.kind,fd.default)
+        main_data.colecoes[index].addField(fd.name,fd.kind,fd.default,fd.parameters)
         about(main_data.colecoes[index])
         saveColecao(index)
     }
-    openHTML('new_field_def',out,[500,0])
+    openHTML('new_field',out,[500,0])
 })
 
 document.querySelector('#about-fields').addEventListener('click',()=>{
@@ -120,16 +120,20 @@ document.querySelector('#about-fields').addEventListener('click',()=>{
     const option = sel.options[sel.selectedIndex]
 
     const out = new Object
-    out.fields = main_data.colecoes[index].fields
+    out.fields = JSON.parse(JSON.stringify(main_data.colecoes[index].fields))
     out.index = main_data.colecoes[index].fields.findIndex(p => p.name == option.data.name)
     const old_name = option.data.name
     out.callback = (field)=>{
-        const new_name = field[out.index].name
-        main_data.colecoes[index].editField(old_name,new_name,field[out.index].kind,field[out.index].default)
+        const new_name = field.length > out.index ? field[out.index].name : option.data.name
+        if(field.hasOwnProperty("delete")){
+            main_data.colecoes[index].delField(new_name)
+        }else{
+            main_data.colecoes[index].editField(old_name,new_name,field[out.index].kind,field[out.index].default,field[out.index].parameters)
+        }
         about(main_data.colecoes[index])
         saveColecao(index)
     }
 
-    openHTML('new_field_def',out,[500,0])
+    openHTML('new_field',out,[500,0])
 
 })

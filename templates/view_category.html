@@ -93,7 +93,7 @@
             param.index = -1
             param.fields = local_data.categories[index].fields
             param.callback = addField
-            openHTML('new_field_def',param,[500,0])
+            openHTML('new_field',param,[500,0])
 
         }catch{}
     })
@@ -148,7 +148,7 @@
             param.index = local_data.categories[index].fields.findIndex(p => p.name == data.name)
             param.callback = addField
             if(param.index>=0){
-                openHTML('new_field_def',param,[500,0])
+                openHTML('new_field',param,[500,0])
             }
         }
     })

@@ -41,13 +41,12 @@ Roseta.prototype.delField = function(field){
     }
 }
 
-Roseta.prototype.addField = function(field,kind='text',def=''){
-console.log(field,kind,def)    
+Roseta.prototype.addField = function(field,kind='text',def='',parameters={}){
     const fld = new Object
     fld.name = field
     fld.kind = kind
     fld.default = def
-    fld.parameters = new Object
+    fld.parameters = parameters
 
     if(!this.fields.some(obj => obj.name === field)){
         this.fields.push(fld)
@@ -57,11 +56,12 @@ console.log(field,kind,def)
     }
 }
 
-Roseta.prototype.editField = function(old_name,new_name,kind='text',def=''){
+Roseta.prototype.editField = function(old_name,new_name,kind='text',def='',param={}){
     if(old_name === new_name){
         const index = this.fields.findIndex(p => p.name == new_name)
         this.fields[index].kind = kind
         this.fields[index].default = def
+        this.fields[index].parameters = param
     }else{
         const index = this.fields.findIndex(p => p.name == old_name)
         this.fields.splice(index,1)
@@ -69,6 +69,7 @@ Roseta.prototype.editField = function(old_name,new_name,kind='text',def=''){
         fld.name = new_name
         fld.kind = kind
         fld.default = def
+        fld.parameters = param
         this.fields.push(fld)
         for(let i=0; i<this.registers.length; i++){
             this.registers[i][new_name] = this.registers[i][old_name]                
