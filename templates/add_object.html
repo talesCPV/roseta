@@ -1,0 +1,48 @@
+<title>Selecione o Objeto</title>
+<template>
+    <style></style>
+
+    <table id="tblObject"></table>
+
+
+</template>
+<script>
+    const local_form = document.querySelector('#add_object')
+    const local_data = main_data.add_object
+
+    console.log(local_data)
+
+    function start(){
+        fillTable()
+    }
+
+    function fillTable(){
+        const tbl =  local_form.querySelector('#tblObject')
+        tbl.innerHTML = ''
+        for(let i=0; i<local_data.objects.length; i++){
+            const tr = document.createElement('tr')
+            tr.data = local_data.objects[i]
+            tbl.appendChild(tr)
+
+            const td = document.createElement('td')
+            td.innerHTML = local_data.objects[i].name
+            tr.appendChild(td)
+        }
+    }
+
+    local_form.querySelector('#tblObject').addEventListener('click',(e)=>{
+        const data = e.target.tagName=='TD'? e.target.parentNode.data : e.target.tagName=='TR' ? e.target.data : 0
+        if(data){
+            const obj = new Object
+            obj.name = data.name
+            obj.default = ''
+            obj.kind = 'object'
+            local_data.objects[local_data.index].fields.push(obj)
+            local_data.callback(local_data.objects[local_data.index].fields)
+            closeWindow('add_object')
+        }
+    })
+
+    start()
+
+</script>

@@ -83,6 +83,12 @@
             local_form.querySelector('#edtNome').value = field.name
             local_form.querySelector('#edtDefault').value = field.default
             local_form.querySelector('#cmbKind').value = field.kind
+            if(field.kind=='object'){
+                local_form.querySelector('#edtDefault').disabled = 1
+                local_form.querySelector('#cmbKind').disabled = 1
+                local_form.querySelector('fieldset').style.display = 'none'
+            }
+
         }
         loadDefaults()
     }

@@ -5,7 +5,7 @@ document.querySelector('#menu-import-csv').addEventListener('click',()=>{
 })
 
 document.querySelector('#menu-categoria').addEventListener('click',()=>{
-    openHTML('view_category',{},[600,0])
+    openHTML('view_object',{},[600,0])
 })
 
 document.querySelector('#menu-padroes').addEventListener('click',()=>{
