@@ -162,6 +162,9 @@
     const local_data = main_data[local_form.data_name]
     let roseta = []
 
+    console.log(local_data)
+
+
     function start(){
         local_form.querySelector('.window-title').innerHTML = local_data.file
         if(local_data.registers.length){
@@ -273,23 +276,29 @@
             const valor = document.createElement('input')
 
             valor.readOnly = true
-            line.appendChild(valor)
+            line.appendChild(valor)          
             if(kind == 'object'){
                 valor.value = 'object'
                 line.addEventListener('click',()=>{
-                    console.log(reg[field.name])
-                    openHTML('show_collection',reg[field.name],[500,0])
+console.log(1)
+console.log(reg)   
+console.log(field.name)     
+                    openHTML('show_collection',reg[field.name])
                 })
 
             }else{
                 valor.value = reg[field.name]
                 line.addEventListener('click',()=>{
                     const data = new Object
+console.log(2)
+console.log(reg)   
+console.log(field.name)
                         data.value = reg[field.name]
-                        data.field = field
+                        data.field = JSON.parse(JSON.stringify(field))
                         data.callback = (value)=>{
+                           
                             valor.value = value
-                            reg[field.name] = value
+                            reg[field.name] = value                            
                             saveColecao(findColecao(local_data.file))
                         }
                     openHTML('edit_field',data,[500,0])

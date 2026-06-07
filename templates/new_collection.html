@@ -40,8 +40,6 @@
     const forms = document.querySelectorAll(`#new_collection`)
     const local_form = forms[forms.length-1]
     const local_data = main_data[local_form.data_name]
-//    const local_form = document.querySelector('#new_collection')
-//    const local_data = main_data.new_collection
 
     function start(){
         loadDefaults()
@@ -60,11 +58,11 @@
                     return out
                 }
 
-                const defaults = JSON.parse(text)
+                local_data.objects = JSON.parse(text)
                 const cmb = local_form.querySelector('#cmbCat')
                 cmb.innerHTML = ''
-                for(let i=0; i<defaults.length; i++){
-                    cmb.appendChild(opt(defaults[i].name,defaults[i].fields))
+                for(let i=0; i<local_data.objects.length; i++){
+                    cmb.appendChild(opt(local_data.objects[i].name,local_data.objects[i].fields))
                 }
                 cmb.appendChild(opt('Nova Categoria'))
 
@@ -90,7 +88,18 @@
             const categoria = sel.value=='Nova Categoria' ? local_form.querySelector('#edtNewCat').value : sel.value
             if(categoria!=null){
                 const roseta = new Roseta(nome,categoria)
-                roseta.editCollection('fields',sel.options[sel.selectedIndex].fields)
+                const fields = sel.options[sel.selectedIndex].fields
+                for(let i=0; i<fields.length; i++){
+                    if(fields[i].kind == 'object'){
+                        const index = local_data.objects.findIndex(p => p.name == fields[i].name)
+                        console.log(local_data)
+                        fields[i].default = JSON.parse(JSON.stringify(local_data.objects[index]))
+                        fields[i].default.kind = 'object'
+                        fields[i].default.file = nome+'.rst'
+                        fields[i].default.registers = []
+                    }
+                }
+                roseta.editCollection('fields',fields)
                 addColecao(roseta)
                 saveColecao(findColecao(roseta.file))
                 closeWindow('new_collection')

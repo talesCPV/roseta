@@ -1,1 +1,0 @@
-{"name":"xx","file":"xx.rst","categoria":"Obra de Arte","fields":[{"name":"Autor","default":"[não identificado]","kind":"text","parameters":{"Schema.org":"name","Dublin Core":"name"}}],"registers":[{"Autor":"Tales"},{"Autor":"[não identificado]"},{"Autor":"[não identificado]"}]}

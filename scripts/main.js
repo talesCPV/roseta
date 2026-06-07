@@ -93,7 +93,7 @@ Roseta.prototype.newRecord = function(record){
     this.registers.push(reg)
 }
 
-Roseta.prototype.editCollection = function(field,value){
+Roseta.prototype.editCollection = function(field,value){    
     this[field] = value
 }
 
