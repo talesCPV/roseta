@@ -123,12 +123,7 @@
                 height: 100%;
             }
             .rigth{width: 100%;}
-/*
-            .slideshow, .slideshow img{
-                position: unset;
-                height: unset;
-            }
-*/
+
         }
 
 
@@ -157,12 +152,10 @@
 </template>
 <script>
 
-    const forms = document.querySelectorAll(`#show_collection`)
+    const forms = document.querySelectorAll(`#view_collection`)
     const local_form = forms[forms.length-1]
     const local_data = main_data[local_form.data_name]
     let roseta = []
-
-    console.log(local_data)
 
 
     function start(){
@@ -255,17 +248,12 @@
             i==0 ? img.classList.add('active') : null
             show.appendChild(img)
         }
-/*
-        try{
-            img = reg['Categorias,URL de Origem'].split(':')
-            local_form.querySelector('#reg-img').src = img.length>2 ? img[1]+':'+img[2] : ''
-        }catch{null}
-*/
+
         const panel = local_form.querySelector('.rigth')
         panel.innerHTML = ''
         const record = []
         for(let i=0; i<local_data.fields.length; i++){
-            const field = local_data.fields[i]
+            const field = JSON.parse(JSON.stringify(local_data.fields[i]))
             const kind = field.kind
             const line = document.createElement('div')
             line.className = 'line'
@@ -281,16 +269,20 @@
             if(kind == 'object'){
                 valor.value = 'object'
                 line.addEventListener('click',()=>{
+console.log(local_data)
+console.log(index)
 console.log(1)
 console.log(reg)   
 console.log(field.name)     
-                    openHTML('show_collection',reg[field.name])
+                    openHTML('view_collection',reg[field.name])
                 })
 
             }else{
                 valor.value = reg[field.name]
                 line.addEventListener('click',()=>{
                     const data = new Object
+console.log(local_data)
+console.log(index)
 console.log(2)
 console.log(reg)   
 console.log(field.name)

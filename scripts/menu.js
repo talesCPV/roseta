@@ -28,7 +28,7 @@ document.querySelector('#cmb-colecoes').addEventListener('click',()=>{
 document.querySelector('#about-show').addEventListener('click',()=>{
     const roseta = document.querySelector('.registros').data
     if(roseta != undefined){
-        openHTML('show_collection',roseta)
+        openHTML('view_collection',roseta)
     }
 })
 
