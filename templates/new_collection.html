@@ -37,9 +37,11 @@
 
 </template>
 <script>
-
-    const local_form = document.querySelector('#new_collection')
-    const local_data = main_data.new_collection
+    const forms = document.querySelectorAll(`#new_collection`)
+    const local_form = forms[forms.length-1]
+    const local_data = main_data[local_form.data_name]
+//    const local_form = document.querySelector('#new_collection')
+//    const local_data = main_data.new_collection
 
     function start(){
         loadDefaults()
@@ -79,7 +81,6 @@
         }else{
             local_form.querySelector('#newCat').classList.add('hide')
         }
-
     })
 
     local_form.querySelector('#btnNew').addEventListener('click',()=>{

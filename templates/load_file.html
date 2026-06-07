@@ -9,9 +9,11 @@
 
 </template>
 <script>
-
-    const local_form = document.querySelector('#load_file')
-    const local_data = main_data.load_file
+    const forms = document.querySelectorAll(`#load_file`)
+    const local_form = forms[forms.length-1]
+    const local_data = main_data[local_form.data_name]
+//    const local_form = document.querySelector('#load_file')
+//    const local_data = main_data.load_file
 
     function start(){
         try{

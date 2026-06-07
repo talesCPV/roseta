@@ -7,8 +7,12 @@
 
 </template>
 <script>
-    const local_form = document.querySelector('#add_object')
-    const local_data = main_data.add_object
+
+    const forms = document.querySelectorAll(`#add_object`)
+    const local_form = forms[forms.length-1]
+    const local_data = main_data[local_form.data_name]
+//    const local_form = document.querySelector('#add_object')
+//    const local_data = main_data.add_object
 
     console.log(local_data)
 
@@ -35,7 +39,9 @@
         if(data){
             const obj = new Object
             obj.name = data.name
-            obj.default = ''
+            obj.default = JSON.parse(JSON.stringify(data))
+            obj.default.registers = []
+            obj.default.file = data.name
             obj.kind = 'object'
             local_data.objects[local_data.index].fields.push(obj)
             local_data.callback(local_data.objects[local_data.index].fields)

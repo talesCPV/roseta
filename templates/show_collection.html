@@ -157,15 +157,15 @@
 </template>
 <script>
 
-//    const localScreen = document.querySelector('#impost_csv')
-    const local_form = document.querySelector('#show_collection')
-    const collection = main_data.show_collection
+    const forms = document.querySelectorAll(`#show_collection`)
+    const local_form = forms[forms.length-1]
+    const local_data = main_data[local_form.data_name]
     let roseta = []
 
     function start(){
-        document.querySelector('.window-title').innerHTML = collection.file
-        if(collection.registers.length){
-            document.querySelector('#edt-goto').value = 0
+        local_form.querySelector('.window-title').innerHTML = local_data.file
+        if(local_data.registers.length){
+            local_form.querySelector('#edt-goto').value = 0
             loadRegister(0)
         }
     }
@@ -176,32 +176,34 @@
         out.img = []
         out.url = []
         for (const [key, value] of Object.entries(reg)) {
-            let isImg = 0
-            if(value.includes('http')){
-                vl = value.split('http')
-                vl = 'http'+vl[vl.length-1]
+            try{
+                let isImg = 0
+                if(value.includes('http')){
+                    vl = value.split('http')
+                    vl = 'http'+vl[vl.length-1]
 
-                let i=vl.length-1
-                let ext = ''
-                while(i>0 && vl[i]!='/'){
-                    if(vl[i]=='.' && ext.length){
-                        isImg = ['png','jpg','jpeg','gif','bmp','svg'].includes(ext)
-                        i=0
-                    }else{
-                        ext = vl[i] + ext
+                    let i=vl.length-1
+                    let ext = ''
+                    while(i>0 && vl[i]!='/'){
+                        if(vl[i]=='.' && ext.length){
+                            isImg = ['png','jpg','jpeg','gif','bmp','svg'].includes(ext)
+                            i=0
+                        }else{
+                            ext = vl[i] + ext
+                        }
+                        i--
                     }
-                    i--
+                    isImg ? /*out.img.includes(vl)?null:*/out.img.push(vl) : out.url.push(vl)
+                    obj[key] = vl
                 }
-                isImg ? /*out.img.includes(vl)?null:*/out.img.push(vl) : out.url.push(vl)
-                obj[key] = vl
-            }
+            }catch{}
         }
         return out
     }
 
     function editRegister(index,field,value){
-        collection.editRegister(index,field,value)
-        saveColecao(findColecao(collection.file))
+        local_data.editRegister(index,field,value)
+        saveColecao(findColecao(local_data.file))
     }
 
     function loadRegister(index){
@@ -220,9 +222,9 @@
 
         local_form.querySelector('#edt-goto').value = index
 
-        reg = collection.registers[index]
+        reg = local_data.registers[index]
         const url = getURL(reg)
-        const left_panel = document.querySelector('.left')
+        const left_panel = local_form.querySelector('.left')
         left_panel.innerHTML = ''
         const show = document.createElement('div')
         show.className = 'slideshow'
@@ -253,15 +255,14 @@
 
         try{
             img = reg['Categorias,URL de Origem'].split(':')
-            document.querySelector('#reg-img').src = img.length>2 ? img[1]+':'+img[2] : ''
+            local_form.querySelector('#reg-img').src = img.length>2 ? img[1]+':'+img[2] : ''
         }catch{null}
-        const panel = document.querySelector('.rigth')
+        const panel = local_form.querySelector('.rigth')
         panel.innerHTML = ''
         const record = []
-        for(let i=0; i<collection.fields.length; i++){
-            const field = collection.fields[i]
+        for(let i=0; i<local_data.fields.length; i++){
+            const field = local_data.fields[i]
             const kind = field.kind
-console.log(kind)            
             const line = document.createElement('div')
             line.className = 'line'
             panel.appendChild(line)
@@ -276,7 +277,8 @@ console.log(kind)
             if(kind == 'object'){
                 valor.value = 'object'
                 line.addEventListener('click',()=>{
-                    openHTML('show_collection',{},[500,0])
+                    console.log(reg[field.name])
+                    openHTML('show_collection',reg[field.name],[500,0])
                 })
 
             }else{
@@ -288,7 +290,7 @@ console.log(kind)
                         data.callback = (value)=>{
                             valor.value = value
                             reg[field.name] = value
-                            saveColecao(findColecao(collection.file))
+                            saveColecao(findColecao(local_data.file))
                         }
                     openHTML('edit_field',data,[500,0])
                 })
@@ -334,7 +336,7 @@ console.log(kind)
     }
 
     local_form.querySelector('#edt-goto').addEventListener('change',(e)=>{
-        const index = (local_form.querySelector('#edt-goto').value>collection.registers.length-1) ? collection.registers.length-1 : document.querySelector('#edt-goto').value
+        const index = (local_form.querySelector('#edt-goto').value>local_data.registers.length-1) ? local_data.registers.length-1 : local_form.querySelector('#edt-goto').value
         local_form.querySelector('#edt-goto').value = index
         loadRegister(index)
     })
@@ -360,22 +362,23 @@ console.log(kind)
     local_form.querySelector('#btn-add').addEventListener('click',()=>{
 
         const reg = new Object
-        for(let i=0; i<collection.fields.length; i++){
-            reg[collection.fields[i].name] = collection.fields[i].default
+        for(let i=0; i<local_data.fields.length; i++){
+            reg[local_data.fields[i].name] = local_data.fields[i].default
         }
-        collection.registers.push(reg)
-        loadRegister(collection.registers.length-1)
-        const index = findColecao(collection)
+        local_data.registers.push(reg)
+        loadRegister(local_data.registers.length-1)
+        const index = findColecao(local_data)
         if(index>=0){
             editColecao(index,'registers',main_data.colecoes[index].registers)
         }
+        saveColecao(findColecao(local_data.file))
     })
 
     local_form.querySelector('#btn-del').addEventListener('click',()=>{
         if(confirm('A remoção deste registro implica na perda de todos os dados relativos a ele. Deseja cotinuar?')){
             const index = Number(local_form.querySelector('#edt-goto').value)
-            collection.registers.splice(index,1)
-            saveColecao(findColecao(collection.file))
+            local_data.registers.splice(index,1)
+            saveColecao(findColecao(local_data.file))
             try{
                 loadRegister(index)
             }catch{

@@ -62,9 +62,11 @@
 
 </template>
 <script>
-
-    const local_form = document.querySelector('#new_field')
-    const local_data = main_data.new_field
+    const forms = document.querySelectorAll(`#new_field`)
+    const local_form = forms[forms.length-1]
+    const local_data = main_data[local_form.data_name]
+//    const local_form = document.querySelector('#new_field')
+//    const local_data = main_data.new_field
     let field
     const newField = local_data.index < 0
 

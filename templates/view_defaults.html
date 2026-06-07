@@ -11,9 +11,11 @@
 
 </template>
 <script>
-    
-    const local_form = document.querySelector('#view_defaults')
-    const local_data = main_data.view_defaults
+    const forms = document.querySelectorAll(`#view_defaults`)
+    const local_form = forms[forms.length-1]
+    const local_data = main_data[local_form.data_name]
+//    const local_form = document.querySelector('#view_defaults')
+//    const local_data = main_data.view_defaults
     local_data.newDefault = local_data.data == null
     local_data.defaults = []
     let index = -1

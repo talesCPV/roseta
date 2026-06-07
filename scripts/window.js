@@ -12,20 +12,24 @@ function openHTML(template,data={},dimension=[-1,-1]){
 }
 
 function closeWindow(id){
-    document.querySelector(`#${id}`).remove()
-    delete(main_data[id])
+    const forms = document.querySelectorAll(`#${id}`)
+    const index = forms.length-1
+    delete(main_data[`${id}-${index}`])
+    forms[index].remove()
 }
 
 function newWindow(id,ttl,body,script,data={},dimension){
     try{
         const area = document.querySelector('.window-area')
-    
-        main_data[id] = data
+        const index = document.querySelectorAll(`#${id}`).length
     
         const wd =  document.createElement('div')
         wd.className = 'window'
         wd.id = id
-    
+        wd.data_name = `${id}-${index}`
+
+        main_data[`${id}-${index}`] = data
+
         const form = document.createElement('div')
         form.className = 'window-form'
         if(dimension[0] >=0 && dimension[1]>=0){
