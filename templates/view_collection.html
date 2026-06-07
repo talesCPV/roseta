@@ -143,8 +143,16 @@
         </div>
 
         <div class="register">
-            <div class="left"></div>
-            <div class="rigth"></div>
+            <div class="left">
+                <div class="slideshow"></div>
+                <div class="slide-control">
+                    <div class="btn-round" id="btn-left"><span class="mdi mdi-arrow-left-bold-circle"></span></div>
+                    <div class="btn-round" id="btn-right"><span class="mdi mdi-arrow-right-bold-circle"></span></div>
+                </div>
+            </div>
+            <div class="rigth">
+                <table id="tblRegisters"></table>
+            </div>
         </div>
     </div>
 
@@ -215,11 +223,46 @@
                 }
             }
         }
+/*
+        function setLine(obj){
+            const row = document.createElement('tr')
+            row.data = obj
 
+            const label = document.createElement('th')
+            label.innerHTML = obj.name
+            row.appendChild(label)
+
+            const text = document.createElement('td')
+            text.innerHTML = obj.value
+            row.appendChild(text)
+
+            return row
+        }
+*/
         local_form.querySelector('#edt-goto').value = index
 
         reg = local_data.registers[index]
+        console.log(reg)
         const url = getURL(reg)
+        const tbl = local_form.querySelector('#tblRegisters')
+        tbl.innerHTML = ''
+
+        for (const [key, value] of Object.entries(reg)) {
+
+            const row = document.createElement('tr')
+            row.data = key
+
+            const label = document.createElement('th')
+            label.innerHTML = key
+            row.appendChild(label)
+
+            const text = document.createElement('td')
+            text.innerHTML = value
+            row.appendChild(text)
+
+            tbl.appendChild(row)
+        }
+/*        
         const left_panel = local_form.querySelector('.left')
         left_panel.innerHTML = ''
         const show = document.createElement('div')
@@ -241,20 +284,29 @@
         rgt.addEventListener('click',()=>{slide(1)})
         control.appendChild(rgt)
         left_panel.appendChild(control)
-
+*/
         for(let i=0; i<url.img.length; i++){
             const img = document.createElement('img')
             img.src = url.img[i]
             i==0 ? img.classList.add('active') : null
             show.appendChild(img)
         }
-
+/*
         const panel = local_form.querySelector('.rigth')
         panel.innerHTML = ''
+*/
         const record = []
         for(let i=0; i<local_data.fields.length; i++){
+
             const field = JSON.parse(JSON.stringify(local_data.fields[i]))
-            const kind = field.kind
+//            console.log(field)
+//            console.log(reg[field.name])
+
+            const line = new Object
+
+
+
+/*            const kind = field.kind
             const line = document.createElement('div')
             line.className = 'line'
             panel.appendChild(line)
@@ -299,7 +351,7 @@ console.log(field.name)
             }
 
 
-
+*/
         }
     }
 
