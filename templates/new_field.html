@@ -31,10 +31,9 @@
             <label for="edtNome">Nome:</label>
             <input type="text" id="edtNome">
         </div>
-        <div class="line">
+        <div class="line valor">
             <label for="edtDefault">Valor:</label>
             <textarea id="edtDefault" rows="5"></textarea>
-
         </div>
         <div class="line">
             <label for="cmbKind">Tipo:</label>
@@ -81,12 +80,18 @@
             field = local_data.fields[local_data.index]
             field.parameters = field.parameters==undefined ? new Object : field.parameters
             local_form.querySelector('#edtNome').value = field.name
-            local_form.querySelector('#edtDefault').value = field.default
-            local_form.querySelector('#cmbKind').value = field.kind
             if(field.kind=='object'){
-                local_form.querySelector('#edtDefault').disabled = 1
+                local_form.querySelector('.window-title').innerHTML = 'Remover Objeto'
+                local_form.querySelector('#edtNome').disabled = 1
+                local_form.querySelector('#btnAdd').disabled = 1
+                local_form.querySelector('.valor').classList.add('hide')
                 local_form.querySelector('#cmbKind').disabled = 1
-                local_form.querySelector('fieldset').style.display = 'none'
+                local_form.querySelector('fieldset').classList.add('hide')
+                local_form.querySelector('#cmbKind').innerHTML = '<option>Objeto</option>'
+            }else{
+                local_form.querySelector('#edtDefault').value = field.default
+                local_form.querySelector('#cmbKind').value = field.kind
+                local_form.querySelector('.window-title').innerHTML = 'Editar Campo'
             }
 
         }

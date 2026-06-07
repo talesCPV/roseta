@@ -260,6 +260,8 @@
         const record = []
         for(let i=0; i<collection.fields.length; i++){
             const field = collection.fields[i]
+            const kind = field.kind
+console.log(kind)            
             const line = document.createElement('div')
             line.className = 'line'
             panel.appendChild(line)
@@ -268,20 +270,31 @@
             line.appendChild(label)
 
             const valor = document.createElement('input')
-            valor.value = reg[field.name]
+
             valor.readOnly = true
             line.appendChild(valor)
-            line.addEventListener('click',()=>{
-                const data = new Object
-                    data.value = reg[field.name]
-                    data.field = field
-                    data.callback = (value)=>{
-                        valor.value = value
-                        reg[field.name] = value
-                        saveColecao(findColecao(collection.file))
-                    }
-                openHTML('edit_field',data,[500,0])
-            })
+            if(kind == 'object'){
+                valor.value = 'object'
+                line.addEventListener('click',()=>{
+                    openHTML('show_collection',{},[500,0])
+                })
+
+            }else{
+                valor.value = reg[field.name]
+                line.addEventListener('click',()=>{
+                    const data = new Object
+                        data.value = reg[field.name]
+                        data.field = field
+                        data.callback = (value)=>{
+                            valor.value = value
+                            reg[field.name] = value
+                            saveColecao(findColecao(collection.file))
+                        }
+                    openHTML('edit_field',data,[500,0])
+                })
+            }
+
+
 
         }
     }
