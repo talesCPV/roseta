@@ -92,10 +92,10 @@
                 for(let i=0; i<fields.length; i++){
                     if(fields[i].kind == 'object'){
                         const index = local_data.objects.findIndex(p => p.name == fields[i].name)
-                        console.log(local_data)
                         fields[i].default = JSON.parse(JSON.stringify(local_data.objects[index]))
                         fields[i].default.kind = 'object'
                         fields[i].default.file = nome+'.rst'
+                        fields[i].default.categoria = local_data.objects[index].name
                         fields[i].default.registers = []
                     }
                 }

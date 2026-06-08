@@ -146,8 +146,8 @@
             <div class="left">
                 <div class="slideshow"></div>
                 <div class="slide-control">
-                    <div class="btn-round" id="btn-left"><span class="mdi mdi-arrow-left-bold-circle"></span></div>
-                    <div class="btn-round" id="btn-right"><span class="mdi mdi-arrow-right-bold-circle"></span></div>
+                    <div class="btn-round" id="btn-img-left" ><span class="mdi mdi-arrow-left-bold-circle"></span></div>
+                    <div class="btn-round" id="btn-img-right"><span class="mdi mdi-arrow-right-bold-circle"></span></div>
                 </div>
             </div>
             <div class="rigth">
@@ -163,254 +163,108 @@
     const forms = document.querySelectorAll(`#view_collection`)
     const local_form = forms[forms.length-1]
     const local_data = main_data[local_form.data_name]
-    let roseta = []
+    let index = 0
 
-
-    function start(){
-        local_form.querySelector('.window-title').innerHTML = local_data.file
-        if(local_data.registers.length){
-            local_form.querySelector('#edt-goto').value = 0
-            loadRegister(0)
-        }
-    }
-
-    function getURL(obj){
-
-        const out = new Object
-        out.img = []
-        out.url = []
-        for (const [key, value] of Object.entries(reg)) {
-            try{
-                let isImg = 0
-                if(value.includes('http')){
-                    vl = value.split('http')
-                    vl = 'http'+vl[vl.length-1]
-
-                    let i=vl.length-1
-                    let ext = ''
-                    while(i>0 && vl[i]!='/'){
-                        if(vl[i]=='.' && ext.length){
-                            isImg = ['png','jpg','jpeg','gif','bmp','svg'].includes(ext)
-                            i=0
-                        }else{
-                            ext = vl[i] + ext
-                        }
-                        i--
-                    }
-                    isImg ? /*out.img.includes(vl)?null:*/out.img.push(vl) : out.url.push(vl)
-                    obj[key] = vl
-                }
-            }catch{}
-        }
-        return out
-    }
-
-    function editRegister(index,field,value){
-        local_data.editRegister(index,field,value)
+    function save(){
         saveColecao(findColecao(local_data.file))
     }
 
-    function loadRegister(index){
+    function start(){
+        local_form.querySelector('.window-title').innerHTML = local_data.categoria + ' - '+ local_data.file
+        goto(index,1)
+    }
 
-        function slide(side=1){
-            const imgs =  show.querySelectorAll('img')
-            for(let i=0; i<imgs.length; i++){
-                if(imgs[i].classList.contains('active')){
-                    index = side ?(i==imgs.length-1 ? 0 : i+1) : (i==0 ? imgs.length-1 : i-1)
-                    imgs[i].classList.remove('active')
-                    imgs[index].classList.add('active')
-                    i=imgs.length
-                }
+    function goto(indice=1,go=0){
+        if(local_data.registers.length){
+            indice = go ? indice : Number(local_form.querySelector('#edt-goto').value) + indice
+            indice = indice > local_data.registers.length-1 ? local_data.registers.length -1 : (indice<0 ? 0 : indice)
+            local_form.querySelector('#edt-goto').value = indice
+            index = Number(local_form.querySelector('#edt-goto').value)
+            loadRegister()
+            local_form.querySelector('.left').classList.remove('hide')
+        }else{
+            local_form.querySelector('#edt-goto').value = ''
+            local_form.querySelector('#tblRegisters').innerHTML = ''
+            local_form.querySelector('.left').classList.add('hide')
+        }
+    }
+
+    function slide(side=1){
+        const imgs =  local_form.querySelector('.slideshow').querySelectorAll('img')
+        for(let i=0; i<imgs.length; i++){
+            if(imgs[i].classList.contains('active')){
+                index = side ?(i==imgs.length-1 ? 0 : i+1) : (i==0 ? imgs.length-1 : i-1)
+                imgs[i].classList.remove('active')
+                imgs[index].classList.add('active')
+                i=imgs.length
             }
         }
-/*
-        function setLine(obj){
-            const row = document.createElement('tr')
-            row.data = obj
+    }
 
-            const label = document.createElement('th')
-            label.innerHTML = obj.name
-            row.appendChild(label)
+    function getURL(value){
+        out = new Object
+        out.isImg = 0
+        out.isURL = 0
+        out.url = ''
+        try{
+            if(value.includes('http')){
+                out.isURL = 1
+                out.url = value.split('http')
+                out.url = 'http'+out.url[out.url.length-1]
 
-            const text = document.createElement('td')
-            text.innerHTML = obj.value
-            row.appendChild(text)
+                let i=out.url.length-1
+                let ext = ''
+                while(i>0 && out.url[i]!='/'){
+                    if(out.url[i]=='.' && ext.length){
+                        out.isImg = ['png','jpg','jpeg','gif','bmp','svg'].includes(ext)
+                        i=0
+                    }else{
+                        ext = out.url[i] + ext
+                    }
+                    i--
+                }              
+            }
+        }catch{}
+        return out
+    }
 
-            return row
-        }
-*/
-        local_form.querySelector('#edt-goto').value = index
-
-        reg = local_data.registers[index]
-        console.log(reg)
-        const url = getURL(reg)
+    function loadRegister(){
+        const reg = local_data.registers[index]
         const tbl = local_form.querySelector('#tblRegisters')
         tbl.innerHTML = ''
-
+        const imgs = local_form.querySelector('.slideshow')
+        imgs.innerHTML = ''
         for (const [key, value] of Object.entries(reg)) {
-
             const row = document.createElement('tr')
             row.data = key
-
             const label = document.createElement('th')
             label.innerHTML = key
             row.appendChild(label)
-
             const text = document.createElement('td')
             text.innerHTML = value
             row.appendChild(text)
-
             tbl.appendChild(row)
-        }
-/*        
-        const left_panel = local_form.querySelector('.left')
-        left_panel.innerHTML = ''
-        const show = document.createElement('div')
-        show.className = 'slideshow'
-        left_panel.appendChild(show)
-
-        const control = document.createElement('div')
-        control.className = 'slide-control'
-
-        const lft = document.createElement('div')
-        lft.className = 'btn-round'
-        lft.innerHTML = '<span class="mdi mdi-arrow-left-bold-circle">'
-        lft.addEventListener('click',()=>{slide(0)})
-        control.appendChild(lft)
-
-        const rgt = document.createElement('div')
-        rgt.className = 'btn-round'
-        rgt.innerHTML = '<span class="mdi mdi-arrow-right-bold-circle">'
-        rgt.addEventListener('click',()=>{slide(1)})
-        control.appendChild(rgt)
-        left_panel.appendChild(control)
-*/
-        for(let i=0; i<url.img.length; i++){
-            const img = document.createElement('img')
-            img.src = url.img[i]
-            i==0 ? img.classList.add('active') : null
-            show.appendChild(img)
-        }
-/*
-        const panel = local_form.querySelector('.rigth')
-        panel.innerHTML = ''
-*/
-        const record = []
-        for(let i=0; i<local_data.fields.length; i++){
-
-            const field = JSON.parse(JSON.stringify(local_data.fields[i]))
-//            console.log(field)
-//            console.log(reg[field.name])
-
-            const line = new Object
-
-
-
-/*            const kind = field.kind
-            const line = document.createElement('div')
-            line.className = 'line'
-            panel.appendChild(line)
-            const label = document.createElement('label')
-            label.innerHTML =  field.name
-            line.appendChild(label)
-
-            const valor = document.createElement('input')
-
-            valor.readOnly = true
-            line.appendChild(valor)          
-            if(kind == 'object'){
-                valor.value = 'object'
-                line.addEventListener('click',()=>{
-console.log(local_data)
-console.log(index)
-console.log(1)
-console.log(reg)   
-console.log(field.name)     
-                    openHTML('view_collection',reg[field.name])
-                })
-
-            }else{
-                valor.value = reg[field.name]
-                line.addEventListener('click',()=>{
-                    const data = new Object
-console.log(local_data)
-console.log(index)
-console.log(2)
-console.log(reg)   
-console.log(field.name)
-                        data.value = reg[field.name]
-                        data.field = JSON.parse(JSON.stringify(field))
-                        data.callback = (value)=>{
-                           
-                            valor.value = value
-                            reg[field.name] = value                            
-                            saveColecao(findColecao(local_data.file))
-                        }
-                    openHTML('edit_field',data,[500,0])
-                })
+            const url = getURL(value)
+            if(url.isImg){
+                const img = document.createElement('img')
+                img.src = url.url
+                imgs.querySelectorAll('img').length? null : img.classList.add('active')
+                imgs.appendChild(img)
             }
 
-
-*/
         }
-    }
-
-    function fragmenta(line,sep){
-        line = line.replaceAll(', ', '*|**|*')
-        const arr = line.split(sep)
-        for(let i=0; i<arr.length; i++){
-            arr[i] = arr[i].replaceAll('*|**|*', ', ')
-        }
-        return arr
-    }
-
-    function makeJSON(txt){
-        const lines = txt.split('\n')        
-        const head = lines[0].split('|')
-        function newJSON(){
-            const out = new Object
-            for(let i=0; i<head.length; i++){
-                out[head[i]] = ''
-            }
-            return out
-        }
-
-    registers = []
-        for(let i=1; i<lines.length; i++){
-            const obj = newJSON()
-            const line = fragmenta(lines[i],',')
-            for(let i=0; i<line.length; i++){
-                obj[head[i]] = line[i]
-            }
-            registers.push(obj)
-        }
-        try{
-            loadRegister(0)
-        }catch{null}
     }
 
     local_form.querySelector('#edt-goto').addEventListener('change',(e)=>{
-        const index = (local_form.querySelector('#edt-goto').value>local_data.registers.length-1) ? local_data.registers.length-1 : local_form.querySelector('#edt-goto').value
-        local_form.querySelector('#edt-goto').value = index
-        loadRegister(index)
+        goto(Number(local_form.querySelector('#edt-goto').value),1)
     })
 
     local_form.querySelector('#btn-left').addEventListener('click',()=>{
-        try{
-            local_form.querySelector('#edt-goto').value--
-            const index = local_form.querySelector('#edt-goto').value
-            loadRegister(index)
-        }catch{
-            local_form.querySelector('#edt-goto').value++
-        }
+        goto(-1)
     })
 
     local_form.querySelector('#btn-right').addEventListener('click',()=>{
-        local_form.querySelector('#edt-goto').value++
-        try{
-            const index = Number(local_form.querySelector('#edt-goto').value)
-            loadRegister(index)
-        }catch{local_form.querySelector('#edt-goto').value--}
+        goto()
     })
 
     local_form.querySelector('#btn-add').addEventListener('click',()=>{
@@ -420,31 +274,45 @@ console.log(field.name)
             reg[local_data.fields[i].name] = local_data.fields[i].default
         }
         local_data.registers.push(reg)
-        loadRegister(local_data.registers.length-1)
-        const index = findColecao(local_data)
-        if(index>=0){
-            editColecao(index,'registers',main_data.colecoes[index].registers)
-        }
-        saveColecao(findColecao(local_data.file))
+        index = local_data.registers.length-1
+        goto(index,1)
     })
 
     local_form.querySelector('#btn-del').addEventListener('click',()=>{
         if(confirm('A remoção deste registro implica na perda de todos os dados relativos a ele. Deseja cotinuar?')){
-            const index = Number(local_form.querySelector('#edt-goto').value)
             local_data.registers.splice(index,1)
-            saveColecao(findColecao(local_data.file))
-            try{
-                loadRegister(index)
-            }catch{
-                try{
-                    loadRegister(index-1)
-                }catch{
-                    local_form.querySelector('.left').innerHTML = ''
-                    local_form.querySelector('.rigth').innerHTML = ''
-                    local_form.querySelector('#edt-goto').value = 0
-                }
-            }
+            save()
+            goto(index,1)
         }
+    })
+
+    local_form.querySelector('#btn-img-left').addEventListener('click',()=>{
+        slide(0)
+    })
+
+    local_form.querySelector('#btn-img-right    ').addEventListener('click',()=>{
+        slide(1)
+    })
+
+    local_form.querySelector('#tblRegisters').addEventListener('click',(e)=>{
+        const target = ['TD','TH'].includes(e.target.tagName) ? e.target.parentNode : e.target.tagName=='TR' ? e.target : null
+        const data = target.data
+        const obj = new Object
+        obj.field = local_data.fields[local_data.fields.findIndex(p => p.name == target.data)]
+        obj.value = local_data.registers[index][target.data]
+        obj.file = local_data.file
+        obj.callback = (value)=>{
+            target.querySelector('td').innerHTML = value
+            local_data.registers[index][target.data] = value
+            save()
+        }
+
+        if(obj.field.kind=='object'){
+            openHTML('view_collection',local_data.registers[index][target.data])
+        }else{
+            openHTML('edit_field',obj,[500,0])
+        }
+
     })
 
     start()
