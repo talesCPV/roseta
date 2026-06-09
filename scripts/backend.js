@@ -110,7 +110,10 @@ function loadUserFiles(user_id){
     async function addRegisters(json){
         let i=2
         while(i<json.length){
-            await fetch(`files/${user_id}/${json[i]}`)
+            await fetch(`files/${user_id}/${json[i]}`, 
+                {
+                    cache: 'no-store'
+                })
             .then( stream =>stream.text())
             .then( text => {
                 const obj = new Roseta
