@@ -48,10 +48,29 @@ Roseta.prototype.addField = function(field,kind='text',def='',parameters={}){
     fld.default = def
     fld.parameters = parameters
 
-    if(!this.fields.some(obj => obj.name === field)){
+    if(!this.fields.some(obj => obj.name === fld.name)){
         this.fields.push(fld)
         for(let i=0; i<this.registers.length; i++){
-            this.registers[i][fld.name] = def
+            this.registers[i][fld.name] = fld.default
+        }
+    }
+}
+
+Roseta.prototype.addObject = function(obj){
+    const fld = new Object
+    fld.name = obj.name
+    fld.kind = 'object'
+    fld.default = new Object
+    fld.default.name = obj.name
+    fld.default.file = this.file
+    fld.default.categoria = obj.name
+    fld.default.fields = obj.fields
+    fld.default.registers = []
+
+    if(!this.fields.some(reg => reg.name === fld.name)){
+        this.fields.push(fld)
+        for(let i=0; i<this.registers.length; i++){
+            this.registers[i][fld.name] = fld.default
         }
     }
 }

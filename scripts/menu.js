@@ -118,8 +118,8 @@ document.querySelector('#about-novo-objeto').addEventListener('click',()=>{
     const out = new Object
     out.callback = (obj)=>{
         const index = findColecao(document.querySelector('.registros').data.file)
-        main_data.colecoes[index].addField(obj.name,'object',obj.fields)
-        
+        console.log(obj)
+        main_data.colecoes[index].addObject(obj)
         about(main_data.colecoes[index])
         saveColecao(index)
     }
