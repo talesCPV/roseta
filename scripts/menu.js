@@ -126,11 +126,14 @@ document.querySelector('#about-fields').addEventListener('click',()=>{
     const old_name = option.data.name
     out.callback = (field)=>{
         const new_name = field.length > out.index ? field[out.index].name : option.data.name
+/*
         if(field.hasOwnProperty("delete")){
             main_data.colecoes[index].delField(new_name)
         }else{
             main_data.colecoes[index].editField(old_name,new_name,field[out.index].kind,field[out.index].default,field[out.index].parameters)
         }
+*/
+        main_data.colecoes[index].editField(old_name,new_name,field[out.index].kind,field[out.index].default,field[out.index].parameters)
         about(main_data.colecoes[index])
         saveColecao(index)
     }

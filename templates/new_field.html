@@ -156,8 +156,8 @@
 
     local_form.querySelector('#btndel').addEventListener('click',()=>{
         if(confirm('A remoção deste campo implica na perda de todos os dados referentes nos registros. Deseja continuar?')){
-            local_data.fields.splice(local_data.index,1)
-            local_data.fields.delete=1
+            main_data.colecoes[local_data.index_col].fields.splice(local_data.index,1)
+//            local_data.fields.delete=1
             local_data.callback(local_data.fields)
             closeWindow('new_field')
         }
