@@ -254,3 +254,35 @@ function enableFields(enable=1){
         el[i].disabled = !enable ? 1 : 0         
     }
 }
+
+function bubble_obj(obj,key){
+    const before = new Object
+    const after = JSON.parse(JSON.stringify(obj))
+    let last = new Object
+    for (const [look, value] of Object.entries(after)) {
+        if(key===look && last){
+            const here = new Object
+            here[look] = value
+            delete(after[look])
+            Object.assign(before,here,last,after)
+            return before
+        }else{
+            Object.assign(before,last)
+            last = new Object
+            last[look] = value
+            delete(after[look])
+        }
+    }
+    return before
+}
+
+
+function bubble_arr(arr,i){
+    const out = JSON.parse(JSON.stringify(arr))
+    if(i && i<out.length){
+        const mem = out[i-1]
+        out[i-1] = out[i]
+        out[i] = mem    
+    }
+    return out
+}

@@ -77,17 +77,6 @@
             padding: 2px;
         }
 
-        .btn-round{
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2em;
-            cursor: pointer;
-        }
-
         .slide-control{
             display: flex;
             justify-content: space-evenly;
@@ -254,6 +243,29 @@
         tbl.innerHTML = ''
         const imgs = local_form.querySelector('.slideshow')
         imgs.innerHTML = ''
+
+        for (let i=0; i<local_data.fields.length; i++) {
+            const key = local_data.fields[i].name
+            const value = reg[key]
+            const row = document.createElement('tr')
+            row.data = key
+            const label = document.createElement('th')
+            label.innerHTML = key
+            row.appendChild(label)
+            const text = document.createElement('td')
+            text.innerHTML = typeof(value)!='object' ? value : 'ver detalhes...'
+            row.appendChild(text)
+            tbl.appendChild(row)
+            const url = getURL(value)
+            if(url.isImg){
+                const img = document.createElement('img')
+                img.src = url.url
+                imgs.querySelectorAll('img').length? null : img.classList.add('active')
+                imgs.appendChild(img)
+            }
+        }
+
+/*        
         for (const [key, value] of Object.entries(reg)) {
             const row = document.createElement('tr')
             row.data = key
@@ -272,6 +284,7 @@
                 imgs.appendChild(img)
             }
         }
+*/
     }
 
     local_form.querySelector('#edt-goto').addEventListener('change',(e)=>{

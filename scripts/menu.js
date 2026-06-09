@@ -103,7 +103,7 @@ document.querySelector('#btn-new-colec').addEventListener('click',()=>{
 document.querySelector('#about-novo-campo').addEventListener('click',()=>{
     const index = findColecao(document.querySelector('.registros').data.file)
     const out = new Object
-    out.fields = JSON.parse(JSON.stringify(main_data.colecoes[index].fields))
+    out.fields = main_data.colecoes[index].fields
     out.index = -1
     out.callback = (field)=>{
         const fd = field[field.length-1]
@@ -120,8 +120,9 @@ document.querySelector('#about-fields').addEventListener('click',()=>{
     const option = sel.options[sel.selectedIndex]
 
     const out = new Object
-    out.fields = JSON.parse(JSON.stringify(main_data.colecoes[index].fields))
+    out.fields = main_data.colecoes[index].fields
     out.index = main_data.colecoes[index].fields.findIndex(p => p.name == option.data.name)
+    out.index_col = index
     const old_name = option.data.name
     out.callback = (field)=>{
         const new_name = field.length > out.index ? field[out.index].name : option.data.name

@@ -64,16 +64,20 @@
         local_form.querySelector('#edtValue').value = local_data.value
         el.focus()
         el.select()
+        if(local_data.field.kind!='textarea'){
+            el.addEventListener('keyup',(e)=>{
+                if(e.key==='Enter'){
+                    local_form.querySelector('#btnSave').click()
+                }
+            })
+        }
     }
 
     local_form.querySelector('#btnSave').addEventListener('click',()=>{
         local_data.callback(local_form.querySelector('#edtValue').value)
         closeWindow('edit_field')
     })
-
-
     
-
     start()
 
 </script>

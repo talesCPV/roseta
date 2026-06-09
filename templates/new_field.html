@@ -23,6 +23,9 @@
             resize: none;
         }
 
+        #btn-up{
+            font-size: 1.5em;
+        }
 
     </style>
 
@@ -55,6 +58,7 @@
             <table id="tblPadroes"></table>
         </fieldset>
         <div class="line-center">
+            <button id="btn-up" class="btn-round"><span class="mdi mdi-arrow-up-bold"></span></button>
             <button id="btndel">Deletar</button>
             <button id="btnAdd">Salvar</button>
         </div>
@@ -157,6 +161,12 @@
             local_data.callback(local_data.fields)
             closeWindow('new_field')
         }
+    })
+
+    local_form.querySelector('#btn-up').addEventListener('click',()=>{
+        main_data.colecoes[local_data.index_col].fields = bubble_arr(local_data.fields,local_data.index)
+        local_data.callback(local_data.fields)
+        closeWindow('new_field')
     })
 
     start()
