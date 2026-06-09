@@ -117,6 +117,10 @@
             opacity: 1;
         }
 
+        .left:has(.slideshow:empty){
+            display: none;
+        }
+
         #tblRegisters tr{
             display: flex;
             flex-direction: column;
@@ -149,6 +153,7 @@
             <div class="btn-round" id="btn-right"><span class="mdi mdi-arrow-right-bold-circle"></span></div>
             <div class="btn-round" id="btn-add"><span class="mdi mdi-plus-circle green"></span></div>
             <div class="btn-round" id="btn-del"><span class="mdi mdi-minus-circle red"></span></div>
+            <div class="btn-round" id="btn-save"><span class="mdi mdi-content-save"></span></div>
         </div>
 
         <div class="register">
@@ -223,15 +228,21 @@
 
                 let i=out.url.length-1
                 let ext = ''
-                while(i>0 && out.url[i]!='/'){
-                    if(out.url[i]=='.' && ext.length){
-                        out.isImg = ['png','jpg','jpeg','gif','bmp','svg'].includes(ext)
-                        i=0
-                    }else{
-                        ext = out.url[i] + ext
-                    }
-                    i--
-                }              
+
+                if(out.url.includes('gstatic.com/images?')){
+                    out.isImg = 1
+                }else{
+                    while(i>0 && out.url[i]!='/'){
+                        if(out.url[i]=='.' && ext.length){
+                            out.isImg = ['png','jpg','jpeg','gif','bmp','svg'].includes(ext)
+                            i=0
+                        }else{
+                            ext = out.url[i] + ext
+                        }
+                        i--
+                    }              
+                }
+
             }
         }catch{}
         return out
@@ -250,7 +261,7 @@
             label.innerHTML = key
             row.appendChild(label)
             const text = document.createElement('td')
-            text.innerHTML = value
+            text.innerHTML = typeof(value)!='object' ? value : 'ver detalhes...'
             row.appendChild(text)
             tbl.appendChild(row)
             const url = getURL(value)
@@ -260,7 +271,6 @@
                 imgs.querySelectorAll('img').length? null : img.classList.add('active')
                 imgs.appendChild(img)
             }
-
         }
     }
 
@@ -280,7 +290,7 @@
 
         const reg = new Object
         for(let i=0; i<local_data.fields.length; i++){
-            reg[local_data.fields[i].name] = local_data.fields[i].default
+            reg[local_data.fields[i].name] = JSON.parse(JSON.stringify(local_data.fields[i].default))
         }
         local_data.registers.push(reg)
         index = local_data.registers.length-1
@@ -322,6 +332,10 @@
             openHTML('edit_field',obj,[500,0])
         }
 
+    })
+
+    local_form.querySelector('#btn-save').addEventListener('click',()=>{
+        save()
     })
 
     start()
