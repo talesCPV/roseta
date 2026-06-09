@@ -114,6 +114,18 @@ document.querySelector('#about-novo-campo').addEventListener('click',()=>{
     openHTML('new_field',out,[500,0])
 })
 
+document.querySelector('#about-novo-objeto').addEventListener('click',()=>{
+    const out = new Object
+    out.callback = (obj)=>{
+        const index = findColecao(document.querySelector('.registros').data.file)
+        main_data.colecoes[index].addField(obj.name,'object',obj.fields)
+        
+        about(main_data.colecoes[index])
+        saveColecao(index)
+    }
+    openHTML('add_object',out,[500,0])
+})
+
 document.querySelector('#about-fields').addEventListener('click',()=>{
     const index = findColecao(document.querySelector('.registros').data.file)
     const sel = document.querySelector('#about-fields')
@@ -126,14 +138,12 @@ document.querySelector('#about-fields').addEventListener('click',()=>{
     const old_name = option.data.name
     out.callback = (field)=>{
         const new_name = field.length > out.index ? field[out.index].name : option.data.name
-/*
+
         if(field.hasOwnProperty("delete")){
             main_data.colecoes[index].delField(new_name)
         }else{
             main_data.colecoes[index].editField(old_name,new_name,field[out.index].kind,field[out.index].default,field[out.index].parameters)
         }
-*/
-        main_data.colecoes[index].editField(old_name,new_name,field[out.index].kind,field[out.index].default,field[out.index].parameters)
         about(main_data.colecoes[index])
         saveColecao(index)
     }

@@ -15,19 +15,33 @@
     console.log(local_data)
 
     function start(){
-        fillTable()
+        local_data.hasOwnProperty('objects') ? fillTable(local_data.objects) : loadObjects()
     }
 
-    function fillTable(){
+    function loadObjects(){
+        loadFile('/../files/config/category.json')
+        .then( text => {
+            try{
+                local_data.objects = JSON.parse(text)
+                fillTable(local_data.objects,'#tblCategorias')
+
+            }catch{
+                console.log('Arquivo de categorias não encontrado!')
+            }
+        })
+    }
+
+
+    function fillTable(obj){
         const tbl =  local_form.querySelector('#tblObject')
         tbl.innerHTML = ''
-        for(let i=0; i<local_data.objects.length; i++){
+        for(let i=0; i<obj.length; i++){
             const tr = document.createElement('tr')
-            tr.data = local_data.objects[i]
+            tr.data = obj[i]
             tbl.appendChild(tr)
 
             const td = document.createElement('td')
-            td.innerHTML = local_data.objects[i].name
+            td.innerHTML = obj[i].name
             tr.appendChild(td)
         }
     }
@@ -38,8 +52,12 @@
             const obj = new Object
             obj.name = data.name
             obj.kind = 'object'
-            local_data.objects[local_data.index].fields.push(obj)
-            local_data.callback(local_data.objects[local_data.index].fields)
+            if(local_data.hasOwnProperty('index')){
+                local_data.objects[local_data.index].fields.push(obj)
+                local_data.callback(local_data.objects[local_data.index].fields)
+            }else{
+                local_data.callback(data)
+            }
             closeWindow('add_object')
         }
     })

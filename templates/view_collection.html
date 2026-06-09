@@ -223,7 +223,7 @@
                 }else{
                     while(i>0 && out.url[i]!='/'){
                         if(out.url[i]=='.' && ext.length){
-                            out.isImg = ['png','jpg','jpeg','gif','bmp','svg'].includes(ext)
+                            out.isImg = ['png','jpg','jpeg','gif','bmp','svg','webp'].includes(ext)
                             i=0
                         }else{
                             ext = out.url[i] + ext
@@ -231,7 +231,6 @@
                         i--
                     }              
                 }
-
             }
         }catch{}
         return out
@@ -264,27 +263,6 @@
                 imgs.appendChild(img)
             }
         }
-
-/*        
-        for (const [key, value] of Object.entries(reg)) {
-            const row = document.createElement('tr')
-            row.data = key
-            const label = document.createElement('th')
-            label.innerHTML = key
-            row.appendChild(label)
-            const text = document.createElement('td')
-            text.innerHTML = typeof(value)!='object' ? value : 'ver detalhes...'
-            row.appendChild(text)
-            tbl.appendChild(row)
-            const url = getURL(value)
-            if(url.isImg){
-                const img = document.createElement('img')
-                img.src = url.url
-                imgs.querySelectorAll('img').length? null : img.classList.add('active')
-                imgs.appendChild(img)
-            }
-        }
-*/
     }
 
     local_form.querySelector('#edt-goto').addEventListener('change',(e)=>{
