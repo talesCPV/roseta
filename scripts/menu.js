@@ -17,7 +17,7 @@ document.querySelector('#menu-padroes').addEventListener('click',()=>{
 document.querySelector('#cmb-colecoes').addEventListener('click',()=>{
     try{
         const sel = document.querySelector('#cmb-colecoes')
-        const option = sel.options[sel.selectedIndex]        
+        const option = sel.options[sel.selectedIndex]
         about(option.data)
         enableFields()  
     }catch{
@@ -131,6 +131,10 @@ document.querySelector('#about-fields').addEventListener('click',()=>{
     const sel = document.querySelector('#about-fields')
     const option = sel.options[sel.selectedIndex]
 
+    console.log(option.data)
+    openHTML('new_field',option.data,[500,0])
+/*
+
     const out = new Object
     out.fields = main_data.colecoes[index].fields
     out.index = main_data.colecoes[index].fields.findIndex(p => p.name == option.data.name)
@@ -149,5 +153,5 @@ document.querySelector('#about-fields').addEventListener('click',()=>{
     }
 
     openHTML('new_field',out,[500,0])
-
+*/
 })

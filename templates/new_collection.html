@@ -47,7 +47,7 @@
 
     function fillObjects(){
 
-        function opt(value,fields=[]){
+        function opt(value,fields={}){
             const out = document.createElement('option')
             out.innerHTML = value
             out.value = value
@@ -55,14 +55,12 @@
             return out
         }
 
-//        local_data.objects = JSON.parse(text)
         const cmb = local_form.querySelector('#cmbCat')
         cmb.innerHTML = ''
-        for(let i=0; i<main_data.objects.length; i++){
-            cmb.appendChild(opt(main_data.objects[i].name,main_data.objects[i].fields))
+        for (const [key, value] of Object.entries(main_data.objects)) {    
+            cmb.appendChild(opt(key,value.fields))
         }
         cmb.appendChild(opt('Nova Categoria'))
-
     }
 
     local_form.querySelector('#cmbCat').addEventListener('change',()=>{

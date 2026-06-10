@@ -15,52 +15,36 @@
     console.log(local_data)
 
     function start(){
-//        local_data.hasOwnProperty('objects') ? fillTable(local_data.objects) : loadObjects()
+        fillTable(main_data.objects,'#tblObject')
     }
-/*
-    function loadObjects(){
-        loadFile('/../files/config/category.json')
-        .then( text => {
-            try{
-                local_data.objects = JSON.parse(text)
-                fillTable(local_data.objects,'#tblCategorias')
 
-            }catch{
-                console.log('Arquivo de categorias não encontrado!')
-            }
-        })
-    }
-*/
-
-    function fillTable(obj){
-        const tbl =  local_form.querySelector('#tblObject')
+    function fillTable(arr,id_table){
+        const tbl = local_form.querySelector(id_table)
         tbl.innerHTML = ''
-        for(let i=0; i<obj.length; i++){
+        for (const [key, value] of Object.entries(arr)) {
             const tr = document.createElement('tr')
-            tr.data = obj[i]
+            tr.data =  new Object
+            tr.data.key = key
+            tr.data.value = value
             tbl.appendChild(tr)
-
+            
             const td = document.createElement('td')
-            td.innerHTML = obj[i].name
+            td.innerHTML = key
             tr.appendChild(td)
         }
     }
 
     local_form.querySelector('#tblObject').addEventListener('click',(e)=>{
-        const data = e.target.tagName=='TD'? e.target.parentNode.data : e.target.tagName=='TR' ? e.target.data : 0
+        const target = e.target.tagName=='TD'? e.target.parentNode : e.target
+        const data = target.data
         if(data){
             const name = prompt('Digite um nome para o campo:',data.name)
             if(name!=null){
                 const obj = new Object
-                obj.name = name
-                obj.type = data.name
+                obj.type = data.key
                 obj.kind = 'object'
-                if(local_data.hasOwnProperty('index')){
-                    local_data.objects[local_data.index].fields.push(obj)
-                    local_data.callback(local_data.objects[local_data.index].fields)
-                }else{
-                    local_data.callback(data)
-                }
+                main_data.objects[local_data.key].fields[name]=obj
+                local_data.callback(main_data.objects[local_data.key].fields)
                 closeWindow('add_object')
             }
         }

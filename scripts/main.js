@@ -227,22 +227,21 @@ function delColecao(file){
 
 }
 
-function about(collection){
-    document.querySelector('.registros').data = collection
+function about(file){
+    document.querySelector('.registros').data = file
     const fields = document.querySelector('#about-fields')
-    document.querySelector('#about-file').innerHTML = collection.file
-    document.querySelector('#about-nome').innerHTML = collection.name
-    document.querySelector('#about-categoria').innerHTML = collection.categoria 
-    document.querySelector('#about-reg').innerHTML = collection.registers.length
+    document.querySelector('#about-file').innerHTML = file.file
+    document.querySelector('#about-nome').innerHTML = file.name
+    document.querySelector('#about-categoria').innerHTML = file.categoria 
+    document.querySelector('#about-reg').innerHTML = file.registers.length
     fields.innerHTML = ''
-    for(let i=0; i<collection.fields.length; i++){
+    for (const [key, value] of Object.entries(file.fields)) {
         const opt = document.createElement('option')
-        opt.data = collection.fields[i]
-        const fullfield = collection.fields[i].name.split(',')
-        opt.innerHTML =  fullfield[fullfield.length==1 ? 0 : 1]
+        opt.data = value
+        opt.value = value
+        opt.innerHTML =  key
         fields.appendChild(opt)
     }
-
 }
 
 function openCSV(file){

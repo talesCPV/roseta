@@ -69,22 +69,21 @@
     const forms = document.querySelectorAll(`#new_field`)
     const local_form = forms[forms.length-1]
     const local_data = main_data[local_form.data_name]
-
+    const newField = local_data.sub_key == null
     let field
-    const newField = local_data.index < 0
 
     function start(){
         if(newField){
             local_form.querySelector('#btndel').disabled = 1
+            local_form.querySelector('#btn-up').disabled = 1
             field = new Object
-            field.name = ''
             field.default = ''
             field.kind = 'text'
             field.parameters = new Object
         }else{
-            field = local_data.fields[local_data.index]
+            field = main_data.objects[local_data.key].fields[local_data.sub_key]
             field.parameters = field.parameters==undefined ? new Object : field.parameters
-            local_form.querySelector('#edtNome').value = field.name
+            local_form.querySelector('#edtNome').value = local_data.sub_key
             if(field.kind=='object'){
                 local_form.querySelector('.window-title').innerHTML = 'Remover Objeto'
                 local_form.querySelector('#edtNome').disabled = 1
@@ -98,7 +97,6 @@
                 local_form.querySelector('#cmbKind').value = field.kind
                 local_form.querySelector('.window-title').innerHTML = 'Editar Campo'
             }
-
         }
         loadDefaults()
     }
@@ -140,8 +138,7 @@
     }
 
     local_form.querySelector('#btnAdd').addEventListener('click',()=>{
-
-        field.name = local_form.querySelector('#edtNome').value
+        const sub_key = local_form.querySelector('#edtNome').value
         field.default = local_form.querySelector('#edtDefault').value
         field.kind = local_form.querySelector('#cmbKind').value
         for (const [key, value] of Object.entries(field.parameters)) {
@@ -149,17 +146,21 @@
                 delete(field.parameters[key])
             }
         }
-        newField ? local_data.fields.push(field) : null        
-        local_data.callback(local_data.fields)
+        main_data.objects[local_data.key].fields[sub_key]=field
+        local_data.callback(main_data.objects[local_data.key].fields)
         closeWindow('new_field')
     })
 
     local_form.querySelector('#btndel').addEventListener('click',()=>{
         if(confirm('A remoção deste campo implica na perda de todos os dados referentes nos registros. Deseja continuar?')){
+            delete(main_data.objects[local_data.key].fields[local_data.sub_key])
+//console.log(local_data)            
+            
 //            main_data.colecoes[local_data.index_col].fields.splice(local_data.index,1)
-            local_data.fields.delete=1
-            local_data.callback(local_data.fields)
+//            local_data.fields.delete=1
+            local_data.callback(main_data.objects[local_data.key].fields)
             closeWindow('new_field')
+
         }
     })
 
