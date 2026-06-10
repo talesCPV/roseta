@@ -42,34 +42,27 @@
     const local_data = main_data[local_form.data_name]
 
     function start(){
-        loadDefaults()
+        fillObjects()
     }
 
-    function loadDefaults(){
-        loadFile('/../files/config/category.json')
-        .then( text => {
-            try{
+    function fillObjects(){
 
-                function opt(value,fields=[]){
-                    const out = document.createElement('option')
-                    out.innerHTML = value
-                    out.value = value
-                    out.fields=fields
-                    return out
-                }
+        function opt(value,fields=[]){
+            const out = document.createElement('option')
+            out.innerHTML = value
+            out.value = value
+            out.fields=fields
+            return out
+        }
 
-                local_data.objects = JSON.parse(text)
-                const cmb = local_form.querySelector('#cmbCat')
-                cmb.innerHTML = ''
-                for(let i=0; i<local_data.objects.length; i++){
-                    cmb.appendChild(opt(local_data.objects[i].name,local_data.objects[i].fields))
-                }
-                cmb.appendChild(opt('Nova Categoria'))
+//        local_data.objects = JSON.parse(text)
+        const cmb = local_form.querySelector('#cmbCat')
+        cmb.innerHTML = ''
+        for(let i=0; i<main_data.objects.length; i++){
+            cmb.appendChild(opt(main_data.objects[i].name,main_data.objects[i].fields))
+        }
+        cmb.appendChild(opt('Nova Categoria'))
 
-            }catch{
-                console.log('Arquivo de padrões não encontrado!')
-            }
-        })
     }
 
     local_form.querySelector('#cmbCat').addEventListener('change',()=>{

@@ -25,7 +25,7 @@
         <fieldset>
             <legend>Objetos</legend>
             <table id="tblCategorias"></table>
-            <button id="btnNewCat">Nova Categoria</button>
+            <button id="btnNewObj">Novo Objeto</button>
         </fieldset>
 
         <fieldset>
@@ -42,14 +42,45 @@
     const forms = document.querySelectorAll(`#view_object`)
     const local_form = forms[forms.length-1]
     const local_data = main_data[local_form.data_name]
-
-    local_data.objects = []
     let index = -1
 
     function start(){
-        loadObjects()
+        fillTable(main_data.objects,'#tblCategorias')
+    }
+    
+        function fillTable(arr,id_table){
+        const tbl = local_form.querySelector(id_table)
+        tbl.innerHTML = ''
+//        for(let i=0; i<arr.length; i++){
+        for (const [key, value] of Object.entries(arr)) {
+            const tr = document.createElement('tr')
+            tr.data = value
+            tbl.appendChild(tr)
+            
+            const td = document.createElement('td')
+            td.innerHTML = key
+            tr.appendChild(td)
+        }
     }
 
+    local_form.querySelector('#btnNewObj').addEventListener('click',()=>{
+        const name = prompt('Nome do Objeto:')
+        if(name!=null){
+//            const index = main_data.objects.findIndex(p => p.name == name)
+            if(!main_data.objects.hasOwnProperty(name)){
+                main_data.objects[name] = new Object
+                main_data.objects[name].fields = new Object
+                saveFile(main_data.objects,'/../files/config/','object.json')
+                .then(()=>{
+                    fillTable(main_data.objects,'#tblCategorias')
+                })
+            }else{
+                alert(`A categoria ${name} já existe, digite outro nome.`)
+            }
+        }
+    })
+
+/*
     function fillTable(arr,id_table){
         const tbl = local_form.querySelector(id_table)
         tbl.innerHTML = ''
@@ -64,19 +95,6 @@
         }
     }
 
-    function loadObjects(){
-        loadFile('/../files/config/category.json')
-        .then( text => {
-            try{
-                local_data.objects = JSON.parse(text)
-                fillTable(local_data.objects,'#tblCategorias')
-
-            }catch{
-                console.log('Arquivo de categorias não encontrado!')
-            }
-        })
-    }
-
     function markLine(id_table,line){
         const rows = local_form.querySelector(`#${id_table}`).rows        
         for(let i=0; i<rows.length; i++){            
@@ -86,14 +104,14 @@
 
     function addField(fields){
         fillTable(fields,'#tblFields')
-        saveFile(local_data.objects,'/../files/config/','category.json')
+        saveFile(main_data.objects,'/../files/config/','category.json')
     }
 
     local_form.querySelector('#btnNewField').addEventListener('click',()=>{
         try{
             const param = new Object               
             param.index = -1
-            param.fields = local_data.objects[index].fields
+            param.fields = main_data.objects[index].fields
             param.callback = addField
             openHTML('new_field',param,[500,0])
 
@@ -103,15 +121,15 @@
     local_form.querySelector('#btnNewCat').addEventListener('click',()=>{
         const name = prompt('Nome da categoria')
         if(name!=null){
-            const index = local_data.objects.findIndex(p => p.name == name)
+            const index = main_data.objects.findIndex(p => p.name == name)
             if(index <0){
                 const nw = new Object
                 nw.name = name
                 nw.fields = []
-                local_data.objects.push(nw)
-                saveFile(local_data.objects,'/../files/config/','category.json')
+                main_data.objects.push(nw)
+                saveFile(main_data.objects,'/../files/config/','category.json')
                 .then(()=>{
-                    fillTable(local_data.objects,'#tblCategorias')
+                    fillTable(main_data.objects,'#tblCategorias')
                 })
             }else{
                 alert(`A categoria ${name} já existe, digite outro nome.`)
@@ -122,21 +140,21 @@
     local_form.querySelector('#tblCategorias').addEventListener('click',(e)=>{
         const data = e.target.tagName=='TD'? e.target.parentNode.data : e.target.tagName=='TR' ? e.target.data : 0
         if(data){
-            index = local_data.objects.findIndex(p => p.name == data.name)
+            index = main_data.objects.findIndex(p => p.name == data.name)
             markLine('tblCategorias',index)
-            fillTable(local_data.objects[index].fields,'#tblFields')
+            fillTable(main_data.objects[index].fields,'#tblFields')
         }
     })
 
     local_form.querySelector('#tblCategorias').addEventListener('dblclick',(e)=>{                
         const data = e.target.tagName=='TD'? e.target.parentNode.data : e.target.tagName=='TR' ? e.target.data : 0
         if(data){
-            const index = local_data.objects.findIndex(p => p.name == data.name)
+            const index = main_data.objects.findIndex(p => p.name == data.name)
             if(index >=0){
-                if(confirm(`Deseja deletar a categoria ${local_data.objects[index].name}?`)){
-                    local_data.objects.splice(index,1)
+                if(confirm(`Deseja deletar a categoria ${main_data.objects[index].name}?`)){
+                    main_data.objects.splice(index,1)
                     document.querySelector('#tblCategorias').rows[index].remove()
-                    saveFile(local_data.objects,'/../files/config/','category.json')
+                    saveFile(main_data.objects,'/../files/config/','category.json')
                 }
             }
         }
@@ -146,8 +164,8 @@
         const data = e.target.tagName=='TD'? e.target.parentNode.data : e.target.tagName=='TR' ? e.target.data : 0
         if(data){
             const param = new Object
-            param.fields = local_data.objects[index].fields
-            param.index = local_data.objects[index].fields.findIndex(p => p.name == data.name)
+            param.fields = main_data.objects[index].fields
+            param.index = main_data.objects[index].fields.findIndex(p => p.name == data.name)
             param.callback = addField
             if(param.index>=0){
                 openHTML('new_field',param,[500,0])
@@ -159,7 +177,7 @@
         try{
             const param = new Object               
             param.index = index
-            param.objects = local_data.objects
+            param.objects = main_data.objects
             param.callback = addField
             openHTML('add_object',param,[500,0])
 
@@ -167,5 +185,5 @@
     })
 
     start()
-
+*/
 </script>

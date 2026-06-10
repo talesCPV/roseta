@@ -102,7 +102,20 @@ function showFiles(path){
     })
 }
 
+function loadObjects(){
+    return loadFile('/../files/config/object.json')
+    .then(text=>{
+        try{
+            main_data.objects = JSON.parse(text)
+            document.querySelector('#btn-new-colec').disabled = 0
+        }catch{
+            console.log('Arquivo de padrões não encontrado!')
+        }
+    })
+}
+
 function loadUserFiles(user_id){
+    loadObjects()
     enableFields(0)
     document.querySelector('#cmb-colecoes').innerHTML = ''
     main_data.colecoes = []

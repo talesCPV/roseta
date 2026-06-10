@@ -281,6 +281,20 @@
 
         const reg = new Object
         for(let i=0; i<local_data.fields.length; i++){
+            if(local_data.fields[i].kind==='object'){
+                console.log(local_data.fields[i])
+                console.log(main_data.objects)
+/*                
+                const def = JSON.parse(JSON.stringify(local_data.objects[index]))
+                def.kind = 'object'
+                def.file = nome+'.rst'
+                def.categoria = local_data.objects[index].name
+                def.registers = []
+*/
+
+
+            }
+
             reg[local_data.fields[i].name] = JSON.parse(JSON.stringify(local_data.fields[i].default))
         }
         local_data.registers.push(reg)

@@ -15,9 +15,9 @@
     console.log(local_data)
 
     function start(){
-        local_data.hasOwnProperty('objects') ? fillTable(local_data.objects) : loadObjects()
+//        local_data.hasOwnProperty('objects') ? fillTable(local_data.objects) : loadObjects()
     }
-
+/*
     function loadObjects(){
         loadFile('/../files/config/category.json')
         .then( text => {
@@ -30,7 +30,7 @@
             }
         })
     }
-
+*/
 
     function fillTable(obj){
         const tbl =  local_form.querySelector('#tblObject')
@@ -49,16 +49,20 @@
     local_form.querySelector('#tblObject').addEventListener('click',(e)=>{
         const data = e.target.tagName=='TD'? e.target.parentNode.data : e.target.tagName=='TR' ? e.target.data : 0
         if(data){
-            const obj = new Object
-            obj.name = data.name
-            obj.kind = 'object'
-            if(local_data.hasOwnProperty('index')){
-                local_data.objects[local_data.index].fields.push(obj)
-                local_data.callback(local_data.objects[local_data.index].fields)
-            }else{
-                local_data.callback(data)
+            const name = prompt('Digite um nome para o campo:',data.name)
+            if(name!=null){
+                const obj = new Object
+                obj.name = name
+                obj.type = data.name
+                obj.kind = 'object'
+                if(local_data.hasOwnProperty('index')){
+                    local_data.objects[local_data.index].fields.push(obj)
+                    local_data.callback(local_data.objects[local_data.index].fields)
+                }else{
+                    local_data.callback(data)
+                }
+                closeWindow('add_object')
             }
-            closeWindow('add_object')
         }
     })
 
