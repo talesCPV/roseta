@@ -1,6 +1,6 @@
 <?php   
 
-  $out = [];
+  $out = new stdClass();
 
 	if (IsSet($_POST["path"])){
 	  $path = getcwd().$_POST["path"];   

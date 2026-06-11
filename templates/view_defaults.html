@@ -14,11 +14,6 @@
     const forms = document.querySelectorAll(`#view_defaults`)
     const local_form = forms[forms.length-1]
     const local_data = main_data[local_form.data_name]
-//    const local_form = document.querySelector('#view_defaults')
-//    const local_data = main_data.view_defaults
-    local_data.newDefault = local_data.data == null
-    local_data.defaults = []
-    let index = -1
 
     function start(){
         loadDefaults()
@@ -42,16 +37,18 @@
         })
     }
 
-    function fillTable(arr){
+    function fillTable(obj){
         const tbl = local_form.querySelector('#tblPadroes')
         tbl.innerHTML = ''
-        for(let i=0; i<arr.length; i++){
+        for (const [key, value] of Object.entries(obj)) {
+//        for(let i=0; i<arr.length; i++){
             const tr = document.createElement('tr')
-            tr.data = arr[i]
+            tr.data = value
+            tr.name = key
             tbl.appendChild(tr)
             
             const td = document.createElement('td')
-            td.innerHTML = arr[i].name
+            td.innerHTML = key
             tr.appendChild(td)
         }
     }
@@ -59,11 +56,11 @@
     local_form.querySelector('#btnNewPad').addEventListener('click',()=>{
         const name = prompt('Nome do novo padrão:')
         if(name!=null){
-            index = local_data.defaults.findIndex(p => p.name == name)
-            if(index <0){
+            if(!local_data.defaults.hasOwnProperty(name)){
                 const nw = new Object
                 nw.name = name
-                local_data.defaults.push(nw)
+                nw.site = ''
+                local_data.defaults[name] = nw
                 saveFile(local_data.defaults,'/../files/config/','defaults.json')
                 .then(()=>{
                     fillTable(local_data.defaults)
@@ -76,13 +73,10 @@
 
     local_form.querySelector('#tblPadroes').addEventListener('dblclick',(e)=>{
         const data = e.target.data
-        const index = local_data.defaults.findIndex(p => p.name == data.name)
-        if(index >=0){
-            if(confirm(`Deseja deletar o padrão ${local_data.defaults[index].name}?`)){
-                local_data.defaults.splice(index,1)
-                document.querySelector('#tblPadroes').rows[index].remove()
-                saveFile(local_data.defaults,'/../files/config/','defaults.json')
-            }
+        if(confirm(`Deseja deletar o padrão ${e.target.name}?`)){
+            delete(local_data.defaults[e.target.name])
+            e.target.remove()
+            saveFile(local_data.defaults,'/../files/config/','defaults.json')
         }
     })
 

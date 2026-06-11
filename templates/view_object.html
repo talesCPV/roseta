@@ -90,8 +90,26 @@
         local_data.data = data
     }
 
-    function addField(fields){
-        fillTable(fields,'#tblFields')
+    function callback(response){
+        if(response.up){
+
+            console.log(bubble_obj(main_data.objects[local_data.data.key].fields,response.callname))
+
+//            main_data.objects[local_data.data.key].fields = bubble_obj(main_data.objects[local_data.data.key].fields,response.callname)
+        }else if(response.del){
+            delete(main_data.objects[local_data.data.key].fields[response.callname])
+        }else{
+            const fields = main_data.objects[local_data.data.key].fields
+            fields[response.name] = new Object
+            fields[response.name].default = response.default
+            fields[response.name].kind = response.kind
+            fields[response.name].parameters = response.parameters
+            fields[response.name].type = response.hasOwnProperty('type') ? response.type : response.kind
+            if(response.name != response.callname){
+                delete(main_data.objects[local_data.data.key].fields[response.callname])
+            }
+        }
+        fillTable(main_data.objects[local_data.data.key].fields,'#tblFields')
         saveFile(main_data.objects,'/../files/config/','object.json')
     }
 
@@ -121,21 +139,24 @@
         const target = e.target.tagName=='TD'? e.target.parentNode : e.target
         const data = target.data
         if(data){
-            const param = new Object               
-            param.key = local_data.data.key
-            param.sub_key = data.key
-            param.callback = addField
+            const param = new Object
+            param.key = data.key
+            param.value = data.value
+            param.new = 0
+            param.callback = callback
             openHTML('new_field',param,[500,0])
         }
+
     })
 
     local_form.querySelector('#btnAddField').addEventListener('click',()=>{
         if(local_data.hasOwnProperty('data')){
             try{
                 const param = new Object               
-                param.key = local_data.data.key
-                param.sub_key = null
-                param.callback = addField
+//                param.key = local_data.data.key
+//                param.value = local_data.data.value
+                param.new = 1
+                param.callback = callback
                 openHTML('new_field',param,[500,0])
             }catch{}
         }

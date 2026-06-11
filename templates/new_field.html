@@ -69,32 +69,25 @@
     const forms = document.querySelectorAll(`#new_field`)
     const local_form = forms[forms.length-1]
     const local_data = main_data[local_form.data_name]
-    const newField = local_data.sub_key == null
-    let field
 
     function start(){
-        if(newField){
+        if(local_data.new){
             local_form.querySelector('#btndel').disabled = 1
             local_form.querySelector('#btn-up').disabled = 1
-            field = new Object
-            field.default = ''
-            field.kind = 'text'
-            field.parameters = new Object
+            local_data.value = new Object
         }else{
-            field = main_data.objects[local_data.key].fields[local_data.sub_key]
-            field.parameters = field.parameters==undefined ? new Object : field.parameters
-            local_form.querySelector('#edtNome').value = local_data.sub_key
-            if(field.kind=='object'){
+            local_form.querySelector('#edtNome').value = local_data.key
+            if(local_data.value.kind=='object'){
                 local_form.querySelector('.window-title').innerHTML = 'Remover Objeto'
                 local_form.querySelector('#edtNome').disabled = 1
                 local_form.querySelector('#btnAdd').disabled = 1
                 local_form.querySelector('.valor').classList.add('hide')
                 local_form.querySelector('#cmbKind').disabled = 1
                 local_form.querySelector('fieldset').classList.add('hide')
-                local_form.querySelector('#cmbKind').innerHTML = '<option>Objeto</option>'
+                local_form.querySelector('#cmbKind').innerHTML = '<option value="object">Objeto</option>'
             }else{
-                local_form.querySelector('#edtDefault').value = field.default
-                local_form.querySelector('#cmbKind').value = field.kind
+                local_form.querySelector('#edtDefault').value = local_data.value.default
+                local_form.querySelector('#cmbKind').value = local_data.value.kind
                 local_form.querySelector('.window-title').innerHTML = 'Editar Campo'
             }
         }
@@ -105,29 +98,43 @@
         loadFile('/../files/config/defaults.json')
         .then( text => {
             try{
-                const defaults = JSON.parse(text)
-                for(let i=0; i<defaults.length; i++){                    
-                    if(!field.parameters.hasOwnProperty(defaults[i].name)){
-                        field.parameters[defaults[i].name] = ''
+                const parameters = JSON.parse(text)
+                local_data.value.parameters = local_data.new ? {} : local_data.value.parameters
+                for (const [key, value] of Object.entries(parameters)) {   
+                    if(!local_data.value.parameters.hasOwnProperty(key)){
+                        local_data.value.parameters[key] = ''                            
                     }
                 }
-                fillParameters()
             }catch{
-                console.log('Arquivo de padrões não encontrado!')
+                local_data.value.parameters = new Object
             }
+            fillParameters()
         })
     }
 
+    function backcall(nw=1,dl=0){
+        const out = new Object
+        out.field = new Object
+        out.field.name = local_form.querySelector('#edtNome').value
+        out.field.default = local_form.querySelector('#edtDefault').value
+        out.field.kind = local_form.querySelector('#cmbKind').value
+
+        for (const [key, value] of Object.entries(field.parameters)) {
+            if(!value.length){
+                delete(field.parameters[key])
+            }
+        }
+    }
+
     function fillParameters(){
-        const param = field.parameters
+        const param = local_data.value.parameters
         const tbl = local_form.querySelector('#tblPadroes')
         tbl.innerHTML = ''
-
         for (const [key, value] of Object.entries(param)) {
             const tr = document.createElement('tr')
             tr.innerHTML = `<td>${key}</td><td>${value}</td>`
             tr.addEventListener('click',()=>{
-                const new_value = prompt(`${field.name} no padrão ${key}:`,value)
+                const new_value = prompt(`${local_data.key} no padrão ${key}:`,value)
                 if(new_value!=null){
                     param[key] = new_value
                     tr.innerHTML = `<td>${key}</td><td>${param[key]}</td>`
@@ -138,35 +145,46 @@
     }
 
     local_form.querySelector('#btnAdd').addEventListener('click',()=>{
-        const sub_key = local_form.querySelector('#edtNome').value
-        field.default = local_form.querySelector('#edtDefault').value
-        field.kind = local_form.querySelector('#cmbKind').value
-        for (const [key, value] of Object.entries(field.parameters)) {
+        const out = new Object
+        out.name = local_form.querySelector('#edtNome').value.trim()
+        out.callname = local_data.key
+        out.default = local_form.querySelector('#edtDefault').value.trim()
+        out.kind = local_form.querySelector('#cmbKind').value
+        out.parameters = local_data.value.parameters
+        out.new = local_data.new
+        out.del = 0
+        out.up = 0
+        for (const [key, value] of Object.entries(out.parameters)) {
             if(!value.length){
-                delete(field.parameters[key])
+                delete(out.parameters[key])
             }
         }
-        main_data.objects[local_data.key].fields[sub_key]=field
-        local_data.callback(main_data.objects[local_data.key].fields)
+        local_data.callback(out)
         closeWindow('new_field')
     })
 
     local_form.querySelector('#btndel').addEventListener('click',()=>{
         if(confirm('A remoção deste campo implica na perda de todos os dados referentes nos registros. Deseja continuar?')){
-            delete(main_data.objects[local_data.key].fields[local_data.sub_key])
+            const out = new Object
+            out.del = 1
+            out.callname = local_data.key
+            console.log(local_data)
+
+//            delete(main_data.objects[local_data.key].fields[local_data.sub_key])
 //console.log(local_data)            
             
 //            main_data.colecoes[local_data.index_col].fields.splice(local_data.index,1)
 //            local_data.fields.delete=1
-            local_data.callback(main_data.objects[local_data.key].fields)
+//            local_data.callback(main_data.objects[local_data.key].fields)
+            local_data.callback(out)
             closeWindow('new_field')
 
         }
     })
 
     local_form.querySelector('#btn-up').addEventListener('click',()=>{
-        main_data.colecoes[local_data.index_col].fields = bubble_arr(local_data.fields,local_data.index)
-        local_data.callback(local_data.fields)
+//        main_data.colecoes[local_data.index_col].fields = bubble_arr(local_data.fields,local_data.index)
+        local_data.callback({"up":1})
         closeWindow('new_field')
     })
 

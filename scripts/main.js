@@ -274,6 +274,7 @@ function enableFields(enable=1){
 }
 
 function bubble_obj(obj,key){
+console.log(obj,key)    
     const before = new Object
     const after = JSON.parse(JSON.stringify(obj))
     let last = new Object
