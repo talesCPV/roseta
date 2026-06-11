@@ -42,7 +42,6 @@
     const forms = document.querySelectorAll(`#view_object`)
     const local_form = forms[forms.length-1]
     const local_data = main_data[local_form.data_name]
-    let index = -1
 
     function start(){
         fillTable(main_data.objects,'#tblObjetos')
@@ -53,11 +52,10 @@
         tbl.innerHTML = ''
         for (const [key, value] of Object.entries(arr)) {
             const tr = document.createElement('tr')
-            tr.data =  new Object
+            tr.data = new Object
             tr.data.key = key
             tr.data.value = value
             tbl.appendChild(tr)
-            
             const td = document.createElement('td')
             td.innerHTML = key
             tr.appendChild(td)
@@ -67,7 +65,6 @@
     local_form.querySelector('#btnNewObj').addEventListener('click',()=>{
         const name = prompt('Nome do Objeto:')
         if(name!=null){
-//            const index = main_data.objects.findIndex(p => p.name == name)
             if(!main_data.objects.hasOwnProperty(name)){
                 main_data.objects[name] = new Object
                 main_data.objects[name].fields = new Object
@@ -82,8 +79,8 @@
     })
 
     function markLine(line,data={}){
-        const rows = line.parentNode.rows        
-        for(let i=0; i<rows.length; i++){            
+        const rows = line.parentNode.rows
+        for(let i=0; i<rows.length; i++){
             rows[i].classList.remove('mark')
         }
         line.classList.add('mark')
@@ -91,21 +88,19 @@
     }
 
     function callback(response){
+        const fields = main_data.objects[local_data.data.key].fields
         if(response.up){
-
-            console.log(bubble_obj(main_data.objects[local_data.data.key].fields,response.callname))
-
-//            main_data.objects[local_data.data.key].fields = bubble_obj(main_data.objects[local_data.data.key].fields,response.callname)
+            main_data.objects[local_data.data.key].fields = bubble_obj(fields,response.callname)
         }else if(response.del){
-            delete(main_data.objects[local_data.data.key].fields[response.callname])
+            delete(fields[response.callname])
         }else{
-            const fields = main_data.objects[local_data.data.key].fields
             fields[response.name] = new Object
             fields[response.name].default = response.default
             fields[response.name].kind = response.kind
             fields[response.name].parameters = response.parameters
             fields[response.name].type = response.hasOwnProperty('type') ? response.type : response.kind
             if(response.name != response.callname){
+                main_data.objects[local_data.data.key].fields = position_obj(fields,response.name,response.callname)
                 delete(main_data.objects[local_data.data.key].fields[response.callname])
             }
         }
@@ -122,12 +117,12 @@
         }
     })
 
-    local_form.querySelector('#tblObjetos').addEventListener('dblclick',(e)=>{                
+    local_form.querySelector('#tblObjetos').addEventListener('dblclick',(e)=>{
         const target = e.target.tagName=='TD'? e.target.parentNode : e.target
         const data = target.data
         if(data){
             if(confirm(`Deseja deletar este Objeto? ${data.key}?`)){
-                delete(main_data.objects[data.key])                    
+                delete(main_data.objects[data.key])
                 target.remove()
                 local_form.querySelector('#tblFields').innerHTML = ''
                 saveFile(main_data.objects,'/../files/config/','object.json')
@@ -146,15 +141,12 @@
             param.callback = callback
             openHTML('new_field',param,[500,0])
         }
-
     })
 
     local_form.querySelector('#btnAddField').addEventListener('click',()=>{
         if(local_data.hasOwnProperty('data')){
             try{
-                const param = new Object               
-//                param.key = local_data.data.key
-//                param.value = local_data.data.value
+                const param = new Object
                 param.new = 1
                 param.callback = callback
                 openHTML('new_field',param,[500,0])
@@ -165,15 +157,12 @@
     local_form.querySelector('#btnAddObject').addEventListener('click',()=>{
         if(local_data.hasOwnProperty('data')){
             try{
-                const param = new Object               
-                param.key = local_data.data.key
-                param.sub_key = null
-                param.callback = addField
-                openHTML('add_object',param,[500,0])
+                const param = new Object
+                param.callback = callback
+                openHTML('new_object',param,[500,0])
             }catch{}
         }
     })
-
 
     start()
 

@@ -8,11 +8,9 @@
 </template>
 <script>
 
-    const forms = document.querySelectorAll(`#add_object`)
+    const forms = document.querySelectorAll(`#new_object`)
     const local_form = forms[forms.length-1]
     const local_data = main_data[local_form.data_name]
-
-    console.log(local_data)
 
     function start(){
         fillTable(main_data.objects,'#tblObject')
@@ -40,12 +38,18 @@
         if(data){
             const name = prompt('Digite um nome para o campo:',data.name)
             if(name!=null){
-                const obj = new Object
-                obj.type = data.key
-                obj.kind = 'object'
-                main_data.objects[local_data.key].fields[name]=obj
-                local_data.callback(main_data.objects[local_data.key].fields)
-                closeWindow('add_object')
+                const out = new Object
+                out.name = name
+                out.new = 1
+                out.type = data.key
+                out.kind = 'object'
+                out.callname = name
+                out.default = new Object
+                out.parameters = new Object
+                out.del = 0
+                out.up = 0
+                local_data.callback(out)
+                closeWindow('new_object')
             }
         }
     })

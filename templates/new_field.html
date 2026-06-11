@@ -155,9 +155,7 @@
         out.del = 0
         out.up = 0
         for (const [key, value] of Object.entries(out.parameters)) {
-            if(!value.length){
-                delete(out.parameters[key])
-            }
+            value.length ? null : delete(out.parameters[key])
         }
         local_data.callback(out)
         closeWindow('new_field')
@@ -168,23 +166,16 @@
             const out = new Object
             out.del = 1
             out.callname = local_data.key
-            console.log(local_data)
-
-//            delete(main_data.objects[local_data.key].fields[local_data.sub_key])
-//console.log(local_data)            
-            
-//            main_data.colecoes[local_data.index_col].fields.splice(local_data.index,1)
-//            local_data.fields.delete=1
-//            local_data.callback(main_data.objects[local_data.key].fields)
             local_data.callback(out)
             closeWindow('new_field')
-
         }
     })
 
     local_form.querySelector('#btn-up').addEventListener('click',()=>{
-//        main_data.colecoes[local_data.index_col].fields = bubble_arr(local_data.fields,local_data.index)
-        local_data.callback({"up":1})
+        const out = new Object
+        out.up = 1
+        out.callname = local_data.key
+        local_data.callback(out)
         closeWindow('new_field')
     })
 

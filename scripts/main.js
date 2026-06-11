@@ -238,6 +238,7 @@ function about(file){
     for (const [key, value] of Object.entries(file.fields)) {
         const opt = document.createElement('option')
         opt.data = value
+        opt.name = key
         opt.value = value
         opt.innerHTML =  key
         fields.appendChild(opt)
@@ -274,7 +275,6 @@ function enableFields(enable=1){
 }
 
 function bubble_obj(obj,key){
-console.log(obj,key)    
     const before = new Object
     const after = JSON.parse(JSON.stringify(obj))
     let last = new Object
@@ -292,9 +292,34 @@ console.log(obj,key)
             delete(after[look])
         }
     }
-    return before
+    return Object.assign(before,last)
 }
 
+function position_obj(obj,key,key_ref,next=1){
+    if(obj.hasOwnProperty(key)){
+        const before = new Object
+        const after = JSON.parse(JSON.stringify(obj))
+        const org = new Object
+        org[key] = after[key]
+        delete(after[key])
+        for (const [look, value] of Object.entries(after)) {
+            const last = new Object
+            last[look] = value
+            if(key_ref===look){
+                if(next){
+                    return Object.assign(before,last,org,after)
+                }else{
+                    return Object.assign(before,org,last,after)
+                }
+            }
+            Object.assign(before,last)
+            delete(after[look])
+        }
+        return Object.assign(before,org)
+    }else{
+        return obj
+    }
+}
 
 function bubble_arr(arr,i){
     const out = JSON.parse(JSON.stringify(arr))
