@@ -75,24 +75,31 @@ Roseta.prototype.addObject = function(obj){
     }
 }
 
-Roseta.prototype.editField = function(old_name,new_name,kind='text',def='',param={}){
-    if(old_name === new_name){
-        const index = this.fields.findIndex(p => p.name == new_name)
-        this.fields[index].kind = kind
-        this.fields[index].default = def
-        this.fields[index].parameters = param
-    }else{
-        const index = this.fields.findIndex(p => p.name == old_name)
-        this.fields.splice(index,1)
-        const fld = new Object
-        fld.name = new_name
-        fld.kind = kind
-        fld.default = def
-        fld.parameters = param
-        this.fields.push(fld)
+Roseta.prototype.editField = function(response){
+    if(response.up){
+        this.fields = bubble_obj(this.fields,response.callname)
+    }else if(response.del){
+        delete(this.fields[response.callname])
         for(let i=0; i<this.registers.length; i++){
-            this.registers[i][new_name] = this.registers[i][old_name]                
-            delete(this.registers[i][old_name])
+            delete(this.registers[i][response.callname])
+        }    
+    }else{
+        this.fields[response.name] = new Object
+        this.fields[response.name].default = response.default
+        this.fields[response.name].kind = response.kind
+        this.fields[response.name].parameters = response.parameters
+        this.fields[response.name].type = response.hasOwnProperty('type') ? response.type : response.kind
+        if(response.name != response.callname){
+            this.fields = position_obj(this.fields,response.name,response.callname)
+            delete(this.fields[response.callname])
+        }
+        for(let i=0; i<this.registers.length; i++){
+            if(response.name != response.callname){
+                this.registers[i][response.name] = this.registers[i][response.callname]                
+                delete(this.registers[i][response.callname])
+            }else{
+                this.registers[i][response.name] = this.fields[response.name].default
+            }
         }
     }
 }

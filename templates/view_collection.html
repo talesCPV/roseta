@@ -178,7 +178,7 @@
     }
 
     function goto(indice=1,go=0){
-        if(local_data.registers.length){
+        if(local_data.registers.length){          
             indice = go ? indice : Number(local_form.querySelector('#edt-goto').value) + indice
             indice = indice > local_data.registers.length-1 ? local_data.registers.length -1 : (indice<0 ? 0 : indice)
             local_form.querySelector('#edt-goto').value = indice
@@ -243,8 +243,7 @@
         const imgs = local_form.querySelector('.slideshow')
         imgs.innerHTML = ''
 
-        for (let i=0; i<local_data.fields.length; i++) {
-            const key = local_data.fields[i].name
+        for (const [key] of Object.entries(local_data.fields)) {
             const value = reg[key]
             const row = document.createElement('tr')
             row.data = key
@@ -278,28 +277,24 @@
     })
 
     local_form.querySelector('#btn-add').addEventListener('click',()=>{
-
         const reg = new Object
-        for(let i=0; i<local_data.fields.length; i++){
-            if(local_data.fields[i].kind==='object'){
-                console.log(local_data.fields[i])
-                console.log(main_data.objects)
-/*                
-                const def = JSON.parse(JSON.stringify(local_data.objects[index]))
+        for (const [key, value] of Object.entries(local_data.fields)) {
+            if(value.kind==='object'){
+                const def = JSON.parse(JSON.stringify(main_data.objects[value.type]))
+                def.name = key
                 def.kind = 'object'
-                def.file = nome+'.rst'
-                def.categoria = local_data.objects[index].name
+                def.file = local_data.file
+                def.categoria = value.type
                 def.registers = []
-*/
-
-
+                reg[key]= def
+            }else{
+                reg[key]=value.default
             }
-
-            reg[local_data.fields[i].name] = JSON.parse(JSON.stringify(local_data.fields[i].default))
         }
-        local_data.registers.push(reg)
+        local_data.registers.push(reg)        
         index = local_data.registers.length-1
         goto(index,1)
+        save()  
     })
 
     local_form.querySelector('#btn-del').addEventListener('click',()=>{
@@ -321,6 +316,9 @@
     local_form.querySelector('#tblRegisters').addEventListener('click',(e)=>{
         const target = ['TD','TH'].includes(e.target.tagName) ? e.target.parentNode : e.target.tagName=='TR' ? e.target : null
         const data = target.data
+        console.log(data)
+        console.log(local_data.registers[index])
+/*        
         const obj = new Object
         obj.field = local_data.fields[local_data.fields.findIndex(p => p.name == target.data)]
         obj.value = local_data.registers[index][target.data]
@@ -336,7 +334,7 @@
         }else{
             openHTML('edit_field',obj,[500,0])
         }
-
+*/
     })
 
     local_form.querySelector('#btn-save').addEventListener('click',()=>{

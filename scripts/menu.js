@@ -126,22 +126,7 @@ document.querySelector('#about-fields').addEventListener('click',()=>{
 
 function editField(response){
     const index = findColecao(document.querySelector('.registros').data.file)
-    const fields = main_data.colecoes[index].fields
-    if(response.up){
-        main_data.colecoes[index].fields = bubble_obj(fields,response.callname)
-    }else if(response.del){
-        delete(fields[response.callname])
-    }else{
-        fields[response.name] = new Object
-        fields[response.name].default = response.default
-        fields[response.name].kind = response.kind
-        fields[response.name].parameters = response.parameters
-        fields[response.name].type = response.hasOwnProperty('type') ? response.type : response.kind
-        if(response.name != response.callname){
-            main_data.colecoes[index].fields = position_obj(fields,response.name,response.callname)
-            delete(main_data.colecoes[index].fields[response.callname])
-        }
-    }
+    main_data.colecoes[index].editField(response)
     about(main_data.colecoes[index])
     saveColecao(index)
 }
