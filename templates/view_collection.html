@@ -170,6 +170,7 @@
 
     function save(){
         saveColecao(findColecao(local_data.file))
+        goto(index,1)
     }
 
     function start(){
@@ -246,7 +247,7 @@
         for (const [key] of Object.entries(local_data.fields)) {
             const value = reg[key]
             const row = document.createElement('tr')
-            row.data = key
+            row.key = key
             const label = document.createElement('th')
             label.innerHTML = key
             row.appendChild(label)
@@ -315,26 +316,22 @@
 
     local_form.querySelector('#tblRegisters').addEventListener('click',(e)=>{
         const target = ['TD','TH'].includes(e.target.tagName) ? e.target.parentNode : e.target.tagName=='TR' ? e.target : null
-        const data = target.data
-        console.log(data)
-        console.log(local_data.registers[index])
-/*        
         const obj = new Object
-        obj.field = local_data.fields[local_data.fields.findIndex(p => p.name == target.data)]
-        obj.value = local_data.registers[index][target.data]
+        obj.field = local_data.fields[target.key]
+        obj.default = local_data.registers[index][target.key]
+        obj.key = target.key
         obj.file = local_data.file
-        obj.callback = (value)=>{
-            target.querySelector('td').innerHTML = value
-            local_data.registers[index][target.data] = value
+        obj.callback = (response)=>{
+            local_data.registers[index][target.key] = response
             save()
         }
 
         if(obj.field.kind=='object'){
-            openHTML('view_collection',local_data.registers[index][target.data])
+            openHTML('view_collection',obj.default)
         }else{
             openHTML('edit_field',obj,[500,0])
         }
-*/
+
     })
 
     local_form.querySelector('#btn-save').addEventListener('click',()=>{

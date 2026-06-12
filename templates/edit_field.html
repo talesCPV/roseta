@@ -59,9 +59,9 @@
 
         const el = newElement(local_data.field.kind)
         local_form.querySelector('.input-place').appendChild(el)        
-        local_form.querySelector('.window-title').innerHTML = local_data.field.name
-        local_form.querySelector('#lblField').innerHTML = local_data.field.name
-        local_form.querySelector('#edtValue').value = local_data.value
+        local_form.querySelector('.window-title').innerHTML = local_data.key
+        local_form.querySelector('#lblField').innerHTML = local_data.key
+        local_form.querySelector('#edtValue').value = local_data.default
         el.focus()
         el.select()
         if(local_data.field.kind!='textarea'){

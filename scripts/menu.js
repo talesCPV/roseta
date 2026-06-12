@@ -109,7 +109,11 @@ document.querySelector('#about-novo-campo').addEventListener('click',()=>{
 
 document.querySelector('#about-novo-objeto').addEventListener('click',()=>{
     const param = new Object
-    param.callback = editField
+    param.callback = (response)=>{
+        response.default.file = document.querySelector('.registros').data.file
+        editField(response)
+    }
+    
     openHTML('new_object',param,[500,0])
 })
 

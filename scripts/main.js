@@ -93,12 +93,10 @@ Roseta.prototype.editField = function(response){
             this.fields = position_obj(this.fields,response.name,response.callname)
             delete(this.fields[response.callname])
         }
-        for(let i=0; i<this.registers.length; i++){
+        for(let i=0; i<this.registers.length; i++){            
+            this.registers[i][response.name] = this.registers[i].hasOwnProperty('') ? this.registers[i][response.callname] : response.default
             if(response.name != response.callname){
-                this.registers[i][response.name] = this.registers[i][response.callname]                
                 delete(this.registers[i][response.callname])
-            }else{
-                this.registers[i][response.name] = this.fields[response.name].default
             }
         }
     }

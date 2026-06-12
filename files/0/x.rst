@@ -1,1 +1,0 @@
-{"name":"x","file":"x.rst","categoria":"Revista","fields":{"Nome":{"default":"[não identificado]","kind":"text","parameters":{"Schema.org":"name","Dublin Core":"name"}},"Artigo":{"type":"Artigo","kind":"object"}},"registers":[]}

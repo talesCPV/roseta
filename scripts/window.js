@@ -32,6 +32,8 @@ function newWindow(id,ttl,body,script,data={},dimension){
 
         const form = document.createElement('div')
         form.className = 'window-form'
+        form.style.top = `${index*25}px`
+        form.style.left = `${index*10}px`
         if(dimension[0] >=0 && dimension[1]>=0){
             form.style.width =  dimension[0] ? `${dimension[0]}px` : 'auto'
             form.style.height = dimension[1] ? `${dimension[1]}px` : 'auto'

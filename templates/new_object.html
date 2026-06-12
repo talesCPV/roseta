@@ -45,6 +45,10 @@
                 out.kind = 'object'
                 out.callname = name
                 out.default = new Object
+                out.default.categoria = data.key
+                out.default.fields = main_data.objects[data.key].fields
+                out.default.name = name
+                out.default.registers = []
                 out.parameters = new Object
                 out.del = 0
                 out.up = 0
