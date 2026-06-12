@@ -255,15 +255,14 @@
 
             let valor = value
             if(typeof(valor)=='object'){
+                valor = 'ver detalhes...'
                 if(valor.registers.length){
                     for (const [key,value] of Object.entries(valor.registers[0])) {
-                        if(typeof(value)!='object' && typeof(valor)=='object'){
+                        if(typeof(value)!='object' && valor == 'ver detalhes...'){
                             valor = value
                             break
                         }
-                    }
-                }else{
-                    valor = 'ver detalhes...'
+                    }                    
                 }
             }
             text.innerHTML = valor //typeof(value)!='object' ? value : 'ver detalhes...'

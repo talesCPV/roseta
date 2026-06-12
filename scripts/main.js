@@ -12,11 +12,11 @@ document.querySelector('.categoria-close').addEventListener('click',()=>{
     */
 
 class Roseta{
-    constructor(name,categoria=''){
+    constructor(name,object=''){
         this.name = name
         this.file = name+'.rst'
-        this.categoria = categoria
-        this.fields = []
+        this.categoria = object
+        this.fields = new Object
         this.registers = []
     }
 }
@@ -104,6 +104,9 @@ Roseta.prototype.editField = function(response){
 
 Roseta.prototype.newRecord = function(record){
     const reg = new Object
+console.log(record)
+    for (const [key, value] of Object.entries(record)) {
+/*        
     for(let i=0; i<record.length; i++){
         try{
             const fullfield = record[i].field.split(',')
@@ -114,6 +117,8 @@ Roseta.prototype.newRecord = function(record){
             }
         }catch{null}
     }
+*/
+    }        
     this.registers.push(reg)
 }
 
@@ -132,8 +137,32 @@ Roseta.prototype.editRegister = function(index,field,value){
     this.registers[index][field] = value
 }
 
-Roseta.prototype.importCSV = function(csv){
+Roseta.prototype.importCSV = function(csv,separator){
+    separator = Array.isArray(separator) ? separator : ['|',',']
+    function split(line,sep){
+        line = line.replaceAll(', ', '*|**|*')
+        const arr = line.split(sep)
+        for(let i=0; i<arr.length; i++){
+            arr[i] = arr[i].replaceAll('*|**|*', ', ')
+        }
+        return arr
+    }
 
+    const lines = csv.split('\n')
+    const head = lines[0].split('|')
+
+//    for (const [key, value] of Object.entries(file.fields)) {
+    for(let i=1; i<lines.length; i++){
+        const line = split(lines[i],separator[1])
+
+        for(let j=0; j<Math.max(head.length,line.length); j++){
+        
+        }
+
+    }
+
+
+/*
     function splitComa(line){
         line = line.replaceAll(', ', '*|**|*')
         const arr = line.split(',')
@@ -144,7 +173,6 @@ Roseta.prototype.importCSV = function(csv){
     }
 
     const lines = csv.split('\n')
-//    lines[0] = lines[0].replaceAll('taxonomy|', '')
     const head = lines[0].split('|')
 
     for(let i=1; i<lines.length; i++){
@@ -156,8 +184,12 @@ Roseta.prototype.importCSV = function(csv){
             reg.value = j<line.length ? line[j] : ''
             record.push(reg)
         }
-        this.newRecord(record)
+
+
+       this.newRecord(record)
+
     }
+*/
 }
 
 
@@ -254,7 +286,7 @@ function openCSV(file){
     if (file) {
         const reader = new FileReader()
         reader.onload = (e) => {
-            const csv = e.target.result              
+            const csv = e.target.result
             const roseta =  new Roseta(file.name,'DEFAULT')                        
             roseta.importCSV(csv)
             addColecao(roseta)
