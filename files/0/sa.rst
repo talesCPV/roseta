@@ -1,1 +1,0 @@
-{"name":"sa","file":"sa.rst","categoria":"Revista","fields":{"Nome":{"default":"[não identificado]","kind":"text","parameters":{"Schema.org":"name","Dublin Core":"name"}}},"registers":[]}

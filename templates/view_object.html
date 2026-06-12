@@ -158,7 +158,15 @@
         if(local_data.hasOwnProperty('data')){
             try{
                 const param = new Object
-                param.callback = callback
+                param.callback = (response)=>{
+                    const fields = main_data.objects[local_data.data.key].fields
+                    fields[response.name] = new Object
+                    fields[response.name].kind = response.kind
+                    fields[response.name].parameters = response.parameters
+                    fields[response.name].type = response.hasOwnProperty('type') ? response.type : response.kind
+                    fillTable(main_data.objects[local_data.data.key].fields,'#tblFields')
+                    saveFile(main_data.objects,'/../files/config/','object.json')
+                }
                 openHTML('new_object',param,[500,0])
             }catch{}
         }
