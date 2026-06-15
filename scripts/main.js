@@ -93,8 +93,8 @@ Roseta.prototype.editField = function(response){
             this.fields = position_obj(this.fields,response.name,response.callname)
             delete(this.fields[response.callname])
         }
-        for(let i=0; i<this.registers.length; i++){            
-            this.registers[i][response.name] = this.registers[i].hasOwnProperty('') ? this.registers[i][response.callname] : response.default
+        for(let i=0; i<this.registers.length; i++){    
+            this.registers[i][response.name] = this.registers[i][response.callname]
             if(response.name != response.callname){
                 delete(this.registers[i][response.callname])
             }
@@ -149,47 +149,35 @@ Roseta.prototype.importCSV = function(csv,separator){
     }
 
     const lines = csv.split('\n')
-    const head = lines[0].split('|')
+    const head = split(lines[0],separator[0])
+    let noname = 0
+    this.fields = new Object
+    for(let i=0; i<head.length; i++){
+        if(!head[i].trim().length){
+            noname++
+            head[i] = `no_name-${noname}`
+        }
+        this.fields[head[i]] = new Object
+        this.fields[head[i]].default = ''
+        this.fields[head[i]].kind = 'text'
+        this.fields[head[i]].parameters = new Object
+    }
 
-//    for (const [key, value] of Object.entries(file.fields)) {
+    this.registers = []
     for(let i=1; i<lines.length; i++){
         const line = split(lines[i],separator[1])
-
+        const reg = new Object
         for(let j=0; j<Math.max(head.length,line.length); j++){
-        
+            if(i==1){
+                if(j>=head.length){
+                    noname++
+                    head[j] = `no_name-${noname}`
+                }
+            }
+            reg[head[j]] = line[j]!= undefined ? line[j] : ''            
         }
-
+        this.registers.push(reg)
     }
-
-
-/*
-    function splitComa(line){
-        line = line.replaceAll(', ', '*|**|*')
-        const arr = line.split(',')
-        for(let i=0; i<arr.length; i++){
-            arr[i] = arr[i].replaceAll('*|**|*', ', ')
-        }
-        return arr
-    }
-
-    const lines = csv.split('\n')
-    const head = lines[0].split('|')
-
-    for(let i=1; i<lines.length; i++){
-        const line = splitComa(lines[i])
-        const record = []
-        for(let j=0; j<Math.max(head.length,line.length); j++){
-            const reg = new Object
-            reg.field = j<head.length ? head[j] : ''
-            reg.value = j<line.length ? line[j] : ''
-            record.push(reg)
-        }
-
-
-       this.newRecord(record)
-
-    }
-*/
 }
 
 

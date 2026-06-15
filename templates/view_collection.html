@@ -243,7 +243,6 @@
         tbl.innerHTML = ''
         const imgs = local_form.querySelector('.slideshow')
         imgs.innerHTML = ''
-
         for (const [key] of Object.entries(local_data.fields)) {
             const value = reg[key]
             const row = document.createElement('tr')
@@ -255,17 +254,19 @@
 
             let valor = value
             if(typeof(valor)=='object'){
-                valor = 'ver detalhes...'
                 if(valor.registers.length){
                     for (const [key,value] of Object.entries(valor.registers[0])) {
-                        if(typeof(value)!='object' && valor == 'ver detalhes...'){
+                        valor = 'ver detalhes...'
+                        if(typeof(value)!='object'){
                             valor = value
                             break
                         }
                     }                    
                 }
+
             }
-            text.innerHTML = valor //typeof(value)!='object' ? value : 'ver detalhes...'
+
+            text.innerHTML = typeof(valor)!='object' ? valor : 'ver detalhes...'
            
             row.appendChild(text)
             tbl.appendChild(row)
