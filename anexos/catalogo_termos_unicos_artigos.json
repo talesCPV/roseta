@@ -1,189 +1,189 @@
 { 
-  "nome" : "artigos",
+  "objeto" : "artigos",
   "campos" :[
   {
-    "Campo": "Identificador IndexAB",
+    "nome": "Identificador IndexAB",
     "tipo" : "text",
-    "default" : "",
-    "Wikidata": "wdt:P528 + qualificador wdt:P972",
+    "padrao" : "",
+    "Wikidata": "wdt:P528",
     "schema.org": "schema:identifier",
-    "DublinCore_ou_outros": "dcterms:identifier"
+    "DublinCore": "dcterms:identifier"
   },
   {
-    "Campo": "Autor",
+    "nome": "Autor",
     "tipo" : "text",
-    "default" : "",
-    "Wikidata": "wdt:P50; se sem item, wdt:P2093",
+    "padrao" : "",
+    "Wikidata": "wdt:P50",
     "schema.org": "schema:author",
-    "DublinCore_ou_outros": "dcterms:creator"
+    "DublinCore": "dcterms:creator"
   },
   {
-    "Campo": "Colaborador",
+    "nome": "Colaborador",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P767",
     "schema.org": "schema:contributor",
-    "DublinCore_ou_outros": "dcterms:contributor"
+    "DublinCore": "dcterms:contributor"
   },
   {
-    "Campo": "Seção da revista",
+    "nome": "Seção da revista",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P958",
     "schema.org": "schema:articleSection",
-    "DublinCore_ou_outros": ""
+    "DublinCore": ""
   },
   {
-    "Campo": "Idioma",
+    "nome": "Idioma",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P407",
     "schema.org": "schema:inLanguage",
-    "DublinCore_ou_outros": "dcterms:language"
+    "DublinCore": "dcterms:language"
   },
   {
-    "Campo": "Idioma 2",
+    "nome": "Idioma 2",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P407",
     "schema.org": "schema:inLanguage",
-    "DublinCore_ou_outros": "dcterms:language"
+    "DublinCore": "dcterms:language"
   },
   {
-    "Campo": "Idioma 3",
+    "nome": "Idioma 3",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P407",
     "schema.org": "schema:inLanguage",
-    "DublinCore_ou_outros": "dcterms:language"
+    "DublinCore": "dcterms:language"
   },
   {
-    "Campo": "Tipo de artigo",
+    "nome": "Tipo de artigo",
     "tipo" : "text",
-    "default" : "",
-    "Wikidata": "wdt:P31 / wdt:P136",
+    "padrao" : "",
+    "Wikidata": "wdt:P31",
     "schema.org": "schema:genre / schema:additionalType",
-    "DublinCore_ou_outros": "fabio:isRepresentationOf"
+    "DublinCore": "fabio:isRepresentationOf"
   },
   {
-    "Campo": "Título do artigo",
+    "nome": "Título do artigo",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P1476",
     "schema.org": "schema:headline / schema:name",
-    "DublinCore_ou_outros": "dcterms:title"
+    "DublinCore": "dcterms:title"
   },
   {
-    "Campo": "Título da revista",
+    "nome": "Título da revista",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P1433",
     "schema.org": "schema:isPartOf",
-    "DublinCore_ou_outros": "dcterms:isPartOf"
+    "DublinCore": "dcterms:isPartOf"
   },
   {
-    "Campo": "Local",
+    "nome": "Local",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P291",
     "schema.org": "schema:locationCreated",
-    "DublinCore_ou_outros": "dcterms:spatial"
+    "DublinCore": "dcterms:spatial"
   },
   {
-    "Campo": "Volume",
+    "nome": "Volume",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P478",
     "schema.org": "schema:volumeNumber",
-    "DublinCore_ou_outros": "bibo:volume"
+    "DublinCore": "bibo:volume"
   },
   {
-    "Campo": "Número",
+    "nome": "Número",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P433",
     "schema.org": "schema:issueNumber",
-    "DublinCore_ou_outros": "bibo:issue"
+    "DublinCore": "bibo:issue"
   },
   {
-    "Campo": "Paginação",
+    "nome": "Paginação",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P304",
     "schema.org": "schema:pagination",
-    "DublinCore_ou_outros": "bibo:pageStart"
+    "DublinCore": "bibo:pageStart"
   },
   {
-    "Campo": "Mês",
+    "nome": "Mês",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P577",
     "schema.org": "schema:datePublished",
-    "DublinCore_ou_outros": "dcterms:issued"
+    "DublinCore": "dcterms:issued"
   },
   {
-    "Campo": "Ano",
+    "nome": "Ano",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P577",
     "schema.org": "schema:datePublished",
-    "DublinCore_ou_outros": "dcterms:date"
+    "DublinCore": "dcterms:date"
   },
   {
-    "Campo": "Nota",
+    "nome": "Nota",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "",
     "schema.org": "schema:description",
-    "DublinCore_ou_outros": "dcterms:description"
+    "DublinCore": "dcterms:description"
   },
   {
-    "Campo": "Assunto",
+    "nome": "Assunto",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P921",
     "schema.org": "schema:about",
-    "DublinCore_ou_outros": "dcterms:subject"
+    "DublinCore": "dcterms:subject"
   },
   {
-    "Campo": "Assunto",
+    "nome": "Assunto",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "",
     "schema.org": "",
-    "DublinCore_ou_outros": "dcterms:subject"
+    "DublinCore": "dcterms:subject"
   },
   {
-    "Campo": "Tipo",
+    "nome": "Tipo",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P31",
-    "schema.org": "@type / schema:additionalType",
-    "DublinCore_ou_outros": "dcterms:type"
+    "schema.org": "schema:additionalType",
+    "DublinCore": "dcterms:type"
   },
   {
-    "Campo": "Coleção",
+    "nome": "Coleção",
     "tipo" : "text",
-    "default" : "",
-    "Wikidata": "wdt:P195 / wdt:P361",
+    "padrao" : "",
+    "Wikidata": "wdt:P195",
     "schema.org": "schema:isPartOf",
-    "DublinCore_ou_outros": ""
+    "DublinCore": ""
   },
   {
-    "Campo": "Direitos",
+    "nome": "Direitos",
     "tipo" : "text",
-    "default" : "",
-    "Wikidata": "wdt:P6216 / wdt:P275",
-    "schema.org": "schema:copyrightNotice / schema:license",
-    "DublinCore_ou_outros": "dcterms:rights"
+    "padrao" : "",
+    "Wikidata": "wdt:P6216",
+    "schema.org": "schema:copyrightNotice",
+    "DublinCore": "dcterms:rights"
   },
   {
-    "Campo": "Acervo",
+    "nome": "Acervo",
     "tipo" : "text",
-    "default" : "",
+    "padrao" : "",
     "Wikidata": "wdt:P3931",
     "schema.org": "schema:copyrightHolder",
-    "DublinCore_ou_outros": "dcterms:rightsholder"
+    "DublinCore": "dcterms:rightsholder"
   }
 ]
 

@@ -103,7 +103,7 @@ function showFiles(path){
 }
 
 function loadObjects(){
-    return loadFile('/../files/config/object.json')
+    return loadFile('/../../roseta_files/config/object.json')
     .then(text=>{
         try{
             main_data.objects = JSON.parse(text)
@@ -123,7 +123,7 @@ function loadUserFiles(user_id){
     async function addRegisters(json){
         let i=2
         while(i<json.length){
-            await fetch(`files/${user_id}/${json[i]}`, 
+            await fetch(`../roseta_files/${user_id}/${json[i]}`, 
                 {
                     cache: 'no-store'
                 })
@@ -138,7 +138,7 @@ function loadUserFiles(user_id){
         }
     }
 
-    showFiles(`files/${user_id}/`).then((resolve)=>{
+    showFiles(`../roseta_files/${user_id}/`).then((resolve)=>{
         const json = JSON.parse(resolve)
         addRegisters(json)          
     })

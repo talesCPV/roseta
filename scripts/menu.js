@@ -70,7 +70,7 @@ document.querySelector('#about-edit-file').addEventListener('click',()=>{
     const file = prompt('Nome do arquivo:',document.querySelector('#about-file').innerHTML)
     if(file!=null){
         const index = findColecao(document.querySelector('.registros').data.file)
-        renameFile(`/../files/${main_data.user_id}/${main_data.colecoes[index].file}`,`/../files/${main_data.user_id}/${file}`)
+        renameFile(`/../../roseta_files/${main_data.user_id}/${main_data.colecoes[index].file}`,`/../../roseta_files/${main_data.user_id}/${file}`)
         .then(()=>{
             editColecao(index,'file',file)
             .then(()=>{

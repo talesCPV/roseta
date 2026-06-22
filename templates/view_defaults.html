@@ -20,7 +20,7 @@
     }
 
     function loadDefaults(){
-        loadFile('/../files/config/defaults.json')
+        loadFile('/../../roseta_files/config/defaults.json')
         .then( text => {
             try{
                 local_data.defaults = JSON.parse(text)
@@ -61,7 +61,7 @@
                 nw.name = name
                 nw.site = ''
                 local_data.defaults[name] = nw
-                saveFile(local_data.defaults,'/../files/config/','defaults.json')
+                saveFile(local_data.defaults,'/../../roseta_files/config/','defaults.json')
                 .then(()=>{
                     fillTable(local_data.defaults)
                 })
@@ -76,7 +76,7 @@
         if(confirm(`Deseja deletar o padrão ${e.target.name}?`)){
             delete(local_data.defaults[e.target.name])
             e.target.remove()
-            saveFile(local_data.defaults,'/../files/config/','defaults.json')
+            saveFile(local_data.defaults,'/../../roseta_files/config/','defaults.json')
         }
     })
 

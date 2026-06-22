@@ -16,7 +16,11 @@
             flex-direction: column;
             justify-content: center;
             gap: 10px;
-        }        
+        }
+
+        .line{
+            justify-content: center;
+        }
 
     </style>
 
@@ -25,14 +29,20 @@
         <fieldset>
             <legend>Objetos</legend>
             <table id="tblObjetos"></table>
-            <button id="btnNewObj">Novo Objeto</button>
+            <div class="line">
+                <button id="btnNewObj" title="Novo Objeto">Novo</button>
+                <button id="btnImport" title="Importar Objeto">Importar</button>
+                <button id="btnExport" title="Exportar Objeto">Exportar</button>
+            </div>
         </fieldset>
 
         <fieldset>
             <legend>Campos</legend>
             <table id="tblFields"></table>
-            <button id="btnAddField">Novo Campo</button>
-            <button id="btnAddObject">Adicionar Objeto</button>
+            <div class="line">
+                <button id="btnAddField" title="Novo Campo">Novo</button>
+                <button id="btnAddObject" title="Adicionar Objeto">Adicionar Objeto</button>
+            </div>
         </fieldset>
     </div>
 
@@ -59,6 +69,10 @@
             const td = document.createElement('td')
             td.innerHTML = key
             tr.appendChild(td)
+            markLine(tr,tr.data)
+            if(id_table=='#tblObjetos'){
+                fillTable(tr.data.value.fields,'#tblFields')
+            }
         }
     }
 
@@ -68,7 +82,7 @@
             if(!main_data.objects.hasOwnProperty(name)){
                 main_data.objects[name] = new Object
                 main_data.objects[name].fields = new Object
-                saveFile(main_data.objects,'/../files/config/','object.json')
+                saveFile(main_data.objects,'/../../roseta_files/config/','object.json')
                 .then(()=>{
                     fillTable(main_data.objects,'#tblObjetos')
                 })
@@ -88,6 +102,7 @@
     }
 
     function callback(response){
+console.log(response)
         const fields = main_data.objects[local_data.data.key].fields
         if(response.up){
             main_data.objects[local_data.data.key].fields = bubble_obj(fields,response.callname)
@@ -105,7 +120,7 @@
             }
         }
         fillTable(main_data.objects[local_data.data.key].fields,'#tblFields')
-        saveFile(main_data.objects,'/../files/config/','object.json')
+        saveFile(main_data.objects,'/../../roseta_files/config/','object.json')
     }
 
     local_form.querySelector('#tblObjetos').addEventListener('click',(e)=>{
@@ -125,7 +140,7 @@
                 delete(main_data.objects[data.key])
                 target.remove()
                 local_form.querySelector('#tblFields').innerHTML = ''
-                saveFile(main_data.objects,'/../files/config/','object.json')
+                saveFile(main_data.objects,'/../../roseta_files/config/','object.json')
             }
         }
     })
@@ -165,11 +180,61 @@
                     fields[response.name].parameters = response.parameters
                     fields[response.name].type = response.hasOwnProperty('type') ? response.type : response.kind
                     fillTable(main_data.objects[local_data.data.key].fields,'#tblFields')
-                    saveFile(main_data.objects,'/../files/config/','object.json')
+                    saveFile(main_data.objects,'/../../roseta_files/config/','object.json')
                 }
                 openHTML('new_object',param,[500,0])
             }catch{}
         }
+    })
+
+    local_form.querySelector('#btnImport').addEventListener('click',()=>{
+        const file = document.createElement('input')
+        file.type = 'file'
+        file.accept = '.json'
+        file.click()
+        file.addEventListener('change',(e)=>{
+            const reader = new FileReader()
+            reader.onload = (e) => {
+                const json = JSON.parse(e.target.result)
+                if(json.hasOwnProperty('objeto') && json.hasOwnProperty('campos') && Array.isArray(json.campos)){
+                    let name = json.objeto
+                    let i = 0
+                    while(main_data.objects.hasOwnProperty(name)){
+                        i++
+                        name = json.objeto+'_'+i
+                    }
+
+                    main_data.objects[name] = new Object
+                    main_data.objects[name].fields = new Object
+                    for(let i=0; i<json.campos.length; i++){
+                        if(json.campos[i].hasOwnProperty('nome')){
+                            const parameters = new Object
+                            for (const [key, value] of Object.entries(json.campos[i])) {
+                                if(!['nome','tipo','padrao'].includes(key)){
+                                    parameters[key.toLowerCase().trim()] = value
+                                }
+                            }
+                            main_data.objects[name].fields[json.campos[i].nome] = new Object
+                            main_data.objects[name].fields[json.campos[i].nome].default = json.campos[i].hasOwnProperty('padrao')? json.campos[i].padrao : ''
+                            main_data.objects[name].fields[json.campos[i].nome].kind = json.campos[i].hasOwnProperty('tipo')? json.campos[i].tipo : 'text'
+                            main_data.objects[name].fields[json.campos[i].nome].parameters = parameters
+                            main_data.objects[name].fields[json.campos[i].nome].type = main_data.objects[name].fields[json.campos[i].nome].kind
+                        }
+                    }
+                    saveFile(main_data.objects,'/../../roseta_files/config/','object.json')
+                    .then(()=>{
+                        fillTable(main_data.objects,'#tblObjetos')
+                    })
+
+                }else{
+                    alert('Arquivo json não esta em um formato válido.')
+                }
+
+
+            }
+            reader.readAsText(e.target.files[0])
+        })
+
     })
 
     start()

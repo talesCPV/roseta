@@ -247,7 +247,7 @@ function saveColecao(index,filename=''){
     const roseta = main_data.colecoes[index]
     if(roseta != undefined){
         filename =  filename.length ? filename : roseta.file
-        saveFile(roseta,`/../files/${main_data.user_id}/`,filename)
+        saveFile(roseta,`/../../roseta_files/${main_data.user_id}/`,filename)
     }
 }
 
