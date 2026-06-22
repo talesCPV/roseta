@@ -144,3 +144,24 @@ function loadUserFiles(user_id){
     })
 
 }
+
+function saveBinaryFile(bytes, fileName, mimeType = 'application/octet-stream') {
+    // 1. Create a Blob object from the binary data
+    const blob = new Blob([bytes], { type: mimeType });
+  
+    // 2. Generate a temporary local URL pointing to the Blob
+    const blobUrl = URL.createObjectURL(blob);
+  
+    // 3. Create a hidden anchor element
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = fileName;
+  
+    // 4. Append to the DOM, trigger the download click, and clean up
+    this.document.body.appendChild(link);
+    link.click();
+    
+    // 5. Free up memory and remove the element
+    document.body.removeChild(link);
+    URL.revokeObjectURL(blobUrl);
+  }

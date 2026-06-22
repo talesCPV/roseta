@@ -180,13 +180,46 @@ Roseta.prototype.importCSV = function(csv,separator){
     }
 }
 
-
 Roseta.prototype.importJSON = function(json){
     this.name = json.name
     this.categoria = json.categoria
     this.fields = json.fields
     this.registers = json.registers
 }
+
+Roseta.prototype.exportCSV = function(separator='|'){
+    let out = ''
+    for(let i=0; i<this.registers.length; i++){
+        let line = ''
+        for (const [key, value] of Object.entries(this.fields)) {
+            if(i==0){
+                out+=key+separator
+            }
+
+            let valor = this.registers[i][key]
+            if(typeof(valor)=='object'){
+                if(valor.registers.length){
+                    for (const [key,value] of Object.entries(valor.registers[0])) {
+                        valor = '...'
+                        if(typeof(value)!='object'){
+                            valor = value
+                            break
+                        }
+                    }                    
+                }
+
+            }
+            line += valor+separator
+//            line+=this.registers[i][key]+separator
+        }
+        out += '\r\n'+line
+    }
+
+    saveBinaryFile(out,this.name+'.csv')
+
+//    return out
+}
+
 
 function findColecao(file){
     try{

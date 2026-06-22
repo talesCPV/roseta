@@ -12,6 +12,13 @@ document.querySelector('#menu-padroes').addEventListener('click',()=>{
     openHTML('view_defaults',{},[600,0])
 })
 
+document.querySelector('#menu-export-csv').addEventListener('click',()=>{
+    const data = document.querySelector('.registros').data
+    if(data!=undefined){
+        data.exportCSV('|')
+    }
+})
+
 /* DOM */
 
 document.querySelector('#cmb-colecoes').addEventListener('click',()=>{
