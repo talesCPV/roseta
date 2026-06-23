@@ -69,7 +69,6 @@
             const td = document.createElement('td')
             td.innerHTML = key
             tr.appendChild(td)
-            markLine(tr,tr.data)
             if(id_table=='#tblObjetos'){
                 fillTable(tr.data.value.fields,'#tblFields')
             }
@@ -92,7 +91,7 @@
         }
     })
 
-    function markLine(line,data={}){
+    function markLine(line,data={}){     
         const rows = line.parentNode.rows
         for(let i=0; i<rows.length; i++){
             rows[i].classList.remove('mark')
@@ -102,7 +101,6 @@
     }
 
     function callback(response){
-console.log(response)
         const fields = main_data.objects[local_data.data.key].fields
         if(response.up){
             main_data.objects[local_data.data.key].fields = bubble_obj(fields,response.callname)
@@ -235,6 +233,27 @@ console.log(response)
             reader.readAsText(e.target.files[0])
         })
 
+    })
+
+    local_form.querySelector('#btnExport').addEventListener('click',()=>{
+        const out = new Object
+        out.objeto = local_data.data.key
+        out.campos = []
+        for (const [key, value] of Object.entries(main_data.objects[local_data.data.key].fields)) {
+            const field = new Object
+            field.nome = key
+            field.tipo = value.kind
+            if(value.kind=='object'){
+                console.log(value.kind)                            
+                field.objeto = value.type
+            }
+            field.padrao = value.default
+            for (const [f_key, f_value] of Object.entries(value.parameters)) {
+                field[f_key] = f_value
+            }
+            out.campos.push(field)
+        }
+        saveBinaryFile(JSON.stringify(out),out.objeto+'.json')        
     })
 
     start()
