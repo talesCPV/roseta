@@ -272,7 +272,7 @@ function delColecao(file){
         if(colec.options[index].data.name == main_data.colecoes[index].name){
             colec.options[index].remove()
             const filename =  main_data.colecoes[index].file
-            delFile(`/../files/${main_data.user_id}/${filename}`)
+            delFile(`/../../roseta_files/${main_data.user_id}/${filename}`)
             .then((response)=>{
                 resolve('ok')
                 main_data.colecoes.splice(index,1)

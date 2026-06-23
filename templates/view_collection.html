@@ -171,6 +171,7 @@
     function save(){
         saveColecao(findColecao(local_data.file))
         goto(index,1)
+        about(main_data.colecoes[findColecao(local_data.file)])
     }
 
     function start(){

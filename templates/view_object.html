@@ -30,6 +30,7 @@
             <legend>Objetos</legend>
             <table id="tblObjetos"></table>
             <div class="line">
+                <button id="btnDelObj" title="Deletar Objeto">Deletar</button>
                 <button id="btnNewObj" title="Novo Objeto">Novo</button>
                 <button id="btnImport" title="Importar Objeto">Importar</button>
                 <button id="btnExport" title="Exportar Objeto">Exportar</button>
@@ -130,15 +131,19 @@
         }
     })
 
-    local_form.querySelector('#tblObjetos').addEventListener('dblclick',(e)=>{
-        const target = e.target.tagName=='TD'? e.target.parentNode : e.target
-        const data = target.data
-        if(data){
-            if(confirm(`Deseja deletar este Objeto? ${data.key}?`)){
-                delete(main_data.objects[data.key])
-                target.remove()
-                local_form.querySelector('#tblFields').innerHTML = ''
-                saveFile(main_data.objects,'/../../roseta_files/config/','object.json')
+    local_form.querySelector('#btnDelObj').addEventListener('click',()=>{
+        if(local_data.hasOwnProperty('data')){            
+            const data = main_data.objects[local_data.data.key]
+            if(data){
+                if(confirm(`                    ATENÇÂO\n\r\nEsta operação é irreversível!\n\nDeseja deletar o objeto ${local_data.data.key}?`)){
+                    delete(main_data.objects[local_data.data.key])
+//                    target.remove()
+//                    local_form.querySelector('#tblFields').innerHTML = ''
+                    saveFile(main_data.objects,'/../../roseta_files/config/','object.json')
+                    .then(()=>{
+                        fillTable(main_data.objects,'#tblObjetos')
+                    })
+                }
             }
         }
     })
